@@ -1,5 +1,5 @@
-<div>
-  <h2>Chat</h2>
+<h2>Chat</h2>
+<div style="height: 400px; overflow-y: auto;" id="chat-container">
   <% @project.idea.split("\n").each do |line| %>
     <% if line.start_with?("[user]") %>
       <p><strong><%= line %></strong></p>
