@@ -1,0 +1,22 @@
+<div>
+  <% if alert = flash[:alert] %>
+    <p id="alert"><%= alert %></p>
+  <% end %>
+
+  <% if notice = flash[:notice] %>
+    <p id="notice"><%= notice %></p>
+  <% end %>
+
+  <h1>New Project</h1>
+
+  <%= form_with model: @project, url: projects_url do |form| %>
+    <div>
+      <%= form.label :title %>
+      <%= form.text_field :title, required: true, autofocus: true, placeholder: "Flying Sauce", value: params[:title] %>
+    </div>
+
+    <div>
+      <%= form.submit "Create" %>
+    </div>
+  <% end %>
+</div>

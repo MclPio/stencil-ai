@@ -1,0 +1,9 @@
+<h1><%= @project.title %></h1>
+
+<div id="chat_area">
+  <%= render partial: "chat", locals: { project: @project } %>
+</div>
+
+<div>
+  <%= render partial: "chat_form", locals: { project: @project } %>
+</div>
