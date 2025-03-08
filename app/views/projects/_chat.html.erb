@@ -1,0 +1,12 @@
+<div>
+  <h2>Chat</h2>
+  <% @project.idea.split("\n").each do |line| %>
+    <% if line.start_with?("[user]") %>
+      <p><strong><%= line %></strong></p>
+    <% elsif line.start_with?("[system]") %>
+      <p><em><%= line %></em></p>
+    <% elsif line.start_with?("[assistant]") %>
+      <p><%= line %></p>
+    <% end %>
+  <% end %>
+</div>

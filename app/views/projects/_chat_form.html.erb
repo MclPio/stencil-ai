@@ -1,0 +1,7 @@
+<div id="chat_form" data-controller="form-reset">
+  <%= form_with url: update_idea_project_path(project), method: :patch,
+                data: { turbo: true, "form-reset-target": "form", action: "turbo:submit-end->form-reset#resetForm" } do |f| %>
+    <%= f.text_field :message, placeholder: "Type your idea...", value: "", autofocus: true %>
+    <%= f.submit "Send" %>
+  <% end %>
+</div>
