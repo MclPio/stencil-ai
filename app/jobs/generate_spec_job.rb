@@ -3,13 +3,9 @@ require "openai"
 class GenerateSpecJob < ApplicationJob
   queue_as :default
 
-  def perform(project_id)
-    project = Project.find(project_id)
+  def perform(project)
     spec = project.specs.last || project.specs.create
-    # LLM
-    # 1. send initial system prompt
-    # 1. send project idea
-    # 1. somehow post the spec?
+
     client = OpenAI::Client.new(
       access_token: Rails.application.credentials.openai_key,
       log_errors: true # Highly recommended in development, so you can see what errors OpenAI is returning. Not recommended in production because it could leak private data to your logs.

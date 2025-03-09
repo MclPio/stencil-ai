@@ -1,4 +1,5 @@
 class ProjectsController < ApplicationController
+  include SpecHelper
   def new
     @project = Current.user.projects.new
   end
@@ -23,7 +24,16 @@ class ProjectsController < ApplicationController
     tagged_message = "[user] #{message}"
 
     @project.update(idea: @project.idea + "\n" + tagged_message)
-    GenerateSpecJob.perform_later(@project.id)
+
+    response = check_enough_info(@project.idea)
+    enough_info = response[:enough]
+    assistant_message = assistant_message(response[:questions])
+    @project.update(idea: @project.idea + "\n" + assistant_message)
+
+    if enough_info
+      @project.update(idea: @project.idea + "\n" + "GENERATING SPECS...")
+      GenerateSpecJob.perform(@project)
+    end
     render turbo_stream: turbo_stream.update("chat_area", partial: "projects/chat", locals: { project: @project })
   end
 
@@ -31,5 +41,13 @@ class ProjectsController < ApplicationController
 
   def project_params
     params.expect(project: [ :title, :idea ])
+  end
+
+  def assistant_message(questions)
+    message = "[assistant]"
+    questions.each do |question|
+      message << " " + question + "\n"
+    end
+    message
   end
 end
