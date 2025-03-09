@@ -23,7 +23,7 @@ class ProjectsController < ApplicationController
     tagged_message = "[user] #{message}"
 
     @project.update(idea: @project.idea + "\n" + tagged_message)
-    # GenerateSpecJob.perform_later(@project.id)
+    GenerateSpecJob.perform_later(@project.id)
     render turbo_stream: turbo_stream.update("chat_area", partial: "projects/chat", locals: { project: @project })
   end
 
