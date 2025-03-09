@@ -1,4 +1,6 @@
 <div>
   <h2>Spec Preview</h2>
-  <pre><%= spec.content.presence || "Generating..." %></pre>
+  <% if @project.specs.last %>
+    <pre><%= @project.specs.last.content%></pre>
+  <% end %>
 </div>
