@@ -27,7 +27,7 @@ class GenerateSpecJob < ApplicationJob
 
   def value_prop
     "
-    You will make the value proposition based on the idea attached. You will also make a list of core features.
+    Generate a spec with problem, features, roadmap.
     "
   end
 end
