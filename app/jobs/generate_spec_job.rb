@@ -10,7 +10,24 @@ class GenerateSpecJob < ApplicationJob
       access_token: Rails.application.credentials.openai_key,
       log_errors: true # Highly recommended in development, so you can see what errors OpenAI is returning. Not recommended in production because it could leak private data to your logs.
     )
+
+    response = client.chat(
+      parameters: {
+        model: "gpt-4o-mini",
+        messages: [ { role: "user", content: project.idea + value_prop } ],
+        temperature: 0.7
+      }
+    )
+    message = response.dig("choices", 0, "message", "content")
     # LLM ENDS
-    spec.update(content: "Generated spec from: #{project.idea}")
+    spec.update(content: message)
+  end
+
+  private
+
+  def value_prop
+    "
+    Generate a spec with problem, features, roadmap.
+    "
   end
 end

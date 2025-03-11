@@ -36,10 +36,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_08_162927) do
     t.text "content"
     t.text "value_flow"
     t.text "models"
-    t.bigint "projects_id", null: false
+    t.bigint "project_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["projects_id"], name: "index_specs_on_projects_id"
+    t.index ["project_id"], name: "index_specs_on_project_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -53,5 +53,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_08_162927) do
 
   add_foreign_key "projects", "users"
   add_foreign_key "sessions", "users"
-  add_foreign_key "specs", "projects", column: "projects_id"
+  add_foreign_key "specs", "projects"
 end

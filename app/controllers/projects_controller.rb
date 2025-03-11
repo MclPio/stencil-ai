@@ -37,7 +37,7 @@ class ProjectsController < ApplicationController
     # If enough info, trigger spec generation
     if enough_info
       @project.update(idea: @project.idea + "\n" + "[assistant] GENERATING SPECS...")
-      GenerateSpecJob.perform(@project)
+      GenerateSpecJob.perform_later(@project)
     end
 
     render turbo_stream: turbo_stream.update("chat_area", partial: "projects/chat", locals: { project: @project })
