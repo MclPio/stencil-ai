@@ -23,17 +23,23 @@ class ProjectsController < ApplicationController
     message = params[:message].to_s
     tagged_message = "[user] #{message}"
 
+    # Append user message to idea
     @project.update(idea: @project.idea + "\n" + tagged_message)
 
+    # Check if the idea has enough detail
     response = check_enough_info(@project.idea)
     enough_info = response[:enough]
-    assistant_message = assistant_message(response[:questions])
-    @project.update(idea: @project.idea + "\n" + assistant_message)
+    explanation = response[:explanation]
 
+    # Append AI feedback
+    @project.update(idea: @project.idea + "\n" + "[assistant] #{explanation}")
+
+    # If enough info, trigger spec generation
     if enough_info
-      @project.update(idea: @project.idea + "\n" + "GENERATING SPECS...")
+      @project.update(idea: @project.idea + "\n" + "[assistant] GENERATING SPECS...")
       GenerateSpecJob.perform(@project)
     end
+
     render turbo_stream: turbo_stream.update("chat_area", partial: "projects/chat", locals: { project: @project })
   end
 
