@@ -63,3 +63,5 @@ group :test do
 end
 
 gem "ruby-openai"
+
+gem "jsbundling-rails", "~> 1.3"
