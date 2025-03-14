@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   root "projects#index"
   get "/home", to: "pages#home"
   resource :registration, only: %i[new create]
-  resources :projects, only: %i[new create show] do
+  resources :projects, only: %i[new create show index] do
     member do
       patch :update_idea
     end
