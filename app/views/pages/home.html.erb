@@ -16,7 +16,6 @@
           <li><%= link_to "Sign Out", session_path, method: :delete, data: { turbo_method: :delete }, class: "btn btn-neutral" %></li>
         <% else %>
           <li><%= link_to "Sign In", new_session_path, class: "btn btn-ghost" %></li>
-          <li><%= link_to "Sign Up", new_registration_path, class: "btn btn-primary" %></li>
         <% end %>
       </ul>
     </div>
@@ -68,7 +67,7 @@
       <div class="p-4 bg-base-200">
         <!-- Mermaid JS Roadmap -->
         <div class="mermaid">
-          graph TD
+          graph LR
             A[Your Idea] --> B[Ideation]
             B --> C[Specs & Diagrams]
             C --> D[Roadmap]
