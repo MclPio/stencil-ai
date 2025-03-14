@@ -4,6 +4,10 @@ class ProjectsController < ApplicationController
     @project = Current.user.projects.new
   end
 
+  def index
+    @projects = Current.user.projects
+  end
+
   def create
     @project = Current.user.projects.new(project_params)
     if @project.save

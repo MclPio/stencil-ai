@@ -1,11 +1,56 @@
-<h1 class="text-3xl font-bold underline"><%= @project.title %></h1>
+<!-- show.html.erb -->
+<div class="container mx-auto px-4 py-6">
+  <h1 class="text-3xl font-bold text-primary mb-6"><%= @project.title %></h1>
 
-<div id="chat_area">
-  <%= render partial: "chat", locals: { project: @project } %>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Chat Section -->
+    <div class="card bg-base-100 shadow-lg overflow-hidden">
+      <div class="card-body p-0 flex flex-col h-[600px]">
+        <div class="px-4 py-3 bg-base-200 border-b border-base-300">
+          <h2 class="card-title text-xl">Chat</h2>
+        </div>
+
+        <div id="chat_area" class="flex-1 overflow-hidden">
+          <%= render partial: "chat", locals: { project: @project } %>
+        </div>
+
+        <div class="border-t border-base-300 p-4 bg-base-100">
+          <%= render partial: "chat_form", locals: { project: @project } %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Spec Preview -->
+    <div class="card bg-base-100 shadow-lg">
+      <div class="card-body">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="card-title text-xl">Spec Preview</h2>
+          <div class="flex gap-2" id="diagram-controls">
+            <button class="btn btn-sm btn-outline" id="zoom-in">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+              </svg>
+            </button>
+            <button class="btn btn-sm btn-outline" id="zoom-out">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+              </svg>
+            </button>
+            <button class="btn btn-sm btn-outline" id="reset-view">Reset</button>
+            <button class="btn btn-sm btn-outline" id="fullscreen">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="diagram-container border border-base-300 rounded-lg p-4 bg-base-200 overflow-hidden relative h-[500px]">
+          <div id="diagram-wrapper" class="w-full h-full overflow-auto">
+            <%= render partial: "spec", locals: { project: @project } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-
-<div>
-  <%= render partial: "chat_form", locals: { project: @project } %>
-</div>
-
-<%= render partial: "spec", locals: { project: @project } %>
