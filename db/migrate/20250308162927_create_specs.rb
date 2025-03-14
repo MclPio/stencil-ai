@@ -4,7 +4,7 @@ class CreateSpecs < ActiveRecord::Migration[8.0]
       t.text :content
       t.text :value_flow
       t.text :models
-      t.references :projects, null: false, foreign_key: true
+      t.references :project, null: false, foreign_key: true
 
       t.timestamps
     end
