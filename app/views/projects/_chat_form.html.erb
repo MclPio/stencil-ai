@@ -1,7 +1,13 @@
+<!-- _chat_form.html.erb -->
 <div id="chat_form" data-controller="form-reset">
   <%= form_with url: update_idea_project_path(project), method: :patch,
-                data: { turbo: true, "form-reset-target": "form", action: "turbo:submit-end->form-reset#resetForm" } do |f| %>
-    <%= f.text_field :message, placeholder: "Type your idea...", value: "", autofocus: true %>
-    <%= f.submit "Send" %>
+                data: { turbo: true, "form-reset-target": "form", action: "turbo:submit-end->form-reset#resetForm" },
+                class: "flex gap-2" do |f| %>
+    <%= f.text_field :message,
+                      placeholder: "Type your idea...",
+                      value: "",
+                      autofocus: true,
+                      class: "input input-bordered flex-grow" %>
+    <%= f.submit "Send", class: "btn btn-primary" %>
   <% end %>
 </div>

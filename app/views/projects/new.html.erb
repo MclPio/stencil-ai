@@ -1,22 +1,22 @@
-<div>
-  <% if alert = flash[:alert] %>
-    <p id="alert"><%= alert %></p>
-  <% end %>
+<div class="card bg-base-100 shadow-xl max-w-md mx-auto p-6">
+  <h1 class="text-2xl font-bold text-center mb-6">New Project</h1>
 
-  <% if notice = flash[:notice] %>
-    <p id="notice"><%= notice %></p>
-  <% end %>
-
-  <h1>New Project</h1>
-
-  <%= form_with model: @project, url: projects_url do |form| %>
-    <div>
-      <%= form.label :title %>
-      <%= form.text_field :title, required: true, autofocus: true, placeholder: "Flying Sauce", value: params[:title] %>
+  <%= form_with model: @project, url: projects_url, class: "space-y-6" do |form| %>
+    <div class="form-control w-full">
+      <%= form.label :title, class: "label" do %>
+        <span class="label-text">Project Title</span>
+      <% end %>
+      <%= form.text_field :title,
+          required: true,
+          autofocus: true,
+          placeholder: "Flying Sauce",
+          value: params[:title],
+          class: "input input-bordered w-full" %>
     </div>
 
-    <div>
-      <%= form.submit "Create" %>
+    <div class="flex justify-between items-center mt-6">
+      <%= link_to "Cancel", projects_path, class: "btn btn-ghost" %>
+      <%= form.submit "Create Project", class: "btn btn-primary" %>
     </div>
   <% end %>
 </div>

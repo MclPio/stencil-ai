@@ -1,0 +1,39 @@
+/* Add this to your CSS */
+.mermaid-container {
+  transition: transform 0.1s ease;
+  min-height: 100%;
+  min-width: 100%;
+  display: inline-block; /* Important to allow diagram to expand beyond container */
+}
+
+.diagram-container {
+  position: relative;
+}
+
+#diagram-wrapper {
+  overflow: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1023px) {
+  .diagram-container {
+    height: 400px !important;
+  }
+
+  /* For mobile view, add some spacing between chat and diagram */
+  .grid > div:first-child {
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Make sure mermaid svg has a minimum size */
+.mermaid svg {
+  min-width: 300px;
+}
+
+/* Fix height of chat container on mobile */
+@media (max-width: 1023px) {
+  .card-body.flex-col.h-\[600px\] {
+    height: 500px !important;
+  }
+}
