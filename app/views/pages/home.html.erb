@@ -1,0 +1,116 @@
+<div class="min-h-screen bg-base-200">
+  <!-- Navbar -->
+  <div class="navbar bg-base-100 shadow-sm">
+    <div class="flex-1">
+      <%= link_to root_path, class: "btn btn-ghost text-xl flex items-center gap-2" do %>
+        <!-- Logo -->
+        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+        </svg>
+        Spec Maker
+      <% end %>
+    </div>
+    <div class="flex-none">
+      <ul class="menu menu-horizontal px-1 items-center gap-2">
+        <% if Current.user %>
+          <li><%= link_to "Sign Out", session_path, method: :delete, data: { turbo_method: :delete }, class: "btn btn-neutral" %></li>
+        <% else %>
+          <li><%= link_to "Sign In", new_session_path, class: "btn btn-ghost" %></li>
+          <li><%= link_to "Sign Up", new_registration_path, class: "btn btn-primary" %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero min-h-[60vh] bg-base-100">
+    <div class="hero-content text-center">
+      <div class="max-w-2xl">
+        <div class="mb-6">
+          <svg class="w-16 h-16 mx-auto text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+          </svg>
+        </div>
+        <h1 class="text-5xl font-bold mb-4">Accelerate Your SaaS Development</h1>
+        <p class="text-xl mb-6">Spec Maker: The AI-powered tool that transforms your ideas into precise, actionable specifications.</p>
+        <%= link_to "Sign Up", new_registration_path, class: "btn btn-primary btn-lg" %>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problem Section -->
+  <section class="py-16 px-4">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-3xl font-bold mb-6">Challenges Solo Developers Face</h2>
+      <p class="text-lg mb-8">Building a SaaS product alone is complex. Spec Maker simplifies the journey.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="card bg-base-100 shadow-md p-6">
+          <h3 class="text-xl font-semibold mb-2">Vision Overload</h3>
+          <p>Struggling to define how your app delivers value and prioritize features.</p>
+        </div>
+        <div class="card bg-base-100 shadow-md p-6">
+          <h3 class="text-xl font-semibold mb-2">Architecture Delays</h3>
+          <p>Designing robust models and logic slows down your progress.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- Solution Section -->
+<section class="py-16 px-4 bg-base-100">
+  <div class="max-w-4xl mx-auto text-center">
+    <h2 class="text-3xl font-bold mb-6">Introducing Spec Maker</h2>
+    <p class="text-lg mb-8">An AI-powered Spec Writer that turns your SaaS ideas into reality—fast and profitably.</p>
+    <div class="mockup-browser border bg-base-300 w-full max-w-2xl mx-auto">
+      <div class="mockup-browser-toolbar">
+        <div class="input">https://specmaker.ai</div>
+      </div>
+      <div class="p-4 bg-base-200">
+        <!-- Mermaid JS Roadmap -->
+        <div class="mermaid">
+          graph TD
+            A[Your Idea] --> B[Ideation]
+            B --> C[Specs & Diagrams]
+            C --> D[Roadmap]
+            D --> E[Iterate]
+            E --> F[Build Fast, Earn More]
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- Features Section -->
+  <section class="py-16 px-4">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-3xl font-bold mb-6">Key Benefits</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="card bg-base-100 shadow-md p-6">
+          <h3 class="text-xl font-semibold mb-2">Fast Ideation</h3>
+          <p>Collaborate with AI to refine your concepts quickly.</p>
+        </div>
+        <div class="card bg-base-100 shadow-md p-6">
+          <h3 class="text-xl font-semibold mb-2">Clear Roadmaps</h3>
+          <p>Visualize your project’s path with structured designs.</p>
+        </div>
+        <div class="card bg-base-100 shadow-md p-6">
+          <h3 class="text-xl font-semibold mb-2">Model Diagrams</h3>
+          <p>Understand how your app’s components connect.</p>
+        </div>
+        <div class="card bg-base-100 shadow-md p-6">
+          <h3 class="text-xl font-semibold mb-2">Effortless Iteration</h3>
+          <p>Edit and optimize specs with real-time feedback.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 px-4 bg-base-100">
+    <div class="max-w-2xl mx-auto text-center">
+      <h2 class="text-3xl font-bold mb-4">Start Building Smarter Today</h2>
+      <p class="text-lg mb-6">Sign up and dive into your projects—create, manage, and grow with ease.</p>
+      <%= link_to "Sign Up", new_registration_path, class: "btn btn-primary btn-lg" %>
+    </div>
+  </section>
+</div>
