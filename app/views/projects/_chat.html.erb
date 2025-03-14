@@ -1,14 +1,30 @@
-<h2>Chat</h2>
-<div style="height: 400px; overflow-y: auto;" id="chat-container">
+<!-- _chat.html.erb -->
+<div class="chat-messages h-full overflow-y-auto p-4" id="chat-container">
   <% @project.idea.split("\n").each do |line| %>
     <% if line.start_with?("[user]") %>
-      <p><strong><%= line %></strong></p>
+      <div class="chat chat-end mb-4">
+        <div class="chat-bubble chat-bubble-primary">
+          <strong><%= line.sub("[user] ", "") %></strong>
+        </div>
+      </div>
     <% elsif line.start_with?("[system]") %>
-      <p><em><%= line %></em></p>
+      <div class="chat chat-start mb-4">
+        <div class="chat-bubble chat-bubble-secondary">
+          <em><%= line.sub("[system] ", "") %></em>
+        </div>
+      </div>
     <% elsif line.start_with?("[assistant]") %>
-      <p><%= line %></p>
+      <div class="chat chat-start mb-4">
+        <div class="chat-bubble">
+          <%= line.sub("[assistant] ", "") %>
+        </div>
+      </div>
     <% else %>
-      <p><%= line %></p>
+      <div class="chat-start mb-4">
+        <div class="chat-bubble">
+          <%= line %>
+        </div>
+      </div>
     <% end %>
   <% end %>
 </div>

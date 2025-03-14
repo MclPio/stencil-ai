@@ -1,11 +1,27 @@
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
-<%= tag.div(flash[:notice], style: "color:green") if flash[:notice] %>
+<div class="min-h-screen flex items-center justify-center bg-base-200">
+  <div class="card w-full max-w-md bg-base-100 shadow-xl p-6">
+    <h1 class="text-3xl font-bold text-center mb-6">Sign In</h1>
 
-<%= form_with url: session_path do |form| %>
-  <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address] %><br>
-  <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72 %><br>
-  <%= form.submit "Sign in" %>
-<% end %>
-<br>
+    <%# Flash Messages %>
+    <%= tag.div flash[:alert], class: "alert alert-error mb-4" if flash[:alert] %>
+    <%= tag.div flash[:notice], class: "alert alert-success mb-4" if flash[:notice] %>
 
-<%= link_to "Forgot password?", new_password_path %>
+    <%# Sign-In Form %>
+    <%= form_with url: session_path, class: "space-y-4" do |form| %>
+      <div class="form-control">
+        <%= form.label :email_address, class: "label" %>
+        <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "input input-bordered w-full" %>
+      </div>
+
+      <div class="form-control">
+        <%= form.label :password, class: "label" %>
+        <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "input input-bordered w-full" %>
+      </div>
+
+      <div class="flex flex-col items-center gap-4 mt-6">
+        <%= form.submit "Sign In", class: "btn btn-primary w-full" %>
+        <%= link_to "Forgot password?", new_password_path, class: "link link-hover text-sm" %>
+      </div>
+    <% end %>
+  </div>
+</div>
