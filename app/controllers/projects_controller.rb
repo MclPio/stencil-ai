@@ -19,7 +19,7 @@ class ProjectsController < ApplicationController
 
   def show
     @project = Current.user.projects.find(params[:id])
-    @spec = @project.specs.last || @project.specs.build
+    @spec = @project.spec || @project.spec.build
   end
 
   def update_idea

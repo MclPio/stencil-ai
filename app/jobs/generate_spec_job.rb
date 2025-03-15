@@ -48,7 +48,8 @@ class GenerateSpecJob < ApplicationJob
         message = syntax_json["syntax"] # Extract the actual Mermaid.js syntax
       end
     end
-    spec.update(content: message)  end
+    spec.update(content: message)
+  end
 
   private
 
