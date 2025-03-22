@@ -1,0 +1,7 @@
+<% @project.conversation.user_assistant_messages.each do |message| %>
+  <% if message.role == "user" %>
+    <%= render partial: "conversation/user_role", locals: { message: message }%>
+  <% elsif message.role == "assistant" %>
+    <%= render partial: "conversation/assistant_role", locals: { message: message }%>
+  <% end %>
+<% end %>
