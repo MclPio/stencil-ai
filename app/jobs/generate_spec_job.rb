@@ -1,71 +1,76 @@
-require "openai"
-
 class GenerateSpecJob < ApplicationJob
   queue_as :default
 
-  def perform(project)
-    spec = project.specs.last || project.specs.create
-
+  def perform(project, diagram_types = [:flowchart]) # Default to flowchart
+    spec = project.spec || project.spec.create
     client = OpenAI::Client.new(
       access_token: Rails.application.credentials.openai_key,
-      log_errors: true # Highly recommended in development, so you can see what errors OpenAI is returning. Not recommended in production because it could leak private data to your logs.
+      log_errors: true
     )
 
-    response = client.chat(
-      parameters: {
-        model: "gpt-4o-mini",
-        messages: [ { role: "system", content: value_flow }, { role: "user", content: project.idea } ],
-        tools: [
-          {
-            type: "function",
-            function: {
-              "name": "mermaid_js_syntax",
-              "parameters": {
-                "type": "object",
-                "properties": {
-                  "syntax": {
-                    "type": "string",
-                    "description": "A valid Mermaid JS syntax string for rendering diagrams. Ensure correctness and avoid extra explanations."
-                  },
-                },
-                "required": ["syntax"],
-                "additionalProperties": false,
-              },
-              "strict": true,
-            },
-          }
-        ],
-        tool_choice: "required"
-      }
-    )
-    message = response.dig("choices", 0, "message", "content")
-
-    if message.nil?
-      tool_calls = response.dig("choices", 0, "message", "tool_calls")
-      if tool_calls && tool_calls.any?
-        mermaid_syntax = tool_calls[0].dig("function", "arguments")
-        syntax_json = JSON.parse(mermaid_syntax) # Convert JSON string to Hash
-        message = syntax_json["syntax"] # Extract the actual Mermaid.js syntax
-      end
+    results = {}
+    diagram_types.each do |type|
+      results[type] = generate_diagram(client, project.idea, type)
     end
-    spec.update(content: message)  end
+    spec.update(user_flow: results[:user_flow], model_erd: results[:model_erd],
+                roadmap_flow: results[:roadmap_flow]) # Store based on what's generated
+  end
 
   private
 
-  def value_flow
+  def generate_diagram(client, idea, type)
+    prompt = send("#{type}_prompt")
+    response = client.chat(
+      parameters: {
+        model: "gpt-4o-mini",
+        messages: [{ role: "system", content: prompt }, { role: "user", content: idea }],
+        tools: [mermaid_tool],
+        tool_choice: "required"
+      }
+    )
+    tool_calls = response.dig("choices", 0, "message", "tool_calls")
+    return nil unless tool_calls&.any?
+    syntax_json = JSON.parse(tool_calls[0].dig("function", "arguments"))
+    syntax_json["syntax"]
+  end
+
+  def user_flow_prompt
     <<~PROMPT
-    Generate a Mermaid.js flowchart showing how features connect to value (e.g., revenue, user benefit).
-    When generating, create a Mermaid.js flowchart (graph TD) that maps the user’s
-    features to their value (e.g., revenue, user retention). Keep it concise, use descriptive nodes
-    (e.g., [Feature Name]), and arrows (-->), focusing on the app’s core flow.
-    Do not include explanations, markdown code fences, or any other text
-    Sample output:
-    graph TD
-    A[Main System] --> B[Feature 1]
-    B --> C[Subtask 1]
-    A --> D[Feature 2]
-    D --> E[Subtask 2]
-    D --> F[Subtask 3]
+    Generate a Mermaid.js flowchart (graph TD) showing how a user would use the app.
+    Use descriptive nodes (e.g., [Feature Name]) and arrows (-->). No extra text.
+    Sample: graph TD\nA[Main System] --> B[Feature 1]\nB --> C[Subtask 1]
     PROMPT
+  end
+
+  def erd_prompt
+    <<~PROMPT
+    Generate a Mermaid.js ERD (erDiagram) showing entity relationships for the app’s data model (e.g., tables, keys, relationships).
+    Use ||--o{ for one-to-many, etc. No extra text.
+    Sample: erDiagram\nCustomer ||--o{ Order : places\nOrder ||--o{ Item : contains
+    PROMPT
+  end
+
+  def roadmap_flow_prompt
+    <<~PROMPT
+    Generate a Mermaid.js ERD (erDiagram) showing the project's roadmap
+    Use ||--o{ for one-to-many, etc. No extra text.
+    Sample: erDiagram\nCustomer ||--o{ Order : places\nOrder ||--o{ Item : contains
+    PROMPT
+  end
+
+  def mermaid_tool
+    {
+      type: "function",
+      function: {
+        "name": "mermaid_js_syntax",
+        "parameters": {
+          "type": "object",
+          "properties": { "syntax": { "type": "string", "description": "Valid Mermaid JS syntax" } },
+          "required": ["syntax"],
+          "additionalProperties": false
+        },
+        "strict": true
+      }
+    }
   end
 end

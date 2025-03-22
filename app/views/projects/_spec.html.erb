@@ -1,8 +1,8 @@
 <!-- _spec.html.erb -->
 <div class="mermaid-container" data-scale="1" data-translate-x="0" data-translate-y="0">
-  <% if @project.specs.last.id %>
+  <% if @project.spec.id %>
     <div class="mermaid">
-      <%= raw @project.specs.last.content %>
+      <%= raw @project.spec.content %>
     </div>
   <% else %>
     <div class="flex items-center justify-center h-full text-base-content/50">

@@ -34,8 +34,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_08_162927) do
 
   create_table "specs", force: :cascade do |t|
     t.text "content"
-    t.text "value_flow"
-    t.text "models"
+    t.text "user_flow"
+    t.text "model_erd"
+    t.text "roadmap_flow"
     t.bigint "project_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

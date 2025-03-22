@@ -1,4 +1,4 @@
 class Project < ApplicationRecord
   belongs_to :user
-  has_many :specs, dependent: :destroy
+  has_one :spec, dependent: :destroy
 end
