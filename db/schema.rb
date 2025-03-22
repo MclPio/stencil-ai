@@ -10,13 +10,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_08_162927) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_22_184144) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
+  create_table "conversations", force: :cascade do |t|
+    t.string "title"
+    t.integer "total_input_tokens", default: 0
+    t.integer "total_output_tokens", default: 0
+    t.bigint "projects_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["projects_id"], name: "index_conversations_on_projects_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.integer "role", null: false
+    t.text "content", null: false
+    t.integer "input_tokens"
+    t.integer "output_tokens"
+    t.bigint "conversations_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["conversations_id"], name: "index_messages_on_conversations_id"
+    t.index ["role"], name: "index_messages_on_role"
+  end
+
   create_table "projects", force: :cascade do |t|
     t.string "title"
-    t.text "idea", default: "", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -52,6 +73,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_08_162927) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "conversations", "projects", column: "projects_id"
+  add_foreign_key "messages", "conversations", column: "conversations_id"
   add_foreign_key "projects", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "specs", "projects"
