@@ -1,5 +1,5 @@
 class Conversation < ApplicationRecord
-  belongs_to :projects
+  belongs_to :project
 
   has_many :messages, dependent: :destroy
 
