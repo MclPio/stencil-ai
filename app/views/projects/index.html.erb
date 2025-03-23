@@ -1,23 +1,14 @@
-<div class="bg-base-100 p-6 rounded-lg shadow-lg">
-  <h2 class="text-2xl font-extrabold mb-4 text-primary">Projects</h2>
+<h2>Projects</h2>
 
-  <div class="grid gap-3 mb-6">
-    <% @projects.each do |project| %>
-      <%= link_to project_path(project), class: "card bg-base-200 hover:bg-base-300 transition-colors p-4 rounded-md flex items-center" do %>
-        <span class="font-medium text-base-content"><%= project.title %></span>
-        <span class="ml-auto">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-          </svg>
-        </span>
-      <% end %>
-    <% end %>
-  </div>
-
-  <%= link_to new_project_path, class: "btn btn-primary" do %>
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-    </svg>
-    New Project
+<% @projects.each do |project| %>
+  <%= link_to project_path(project) do %>
+    <span><%= project.title %></span>
   <% end %>
-</div>
+  <%# link to chat %>
+  <%# link to specs if generated %>
+  <%# Delete edit for project here %>
+<% end %>
+
+<%= link_to new_project_path do %>
+  New Project
+<% end %>
