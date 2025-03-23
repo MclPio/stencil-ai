@@ -15,9 +15,11 @@ Rails.application.routes.draw do
   root "projects#index"
   get "/home", to: "pages#home"
   resource :registration, only: %i[new create]
-  resources :projects, only: %i[new create show index update] do
+  resources :projects, only: %i[new create index update] do
     member do
       patch :update_idea
     end
+
+    resource :conversation, only: [ :show ]
   end
 end

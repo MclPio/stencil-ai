@@ -1,13 +1,20 @@
 <h2>Projects</h2>
-
-<% @projects.each do |project| %>
-  <%= link_to project_path(project) do %>
-    <span><%= project.title %></span>
+<%# class %>
+<ul class="list bg-base-100 rounded-box shadow-md mb-4">
+  <% @projects.each do |project| %>
+    <li class="list-row">
+      <div class="list-col-grow">
+        <span><%= project.title %></span>
+      </div>
+      <%= link_to "Chat", project_conversation_path(project), class: "btn btn-primary" %>
+      <button class="btn">Specs</button>
+      <button class="btn">Delete</button>
+      <%# link to chat %>
+      <%# link to specs if generated %>
+      <%# Delete edit for project here %>
+    </li>
   <% end %>
-  <%# link to chat %>
-  <%# link to specs if generated %>
-  <%# Delete edit for project here %>
-<% end %>
+</ul>
 
 <%= link_to new_project_path do %>
   New Project

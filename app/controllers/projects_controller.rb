@@ -25,9 +25,6 @@ class ProjectsController < ApplicationController
       render :edit, status: :unprocessable_entity
     end
   end
-  def show
-    @project = Current.user.projects.find(params[:id])
-  end
 
   def update_idea
   end
