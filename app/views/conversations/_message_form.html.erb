@@ -1,11 +1,13 @@
-<fieldset class="fieldset">
-  <%= form_with model: Message.new, url: messages_url do |form| %>
+<fieldset class="fieldset justify-items-center">
+  <%= form_with model: Message.new, url: messages_url, html: { class: "message-form", data: { controller: "message-form" } } do |form| %>
     <%= form.hidden_field :conversation_id, value: conversation.id %>
-    <%= form.text_area :content, class:"textarea h-24" %>
-    <%= form.button class: "btn btn-primary flex items-center gap-1" do %>
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
-        <path d="M208.49,120.49a12,12,0,0,1-17,0L140,69V216a12,12,0,0,1-24,0V69L64.49,120.49a12,12,0,0,1-17-17l72-72a12,12,0,0,1,17,0l72,72A12,12,0,0,1,208.49,120.49Z"></path>
-      </svg>
-    <% end %>
+    <div class="relative">
+      <%= form.text_area :content, data: { controller: 'auto-expand', action: "input->auto-expand#resize keydown->message-form#handleKeydown" }, class:"textarea h-24 min-h-[6rem] max-h-[12rem] resize-none pr-12", placeholder:"Lets Build, provide me a detailed writeup about your project" %>
+      <%= form.button class: "btn btn-primary absolute top-2 right-2 p-2 rounded-full" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
+          <path d="M208.49,120.49a12,12,0,0,1-17,0L140,69V216a12,12,0,0,1-24,0V69L64.49,120.49a12,12,0,0,1-17-17l72-72a12,12,0,0,1,17,0l72,72A12,12,0,0,1,208.49,120.49Z"></path>
+        </svg>
+      <% end %>
+    </div>
   <% end %>
 </fieldset>

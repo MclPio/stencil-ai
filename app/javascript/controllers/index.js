@@ -4,5 +4,8 @@
 
 import { application } from "./application"
 
-import FormResetController from "./form_reset_controller"
-application.register("form-reset", FormResetController)
+import AutoExpandController from "./auto_expand_controller"
+application.register("auto-expand", AutoExpandController)
+
+import MessageFormController from "./message_form_controller"
+application.register("message-form", MessageFormController)
