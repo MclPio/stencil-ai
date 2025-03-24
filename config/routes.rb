@@ -23,4 +23,5 @@ Rails.application.routes.draw do
     resource :conversation, only: [ :show ]
     resource :spec, only: [ :show ]
   end
+  resources :messages, only: [ :create ]
 end

@@ -28,9 +28,6 @@ class ProjectsController < ApplicationController
     end
   end
 
-  def update_idea
-  end
-
   def destroy
     @project.destroy
     redirect_to projects_path
@@ -45,12 +42,4 @@ class ProjectsController < ApplicationController
   def project_params
     params.expect(project: [ :title ])
   end
-
-  # def assistant_message(questions)
-  #   message = "[assistant]"
-  #   questions.each do |question|
-  #     message << " " + question + "\n"
-  #   end
-  #   message
-  # end
 end

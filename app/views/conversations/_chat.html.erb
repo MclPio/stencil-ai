@@ -1,5 +1,5 @@
 <div class="max-w-3xl mx-auto">
-  <% project.conversation.user_assistant_messages.each do |message| %>
+  <% conversation.user_assistant_messages.each do |message| %>
     <% if message.role == "user" %>
       <%= render partial: "user_role", locals: { message: message }%>
     <% elsif message.role == "assistant" %>

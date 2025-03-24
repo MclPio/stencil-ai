@@ -1,1 +1,2 @@
-<%= render partial: "chat", locals: { project: @project  } %>
+<%= render partial: "chat", locals: { conversation: @conversation  } %>
+<%= render partial: "message_form", locals: { conversation: @conversation } %>
