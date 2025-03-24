@@ -7,6 +7,7 @@
         <span><%= project.title %></span>
       </div>
       <%= link_to "Chat", project_conversation_path(project), class: "btn btn-primary" %>
+      <%= link_to "Specs", project_spec_path(project), class: "btn btn-secondary" %>
       <button class="btn">Specs</button>
       <button class="btn">Delete</button>
       <%# link to chat %>

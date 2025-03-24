@@ -21,5 +21,6 @@ Rails.application.routes.draw do
     end
 
     resource :conversation, only: [ :show ]
+    resource :spec, only: [ :show ]
   end
 end
