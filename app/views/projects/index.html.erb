@@ -8,8 +8,7 @@
       </div>
       <%= link_to "Chat", project_conversation_path(project), class: "btn btn-primary" %>
       <%= link_to "Specs", project_spec_path(project), class: "btn btn-secondary" %>
-      <button class="btn">Specs</button>
-      <button class="btn">Delete</button>
+      <%= button_to "Delete", project, method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "btn btn-warning" %>
       <%# link to chat %>
       <%# link to specs if generated %>
       <%# Delete edit for project here %>

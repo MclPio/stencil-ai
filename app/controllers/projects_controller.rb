@@ -1,5 +1,8 @@
 class ProjectsController < ApplicationController
   include SpecHelper
+
+  before_action :set_project, only: %i[ update destroy ]
+
   def new
     @project = Current.user.projects.new
   end
@@ -18,7 +21,6 @@ class ProjectsController < ApplicationController
   end
 
   def update
-    @project = Project.find(params[:id])
     if @project.update(project_params)
       redirect_to projects_path
     else
@@ -29,7 +31,16 @@ class ProjectsController < ApplicationController
   def update_idea
   end
 
+  def destroy
+    @project.destroy
+    redirect_to projects_path
+  end
+
   private
+
+  def set_project
+    @project = Project.find(params[:id])
+  end
 
   def project_params
     params.expect(project: [ :title ])

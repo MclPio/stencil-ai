@@ -80,9 +80,12 @@ message_collections = [
 ]
 
 user = User.create!(email_address: "user0@world.co", password: "1234", name: "Joe Smith")
-project = Project.create!(title: "AI Oven", user: user)
-conversation = project.conversation
-messages = message_collections.each do |message|
-  Message.create!(role: message[:role], content: message[:content], input_tokens: message[:input_tokens],
-              output_tokens: message[:output_tokens], conversation: conversation)
+
+5.times do |i|
+  project = Project.create!(title: "AI Oven #{i}", user: user)
+  conversation = project.conversation
+  messages = message_collections.each do |message|
+    Message.create!(role: message[:role], content: message[:content], input_tokens: message[:input_tokens],
+                output_tokens: message[:output_tokens], conversation: conversation)
+  end
 end
