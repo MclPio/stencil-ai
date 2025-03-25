@@ -1,4 +1,4 @@
-<div class="max-w-3xl mx-auto mb-24">
+<div class="max-w-3xl mx-auto mb-54">
   <% conversation.user_assistant_messages.each do |message| %>
     <% if message.role == "user" %>
       <%= render partial: "user_role", locals: { message: message }%>
