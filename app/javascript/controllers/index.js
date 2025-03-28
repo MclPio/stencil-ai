@@ -7,5 +7,8 @@ import { application } from "./application"
 import AutoExpandController from "./auto_expand_controller"
 application.register("auto-expand", AutoExpandController)
 
+import ChatScrollController from "./chat_scroll_controller"
+application.register("chat-scroll", ChatScrollController)
+
 import MessageFormController from "./message_form_controller"
 application.register("message-form", MessageFormController)

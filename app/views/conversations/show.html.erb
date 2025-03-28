@@ -1,2 +1,4 @@
-<%= render partial: "chat", locals: { conversation: @conversation  } %>
-<%= render partial: "message_form", locals: { conversation: @conversation } %>
+<div data-controller="chat-scroll">
+  <%= render partial: "chat", locals: { conversation: @conversation  } %>
+  <%= render partial: "message_form", locals: { conversation: @conversation } %>
+</div>
