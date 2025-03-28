@@ -1,7 +1,16 @@
 class MessagesController < ApplicationController
   def create
     @message = Message.new(message_params)
-    @message.save
+    if @message.save
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.append("conversations", partial: "conversations/user_role", locals: { message: @message })
+        end
+        format.html { redirect_to @message.conversation }
+      end
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   private
