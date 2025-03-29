@@ -1,4 +1,6 @@
 class MessagesController < ApplicationController
+  include ConversationHelper
+
   def create
     @message = Message.new(message_params)
     if @message.save
@@ -8,6 +10,15 @@ class MessagesController < ApplicationController
         end
         format.html { redirect_to @message.conversation }
       end
+      c = check_enough_info(message_params[:conversation_id])
+      # assistant_chat(conversation_id)
+      #   check_enough_info
+      #   save message in conversation Message.create!(role: "assistant", content: content)
+
+      # if Conversation.find(conversation_id).messages.last.enough (should be the assistant)
+      #  call spec job and generate marmaid erd
+      # else
+      #  do nothing and keep chatting
     else
       render :new, status: :unprocessable_entity
     end

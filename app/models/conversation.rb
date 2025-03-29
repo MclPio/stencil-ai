@@ -16,9 +16,11 @@ class Conversation < ApplicationRecord
     messages.filter { |message| message.role != "system" }
   end
 
-  # def formatted_messages
-  #   messages.order(:created_at).map do |message|
-  #     { role: message.role, content: message.content }
-  #   end
-  # end
+  def formatted_messages
+    messages
+      .select(:role, :content)
+      .order(:created_at)
+      .pluck(:role, :content)
+      .map { |role, content| { role: role, content: content } }
+  end
 end
