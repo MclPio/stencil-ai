@@ -36,6 +36,7 @@ module ConversationHelper
       2. At least 2-3 key features or functionalities.
       3. Basic technical requirements (e.g., tech stack or integrations).
 
+      if the user wants to bypass it or says they provided enough then let them pass do not be too strict be helpful.
       Respond with a JSON object:
       {
         "enough": true or false,

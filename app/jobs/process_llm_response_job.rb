@@ -19,8 +19,7 @@ class ProcessLlmResponseJob < ApplicationJob
     )
 
     if response[:enough]
-      puts("######## RESPONSE IS ENOUGH TO TRIGGER ERD GENERATE")
-      # GenerateErdDiagramJob.perform_later(conversation_id)
+      GenerateErdDiagramJob.perform_later(conversation_id)
     end
   end
 end

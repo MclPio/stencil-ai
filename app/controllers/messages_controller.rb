@@ -12,21 +12,6 @@ class MessagesController < ApplicationController
         end
         format.html { redirect_to @message.conversation }
       end
-
-      # if response[:enough]
-        # run the erd diagram component job.
-        # notify user when done via assistant message...
-        # user clicks spec to view it
-      # end
-
-      # assistant_chat(conversation_id)
-      #   check_enough_info
-      #   save message in conversation Message.create!(role: "assistant", content: content)
-
-      # if Conversation.find(conversation_id).messages.last.enough (should be the assistant)
-      #  call spec job and generate marmaid erd
-      # else
-      #  do nothing and keep chatting
       ProcessLlmResponseJob.perform_later(message_params[:conversation_id])
     else
       render :new, status: :unprocessable_entity
