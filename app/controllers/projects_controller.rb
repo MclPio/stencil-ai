@@ -1,6 +1,4 @@
 class ProjectsController < ApplicationController
-  include SpecHelper
-
   before_action :set_project, only: %i[ update destroy ]
 
   def new
