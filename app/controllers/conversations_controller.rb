@@ -1,6 +1,6 @@
 class ConversationsController < ApplicationController
   def show
     project = Project.find(params[:project_id])
-    @conversation = project.conversation.preload(:messages)
+    @conversation = project.conversation
   end
 end

@@ -1,9 +1,6 @@
+<%= turbo_stream_from "conversation_#{@conversation.id}" %>
 <div id="conversations" class="max-w-3xl mx-auto mb-54">
-  <% conversation.user_assistant_messages.each do |message| %>
-    <% if message.role == "user" %>
-      <%= render partial: "user_role", locals: { message: message }%>
-    <% elsif message.role == "assistant" %>
-      <%= render partial: "assistant_role", locals: { message: message }%>
-    <% end %>
+  <% @conversation.user_assistant_messages.each do |message| %>
+    <%= render partial: "conversations/#{message.role}_role", locals: { message: message } %>
   <% end %>
 </div>
