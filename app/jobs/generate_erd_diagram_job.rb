@@ -21,7 +21,5 @@ class GenerateErdDiagramJob < ApplicationJob
       partial: "conversations/assistant_role",
       locals: { message: assistant_message }
     )
-
-    conversation.project.spec.update(model_erd: erd_content)
   end
 end
