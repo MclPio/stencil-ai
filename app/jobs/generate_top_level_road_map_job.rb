@@ -11,7 +11,7 @@ class GenerateTopLevelRoadMapJob < ApplicationJob
 
     assistant_message = Message.create!(
       role: "assistant",
-      content: "ERD diagram generated! View it in your project spec.\n\nExplanation: #{top_level_roadmap_response[:explanation]}",
+      content: "Roadmap generated! View it in your project spec.\n\nExplanation: #{top_level_roadmap_response[:explanation]}",
       conversation_id: conversation_id
     )
 
