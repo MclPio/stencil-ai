@@ -19,10 +19,10 @@ module TopLevelRoadMapHelper
     )
 
     raw_content = response.dig("choices", 0, "message", "content")
-    puts "Raw LLM Response: #{raw_content}"
+    # puts "Raw LLM Response: #{raw_content}"
 
     parsed_response = parse_top_level_roadmap_response(raw_content)
-    puts "Parsed Response: #{parsed_response}"
+    # puts "Parsed Response: #{parsed_response}"
     parsed_response
   end
 

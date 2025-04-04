@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_04_154436) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_04_165840) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -63,6 +63,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_154436) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "top_level_roadmap_diagram"
+    t.text "value_flow_diagram"
     t.index ["project_id"], name: "index_specs_on_project_id"
   end
 
