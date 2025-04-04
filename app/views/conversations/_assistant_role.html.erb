@@ -1,5 +1,12 @@
-<div class="card card-border bg-base-100 card-lg mb-4">
- <div class="card-body">
-   <p><%= message.content %></p>
- </div>
+<div class="card bg-base-100 border border-base-300 shadow-sm rounded-lg mb-4">
+  <div class="card-body p-4">
+    <p class="text-base-content"><%= message.content %></p>
+    <% if message.suggestions.any? %>
+      <ul class="mt-3 list-disc list-inside text-sm text-base-content/80">
+        <% message.suggestions.each do |suggestion| %>
+          <li class="mb-1 last:mb-0"><%= suggestion %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
 </div>

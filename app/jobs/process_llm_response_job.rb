@@ -8,6 +8,7 @@ class ProcessLlmResponseJob < ApplicationJob
     assistant_message = Message.create!(
       role: "assistant",
       content: response[:explanation],
+      suggestions: response[:suggestions],
       conversation_id: conversation_id
     )
 

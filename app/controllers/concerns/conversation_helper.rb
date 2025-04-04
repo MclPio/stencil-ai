@@ -31,18 +31,20 @@ module ConversationHelper
 
   def system_prompt
     <<~PROMPT
-      You are an assistant evaluating SaaS product ideas for planning. Analyze the conversation and determine if it has enough detail to generate an architecture diagram based on:
-      1. A clear problem statement (what issue the product solves).
-      2. At least 2-3 key features or functionalities.
-      3. Basic technical requirements (e.g., tech stack or integrations).
+    You are an assistant helping a solo Rails developer evaluate their SaaS product idea. Analyze the conversation and determine if it has enough detail to generate an architecture diagram based on:
+    1. A clear problem statement (what issue the product solves).
+    2. At least 2-3 key features or functionalities.
+    3. Basic technical requirements (e.g., tech stack or integrations).
 
-      if the user wants to bypass it or says they provided enough then let them pass do not be too strict be helpful.
-      Respond with a JSON object:
-      {
-        "enough": true or false,
-        "explanation": "A brief reason why it's enough or what is missing."
-      }
-    PROMPT
+    If the user says they’ve provided enough or wants to bypass this check, set "enough" to true and note their preference in the explanation. Otherwise, be helpful, not strict—guide them toward clarity.
+
+    Respond with a JSON object:
+    {
+      "enough": true or false,
+      "explanation": "A brief reason why it’s enough or what’s missing.",
+      "suggestions": ["A list of 1-3 specific, actionable ideas to improve the input if not enough, or an empty array if enough."]
+    }
+  PROMPT
   end
 
   def parse_response(content)
@@ -50,7 +52,8 @@ module ConversationHelper
 
     {
       enough: parsed[:enough] == true,
-      explanation: parsed[:explanation].to_s
+      explanation: parsed[:explanation].to_s,
+      suggestions: parsed[:suggestions]
     }
   rescue JSON::ParserError
     { enough: false, explanation: "Invalid JSON response: '#{content}'" }
