@@ -11,7 +11,7 @@ module TopLevelRoadMapHelper
         model: "gpt-4o-mini",
         messages: [
           { role: "system", content: top_level_roadmap_system_prompt },
-          { role: "user", content: "Generate a valid Mermaid JS roadmap diagram based on the conversation." }
+          { role: "user", content: "Generate a valid Mermaid JS roadmap diagram based on the conversation, adapting to any time goals or constraints mentioned." }
         ] + message_history,
         temperature: 0.2,
         response_format: { type: "json_object" }
@@ -30,47 +30,41 @@ module TopLevelRoadMapHelper
 
   def top_level_roadmap_system_prompt
     <<~PROMPT
-    You are an expert in generating Timeline Diagrams for Ruby on Rails applications. Your task is to analyze the conversation and produce a valid Mermaid JS Timeline Diagram that visualizes a top-level roadmap for the project discussed in the conversation. Follow these rules strictly:
+    You are an expert in generating Timeline Diagrams for Ruby on Rails applications. Your task is to analyze the conversation and produce a valid Mermaid JS Timeline Diagram that visualizes a top-level roadmap for the project, tailored to the user's specific goals and constraints. Follow these rules:
 
     1. Output *only* valid Mermaid JS Timeline syntax using the timeline format.
 
-    2. Structure the roadmap into clear development phases that follow a typical Rails SaaS development lifecycle:
+    2. Structure the roadmap dynamically based on:
+       - The user's stated time goals (e.g., "I need this in 3 months") or default to a 3-month solo-dev timeline if unspecified.
+       - Key priorities or constraints (e.g., "MVP for a demo," "backend-first," "no UI needed").
+       - The problem statement, models, technical requirements, and business goals from the conversation.
+
+    3. Generate phases that fit the project’s needs, such as:
        - Planning & Setup
        - Core Functionality Development
-       - User Experience & UI
+       - User Experience & UI (if relevant)
        - Testing & Quality Assurance
        - Deployment & Launch
-       - Post-Launch Improvements
+       - Post-Launch Improvements (optional)
+       - Omit or combine phases if they don’t apply (e.g., skip UI for an API app).
 
-    3. For each phase, include:
-       - Estimated time duration (in weeks)
+    4. For each phase, include:
+       - Estimated time duration (in weeks, adjusted to fit the user’s timeline)
        - Key milestones and deliverables
-       - Critical tasks that must be completed
+       - Critical tasks, reflecting Rails conventions (e.g., schema before controllers)
 
-    4. Use appropriate timeline section organization:
+    5. Use appropriate timeline section organization:
        - Group related tasks under logical sections
-       - Include parallel tracks where relevant (e.g., backend/frontend work)
+       - Include parallel tracks where feasible (e.g., backend/frontend)
        - Highlight dependencies between milestones
 
-    5. Base the timeline on:
-       - The conversation's problem statement
-       - The models and relationships identified
-       - Technical requirements discussed
-       - Business goals mentioned
+    6. If the user’s time goal is aggressive, note trade-offs (e.g., reduced testing or scope).
+    7. If details are missing, make reasonable assumptions based on Rails conventions and the solo-dev context, and explain them.
 
-    6. Reflect Rails-specific development sequences:
-       - Database schema and migrations before controller logic
-       - Core models before auxiliary features
-       - Authentication/authorization before user-specific features
-
-    7. If details are missing, make reasonable assumptions based on Rails conventions and note them in the explanation.
-
-    8. Keep the timeline realistic for a solo Rails developer (avoid overly optimistic schedules).
-
-    9. Respond *only* with this JSON format, no extra text:
+    8. Respond *only* with this JSON format:
     {
-      "mermaid": "timeline\\n    title Ruby on Rails SaaS Development Roadmap\\n    section Planning & Setup\\n      Database Schema Design: 1 week\\n      User Authentication Setup: 2 weeks\\n    section Core Functionality\\n      User Management: 2 weeks\\n      ...",
-      "explanation": "This roadmap outlines a X-month development cycle with Y major phases. Assumptions made include Z. Critical path items are highlighted in the Planning and Core Functionality sections."
+      "mermaid": "timeline\\n    title Ruby on Rails SaaS Development Roadmap\\n    section Planning & Setup\\n      Database Schema Design: 1 week\\n      User Authentication Setup: 1 week\\n    section Core Functionality\\n      Core Feature X: 2 weeks\\n      ...",
+      "explanation": "This roadmap adapts to a [X]-month goal based on [user input]. Phases are tailored to [priorities]. Assumptions: [Y]. Trade-offs: [Z]."
     }
     PROMPT
   end
