@@ -25,7 +25,6 @@ module ValueFlowDiagramHelper
   private
 
   def value_flow_system_prompt
-    def value_flow_system_prompt
     <<~PROMPT
     You are an assistant helping a solo Rails developer create a Value Flow Diagram for their SaaS idea. Based on the conversation, generate a Mermaid Flowchart (`graph TD`) mapping how value flows from the user’s problem to the solution, and return it in JSON format.
 
@@ -56,7 +55,6 @@ module ValueFlowDiagramHelper
       "explanation": "Used squares for user actions, bold for key process, and slash for output to highlight flow."
     }
     PROMPT
-    end
   end
 
   def parse_value_flow_diagram_response(content)
