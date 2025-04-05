@@ -1,0 +1,46 @@
+<h2>My slide in panel<h2>
+
+<!-- app/views/specs/show.html.erb -->
+<div class="max-w-4xl mx-auto py-8">
+  <!-- Raw Mermaid Code -->
+  <div class="mb-6">
+    <h2 class="text-xl font-bold mb -2">Mermaid JS Code</h2>
+    <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto"><code><%= spec.model_erd %></code></pre>
+  </div>
+
+  <!-- Rendered Diagram -->
+  <div class="mb-6">
+    <h2 class="text-xl font-bold mb-2">ERD Diagram</h2>
+    <div id="mermaid-diagram" class="mermaid bg-white p-4 border rounded-lg">
+      <%= spec.model_erd %>
+    </div>
+  </div>
+
+  <!-- Raw Mermaid Code -->
+  <div class="mb-6">
+    <h2 class="text-xl font-bold mb -2">Mermaid JS Code</h2>
+    <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto"><code><%= spec.top_level_roadmap_diagram %></code></pre>
+  </div>
+
+  <!-- Rendered Diagram -->
+  <div class="mb-6">
+    <h2 class="text-xl font-bold mb-2">ERD Diagram</h2>
+    <div id="mermaid-diagram" class="mermaid bg-white p-4 border rounded-lg">
+      <%= spec.top_level_roadmap_diagram %>
+    </div>
+  </div>
+
+    <!-- Raw Mermaid Code -->
+  <div class="mb-6">
+    <h2 class="text-xl font-bold mb -2">Mermaid JS Code</h2>
+    <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto"><code><%= spec.value_flow_diagram %></code></pre>
+  </div>
+
+  <!-- Rendered Diagram -->
+  <div class="mb-6">
+    <h2 class="text-xl font-bold mb-2">ERD Diagram</h2>
+    <div id="mermaid-diagram" class="mermaid bg-white p-4 border rounded-lg">
+      <%= spec.value_flow_diagram %>
+    </div>
+  </div>
+</div>
