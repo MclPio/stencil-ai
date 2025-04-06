@@ -26,7 +26,9 @@
                 <button>close</button>
               </form>
             </dialog>
-            <li><a class="text-error">Delete</a></li>
+            <li>
+              <%= button_to "Delete", @conversation.project, method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "text-error" %>
+            </li>
           </ul>
         </details>
       </li>
