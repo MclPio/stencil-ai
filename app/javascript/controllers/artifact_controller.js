@@ -6,14 +6,20 @@ export default class extends Controller {
   static targets = [ "panel", "divider" ]
 
   connect() {
-    mermaid.initialize({
-      startOnLoad: false,  // Don't auto-render on page load
-      theme: "default",
-    });
+    // mermaid.initialize({
+    //   startOnLoad: false,  // Don't auto-render on page load
+    //   theme: "default",
+    // });
   }
 
   toggle() {
     this.panelTarget.classList.toggle("hidden")
     this.dividerTarget.classList.toggle("hidden")
+
+    if (!this.panelTarget.classList.contains("hidden")) {     
+      console.log("yesss");
+      mermaid.initialize();
+      mermaid.contentLoaded();
+    }
   }
 }
