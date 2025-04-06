@@ -20,7 +20,10 @@ class ProjectsController < ApplicationController
 
   def update
     if @project.update(project_params)
-      redirect_to projects_path
+      respond_to do |format|
+        format.html { redirect_to projects_path }
+        format.turbo_stream
+      end
     else
       render :edit, status: :unprocessable_entity
     end
