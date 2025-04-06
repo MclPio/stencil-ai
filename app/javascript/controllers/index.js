@@ -4,6 +4,9 @@
 
 import { application } from "./application"
 
+import ArtifactController from "./artifact_controller"
+application.register("artifact", ArtifactController)
+
 import AutoExpandController from "./auto_expand_controller"
 application.register("auto-expand", AutoExpandController)
 
