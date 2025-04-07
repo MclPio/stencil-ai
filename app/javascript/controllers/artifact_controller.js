@@ -6,20 +6,35 @@ export default class extends Controller {
   static targets = [ "panel", "divider" ]
 
   connect() {
-    // mermaid.initialize({
-    //   startOnLoad: false,  // Don't auto-render on page load
-    //   theme: "default",
-    // });
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: 'strict',
+    });
+    
+    // Render charts if panel is visible on initial load
+    // if (!this.panelTarget.classList.contains("hidden")) {
+    //   this.renderMermaid();
+    // }
   }
 
   toggle() {
-    this.panelTarget.classList.toggle("hidden")
-    this.dividerTarget.classList.toggle("hidden")
+    this.panelTarget.classList.toggle("hidden");
+    this.dividerTarget.classList.toggle("hidden");
 
-    if (!this.panelTarget.classList.contains("hidden")) {     
-      console.log("yesss");
-      mermaid.initialize();
-      mermaid.contentLoaded();
+    if (!this.panelTarget.classList.contains("hidden")) {
+      this.renderMermaid();
     }
+  }
+
+  renderMermaid() {
+    // Wait for DOM to update
+    requestAnimationFrame(() => {
+      mermaid.run({
+        querySelector: '.mermaid',
+        suppressErrors: false
+      }).catch(err => {
+        console.error('Mermaid rendering error:', err);
+      });
+    });
   }
 }
