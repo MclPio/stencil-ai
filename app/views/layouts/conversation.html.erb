@@ -38,7 +38,7 @@
     <% end %>
     <div class="flex w-full" data-controller="artifact">
       <%# WILL HOLD THE chat_navbar + chat content %>
-      <div class="grid h-20 grow place-items-center">
+      <div class="grid h-screen grow place-items-center overflow-y-auto">
         <%= render "conversations/navbar" %>
         <main class="container mx-auto px-4 pt-24 pb-8 flex-grow">
           <%= yield %>
