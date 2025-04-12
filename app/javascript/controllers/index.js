@@ -7,6 +7,9 @@ import { application } from "./application"
 import ArtifactController from "./artifact_controller"
 application.register("artifact", ArtifactController)
 
+import ArtifactSelectController from "./artifact_select_controller"
+application.register("artifact-select", ArtifactSelectController)
+
 import AutoExpandController from "./auto_expand_controller"
 application.register("auto-expand", AutoExpandController)
 
