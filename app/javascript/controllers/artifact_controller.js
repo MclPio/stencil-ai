@@ -3,7 +3,7 @@ import mermaid from "mermaid";
 
 // Connects to data-controller="artifact"
 export default class extends Controller {
-  static targets = [ "panel", "divider" ]
+  static targets = [ "panel", "divider", "openButton" ]
 
   connect() {
     mermaid.initialize({
@@ -17,9 +17,16 @@ export default class extends Controller {
     // }
   }
 
-  toggle() {
-    this.panelTarget.classList.toggle("hidden");
-    this.dividerTarget.classList.toggle("hidden");
+  close() {
+    this.panelTarget.classList.add("hidden");
+    this.dividerTarget.classList.add("hidden");
+    this.openButtonTarget.classList.remove("hidden");
+  }
+
+  open() {
+    this.panelTarget.classList.remove("hidden");
+    this.dividerTarget.classList.remove("hidden");
+    this.openButtonTarget.classList.add("hidden");
 
     if (!this.panelTarget.classList.contains("hidden")) {
       this.renderMermaid();

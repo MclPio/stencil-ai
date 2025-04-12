@@ -1,4 +1,16 @@
-<!-- app/views/specs/show.html.erb -->
+<div class="flex justify-between items-center p-4 border-b border-base-300">
+  <select>
+    <option>Artifact 1</option>
+    <option>Artifact 2</option>
+  </select>
+  <button class="btn btn-outline btn-sm" data-action="click->artifact#close">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+      <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+    </svg>
+  </button>
+</div>
+
+<!-- app/views/conversations/_artifact.html.erb -->
 <div class="w-full h-full p-4 overflow-x-auto">
   <!-- Raw Mermaid Code -->
   <div class="mb-6">
