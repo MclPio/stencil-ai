@@ -1,0 +1,13 @@
+<!-- Raw Mermaid Code -->
+<div class="mb-6">
+  <h2 class="text-xl font-bold mb -2">Mermaid JS Code</h2>
+  <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto"><code><%= @conversation.project.spec.model_erd %></code></pre>
+</div>
+
+<!-- Rendered Diagram -->
+<div class="mb-6">
+  <h2 class="text-xl font-bold mb-2">ERD Diagram</h2>
+  <div id="mermaid-diagram" class="mermaid bg-white p-4 border rounded-lg">
+    <%= @conversation.project.spec.model_erd %>
+  </div>
+</div>

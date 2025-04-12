@@ -9,48 +9,9 @@
     </svg>
   </button>
 </div>
-
 <!-- app/views/conversations/_artifact.html.erb -->
-<div class="w-full h-full p-4 overflow-x-auto">
-  <!-- Raw Mermaid Code -->
-  <div class="mb-6">
-    <h2 class="text-xl font-bold mb -2">Mermaid JS Code</h2>
-    <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto"><code><%= @conversation.project.spec.model_erd %></code></pre>
-  </div>
-
-  <!-- Rendered Diagram -->
-  <div class="mb-6">
-    <h2 class="text-xl font-bold mb-2">ERD Diagram</h2>
-    <div id="mermaid-diagram" class="mermaid bg-white p-4 border rounded-lg">
-      <%= @conversation.project.spec.model_erd %>
-    </div>
-  </div>
-
-  <!-- Raw Mermaid Code -->
-  <div class="mb-6">
-    <h2 class="text-xl font-bold mb -2">Mermaid JS Code</h2>
-    <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto"><code><%= @conversation.project.spec.top_level_roadmap_diagram %></code></pre>
-  </div>
-
-  <!-- Rendered Diagram -->
-  <div class="mb-6">
-    <h2 class="text-xl font-bold mb-2">ERD Diagram</h2>
-    <div id="mermaid-diagram" class="mermaid bg-white p-4 border rounded-lg">
-      <%= @conversation.project.spec.top_level_roadmap_diagram %>
-    </div>
-  </div>
-
-    <!-- Raw Mermaid Code -->
-  <div class="mb-6">
-    <h2 class="text-xl font-bold mb -2">Mermaid JS Code</h2>
-    <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto"><code><%= @conversation.project.spec.value_flow_diagram %></code></pre>
-  </div>
-
-  <!-- Rendered Diagram -->
-  <div class="mb-6">
-    <h2 class="text-xl font-bold mb-2">ERD Diagram</h2>
-    <div id="mermaid-diagram" class="mermaid bg-white p-4 border rounded-lg">
-      <%= @conversation.project.spec.value_flow_diagram %>
-    </div>
-  </div>
+<div class="w-full h-full p-4 overflow-x-auto pb-54">
+  <%= render partial: "conversations/artifacts/model_erd" %>
+  <%= render partial: "conversations/artifacts/top_level_roadmap_diagram" %>
+  <%= render partial: "conversations/artifacts/value_flow_diagram" %>
 </div>
