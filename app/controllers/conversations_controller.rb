@@ -1,8 +1,18 @@
 class ConversationsController < ApplicationController
+  before_action :set_project_conversation
   layout "conversation"
 
   def show
-    project = Project.find(params[:project_id])
-    @conversation = project.conversation
+  end
+
+  def artifact
+    render partial: "conversations/artifacts/#{params[:type]}"
+  end
+
+  private
+
+  def set_project_conversation
+    @project = Project.find(params[:project_id])
+    @conversation = @project.conversation
   end
 end

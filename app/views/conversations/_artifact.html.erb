@@ -1,4 +1,4 @@
-<div data-controller="artifact-select">
+<div data-controller="artifact-select" data-artifact-select-project-id-value=<%= @project.id %>>
   <div class="flex justify-between items-center p-4 border-b border-base-300">
     <select data-action="artifact-select#select" data-artifact-select-target="selection">
       <option value="model_erd">Model ERD</option>
@@ -13,7 +13,10 @@
   </div>
   <!-- app/views/conversations/_artifact.html.erb -->
   <div class="w-full h-full p-4 overflow-x-auto pb-54">
-    <div class="" data-target="modelErd">
+    <div data-artifact-select-target="artifactContent">
+    </div>
+    <%# To be deleted %>
+    <div class="hidden" data-target="modelErd">
       <%= render partial: "conversations/artifacts/model_erd" %>
     </div>
     <div class="hidden" data-target="topLevelRoadmapDiagram">
@@ -22,5 +25,6 @@
     <div class="hidden" data-target="valueFlowDiagram">
       <%= render partial: "conversations/artifacts/value_flow_diagram" %>
     </div>
+    <%# To be deleted %>
   </div>
 </div>
