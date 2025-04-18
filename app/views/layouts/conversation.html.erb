@@ -36,7 +36,7 @@
         <span><%= notice %></span>
       </div>
     <% end %>
-    <div class="flex w-full" data-controller="artifact">
+    <div class="flex w-full" data-controller="artifact" data-artifact-project-id-value=<%= @project.id %>>
       <%# WILL HOLD THE chat_navbar + chat content %>
       <div class="grid h-screen grow place-items-center overflow-y-auto">
         <%= render "conversations/navbar" %>
