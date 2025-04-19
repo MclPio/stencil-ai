@@ -9,6 +9,14 @@ export default class extends Controller {
     const elem = this.diagramTarget
     toggleFullscreen(elem)
   }
+
+  reset() {
+    const svg = this.diagramTarget.querySelector('svg');
+    if (svg && svg.panzoom) {
+      svg.panzoom.reset();
+    }
+  }
+
 }
 
 function toggleFullscreen(elem) {
