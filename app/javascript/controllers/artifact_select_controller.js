@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import mermaid from "mermaid";
+import Panzoom from "@panzoom/panzoom";
 
 // Connects to data-controller="artifact-select"
 export default class extends Controller {
@@ -9,6 +10,7 @@ export default class extends Controller {
   select() {
     const url = `/projects/${this.projectIdValue}/artifacts/${this.selectionTarget.value}`
     this.load(url)
+    this.panzoom()
   }
 
   load(urlValue) {
@@ -23,5 +25,11 @@ export default class extends Controller {
           console.error('Mermaid rendering error:', err);
         });
       })
+  }
+
+  panzoom() {
+    const panzoom = Panzoom(this.artifactContentTarget, {maxScale: 5})
+    panzoom.pan(10, 10)
+    panzoom.zoom(2, { animate: true })
   }
 }
