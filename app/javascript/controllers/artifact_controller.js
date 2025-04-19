@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import mermaid from "mermaid";
+import mermaidLoader from "../mermaidLoader";
 
 // Connects to data-controller="artifact"
 export default class extends Controller {
@@ -21,20 +21,6 @@ export default class extends Controller {
 
   loadChartOnOpen() {
     const url = `/projects/${this.projectIdValue}/artifacts/${this.selectionTarget.value}`
-    this.load(url)
-  }
-
-  load(urlValue) {
-    fetch(urlValue)
-      .then(response => response.text())
-      .then(html => {
-        this.artifactContentTarget.innerHTML = html;
-        mermaid.run({
-          querySelector: '.mermaid',
-          suppressErrors: false
-        }).catch(err => {
-          console.error('Mermaid rendering error:', err);
-        });
-      })
+    mermaidLoader(url, this.artifactContentTarget)
   }
 }
