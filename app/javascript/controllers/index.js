@@ -18,3 +18,6 @@ application.register("chat-scroll", ChatScrollController)
 
 import MessageFormController from "./message_form_controller"
 application.register("message-form", MessageFormController)
+
+import SvgZoomController from "./svg_zoom_controller"
+application.register("svg-zoom", SvgZoomController)
