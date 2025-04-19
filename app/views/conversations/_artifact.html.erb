@@ -1,11 +1,16 @@
 <div data-controller="artifact-select" data-artifact-select-project-id-value=<%= @project.id %>>
   <div class="flex justify-between items-center p-4 border-b border-base-300">
-    <select data-action="artifact-select#select" data-artifact-select-target="selection" data-artifact-target="selection" class="select select-primary">
+    <label for="artifact-selection" class="sr-only">Select diagram type</label>
+    <select 
+    id="artifact-selection"
+    data-action="artifact-select#select" data-artifact-select-target="selection" data-artifact-target="selection" class="select select-primary"
+    aria-label="Diagram selection">
       <option value="model_erd">Model ERD</option>
       <option value="top_level_roadmap_diagram">Top Level Roadmap</option>
       <option value="value_flow_diagram">Value Flow Diagram</option>
     </select>
-    <button class="btn btn-outline btn-primary btn-sm" data-action="click->artifact#close">
+    <button class="btn btn-outline btn-primary btn-sm" data-action="click->artifact#close"
+    aria-label="Close diagram">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
         <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
       </svg>
@@ -14,16 +19,33 @@
   <!-- app/views/conversations/_artifact.html.erb -->
   <div class="w-full h-full p-4 overflow-x-auto pb-54" data-controller="svg-zoom">
     <div data-artifact-select-target="artifactContent" data-artifact-target="artifactContent" data-svg-zoom-target="artifactContent">
+      <div class="loading-indicator text-center text-base-content/60">Loading diagram...</div>
     </div>
-    <button class="btn btn-outline btn-primary btn-sm" data-action="svg-zoom#zoom">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
-      </svg>
-    </button>
-    <button class="btn btn-outline btn-primary btn-sm" data-action="svg-zoom#reset">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
-      </svg>
-    </button>
+    <div class="flex gap-2 justify-end">
+      <button 
+        class="btn btn-outline btn-primary btn-sm tooltip tooltip-left" 
+        data-tip="Reset"
+        data-action="svg-zoom#reset"
+        aria-label="Reset zoom">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+        </svg>
+      </button>
+      
+      <button 
+        class="btn btn-outline btn-primary btn-sm tooltip tooltip-left" 
+        data-tip="Toggle fullscreen"
+        data-action="svg-zoom#zoom"
+        aria-label="Toggle fullscreen view">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
+        </svg>
+      </button>
+    </div>
+    <div class="mt-2 text-sm text-base-content/70 hidden md:block">
+      <p class="sr-only md:not-sr-only">
+        <span class="kbd kbd-sm">Scroll</span> to zoom, <span class="kbd kbd-sm">Click & drag</span> to pan
+      </p>
+    </div>
   </div>
 </div>
