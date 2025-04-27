@@ -29,7 +29,7 @@
 
   <% projects.each do |p| %>
     <li class="hidden" data-project-menu-target="link">
-      <%= link_to project_conversation_path(p) do %>
+      <%= link_to project_conversation_path(p), class: p == project ? "menu-focus" : "" do %>
         <span><%= p.title %></span>
       <% end %>
     </li>
