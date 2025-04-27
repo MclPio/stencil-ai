@@ -26,4 +26,12 @@
       <span class="hidden" data-project-menu-target="projectsSpan">Projects</span>
     <% end %>
   </li>
+
+  <% projects.each do |p| %>
+    <li class="hidden" data-project-menu-target="link">
+      <%= link_to project_conversation_path(p) do %>
+        <span><%= p.title %></span>
+      <% end %>
+    </li>
+  <% end %>
 </ul>
