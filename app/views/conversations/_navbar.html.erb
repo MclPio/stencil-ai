@@ -52,8 +52,11 @@
 <script>
   document.addEventListener('turbo:submit-end', (event) => {
     if (event.detail.success) {
-      const modal = document.getElementById('my_modal_2');
-      modal.close();
+      // Only close modals that are currently open
+      const modals = document.querySelectorAll('.modal[open]');
+      modals.forEach(modal => {
+        modal.close();
+      });
     }
   });
 </script>
