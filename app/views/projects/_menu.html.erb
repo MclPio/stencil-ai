@@ -26,12 +26,25 @@
       <span class="hidden" data-project-menu-target="projectsSpan">Projects</span>
     <% end %>
   </li>
-
+  <p class="hidden" data-project-menu-target="link">Projects</p>
   <% projects.each do |p| %>
     <li class="hidden" data-project-menu-target="link">
-      <%= link_to project_conversation_path(p), class: p == project ? "menu-focus" : "" do %>
-        <span><%= p.title %></span>
-      <% end %>
+      <div class="flex items-center justify-between w-full pr-1">
+        <%= link_to project_conversation_path(p), class: "flex-grow #{p == project ? 'menu-focus' : ''}" do %>
+          <span><%= p.title.truncate(16) %></span>
+        <% end %>
+        <div class="dropdown dropdown-end">
+          <label tabindex="0" class="btn btn-ghost btn-xs p-1">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+            </svg>
+          </label>
+          <ul tabindex="0" class="dropdown-content z-10 menu p-2 shadow bg-base-100 rounded-box w-40">
+            <li><a href="#" class="text-sm">Rename</a></li>
+            <li><a href="#" class="text-sm text-error">Delete</a></li>
+          </ul>
+        </div>
+      </div>
     </li>
   <% end %>
 </ul>
