@@ -1,0 +1,30 @@
+.chat-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chat-form__border {
+  border: 1px solid black;
+  width: 80%;
+  padding: 0.5rem;
+}
+
+.chat-form__textarea {
+  width: 100%;
+}
+
+.chat-form__input-groups {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  align-items: center;
+}
+
+.chat-form__input-checkbox {
+  
+}
+
+.chat-form__input-submit {
+  
+}
