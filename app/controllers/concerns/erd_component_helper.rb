@@ -2,7 +2,7 @@ module ErdComponentHelper
   extend ActiveSupport::Concern
 
   def generate_erd_model(conversation_id)
-    client = OpenAI::Client.new(access_token: Rails.application.credentials.openai_key, log_errors: true)
+    client = OpenAI::Client.new(access_token: Rails.application.credentials.openrouter_key, log_errors: true)
     conversation = Conversation.find(conversation_id)
     message_history = conversation.formatted_messages
 
