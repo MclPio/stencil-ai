@@ -6,7 +6,7 @@
       <div class="chat-form__input-groups">
         <div class="chat-form__input-checkbox">
           <%= form.label :general_chat, "General Chat" %>
-          <%= form.checkbox :general_chat %>
+          <%= form.checkbox :general_chat, checked: true%>
         </div>
         <%= form.button class: "btn btn-primary p-2 rounded-full chat-form__input-submit", data: {'message-form-target': 'submit' } do %>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">

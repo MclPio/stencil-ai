@@ -21,6 +21,10 @@
   align-items: center;
 }
 
+.message-content {
+  overflow-wrap: anywhere;
+}
+
 .chat-form__input-checkbox {
   
 }
