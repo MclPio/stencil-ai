@@ -12,7 +12,14 @@ class MessagesController < ApplicationController
         end
         format.html { redirect_to @message.conversation }
       end
-      ProcessLlmResponseJob.perform_later(message_params[:conversation_id])
+
+      if params[:message][:general_chat] == "0"
+        puts("ARTIFACT LLM chat")
+        ProcessLlmResponseJob.perform_later(message_params[:conversation_id])
+      elsif params[:message][:general_chat] == "1"
+        puts("GENERAL LLM chat")
+        ProcessLlmChatJob.perform_later(message_params[:conversation_id])
+      end
     else
       render :new, status: :unprocessable_entity
     end
