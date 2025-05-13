@@ -26,9 +26,75 @@
 }
 
 .chat-form__input-checkbox {
-  
 }
 
 .chat-form__input-submit {
-  
+}
+
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  max-width: 350px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast {
+  background: white;
+  border-radius: 5px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  margin-bottom: 10px;
+  transform: translateX(120%);
+  transition: transform 0.3s ease-out;
+  overflow: hidden;
+}
+
+.toast-visible {
+  transform: translateX(0);
+}
+
+.toast-hidden {
+  transform: translateX(120%);
+}
+
+.toast-error {
+  border-left: 4px solid #e74c3c;
+}
+
+.toast-success {
+  border-left: 4px solid #2ecc71;
+}
+
+.toast-info {
+  border-left: 4px solid #3498db;
+}
+
+.toast-warning {
+  border-left: 4px solid #f39c12;
+}
+
+.toast-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+}
+
+.toast-body {
+  word-wrap: break-word;
 }

@@ -24,3 +24,6 @@ application.register("project-menu", ProjectMenuController)
 
 import SvgZoomController from "./svg_zoom_controller"
 application.register("svg-zoom", SvgZoomController)
+
+import ToastController from "./toast_controller"
+application.register("toast", ToastController)

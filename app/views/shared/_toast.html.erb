@@ -1,0 +1,12 @@
+<div id="<%= dom_id = "toast_#{SecureRandom.hex(8)}" %>" 
+     class="toast toast-<%= type || 'info' %>" 
+     data-controller="toast"
+     data-toast-timeout="<%= timeout || 5000 %>">
+  <div class="toast-header">
+    <strong><%= title %></strong>
+    <button type="button" class="toast-close" data-action="click->toast#dismiss">&times;</button>
+  </div>
+  <div class="toast-body">
+    <%= message %>
+  </div>
+</div>
