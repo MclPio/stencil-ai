@@ -1,6 +1,5 @@
 class ConversationsController < ApplicationController
   before_action :set_project_conversation
-  layout "conversation"
 
   def show
   end

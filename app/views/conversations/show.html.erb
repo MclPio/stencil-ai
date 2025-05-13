@@ -1,4 +1,21 @@
-<div data-controller="chat-scroll">
-  <%= render partial: "chat", locals: { conversation: @conversation  } %>
-  <%= render partial: "message_form", locals: { conversation: @conversation } %>
+<div id="toast_container" class="toast-container"></div>
+<div class="flex w-full" data-controller="artifact" data-artifact-project-id-value=<%= @project.id %>>
+  <%= render partial: "projects/menu", locals: { project: @project, projects: @projects } %>
+  <%# WILL HOLD THE chat_navbar + chat content %>
+  <div class="h-screen grow place-items-center overflow-y-auto">
+    <%= render "conversations/navbar" %>
+    <main class="container mx-auto px-4 pt-24 pb-8 flex-grow">
+      <div data-controller="chat-scroll">
+        <%= render partial: "chat", locals: { conversation: @conversation  } %>
+        <%= render partial: "message_form", locals: { conversation: @conversation } %>
+      </div>
+    </main>
+  </div>
+
+  <div class="divider divider-horizontal hidden" data-artifact-target="divider">🍰</div>
+
+  <%# WILL HOLD artifact panel %>
+  <div class="flex flex-col w-1/2 h-screen overflow-y-auto hidden" data-artifact-target="panel">
+    <%= render "conversations/artifact" %>
+  </div>
 </div>
