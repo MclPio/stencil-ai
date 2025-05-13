@@ -3,7 +3,7 @@ class ProcessLlmChatJob < ApplicationJob
   queue_as :default
 
   def perform(conversation_id)
-    response = check_enough_info(conversation_id)
+    response = send_conversation_to_chat(conversation_id)
     # { error: true, message: "Service unavailable" }
     # { error: false, content: response.dig("choices", 0, "message", "content") }
 

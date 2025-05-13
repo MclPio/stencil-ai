@@ -1,5 +1,5 @@
 module GeneralChatHelper
-  def check_enough_info(conversation_id)
+  def send_conversation_to_chat(conversation_id)
     client = OpenRouterClient.new
 
     conversation = Conversation.find(conversation_id)
