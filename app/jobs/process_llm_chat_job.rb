@@ -4,6 +4,8 @@ class ProcessLlmChatJob < ApplicationJob
 
   def perform(conversation_id)
     response = check_enough_info(conversation_id)
+    # { error: true, message: "Service unavailable" }
+    # { error: false, content: response.dig("choices", 0, "message", "content") }
 
     assistant_message = Message.create!(
       role: "assistant",
