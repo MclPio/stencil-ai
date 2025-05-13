@@ -1,5 +1,6 @@
 class ProcessLlmChatJob < ApplicationJob
   include GeneralChatHelper
+  include ToastHelper
   queue_as :default
 
   def perform(conversation_id)
@@ -8,18 +9,7 @@ class ProcessLlmChatJob < ApplicationJob
     # { error: false, content: response.dig("choices", 0, "message", "content") }
 
     if response[:error]
-      # TOAST ERROR MESSAGE
-      Turbo::StreamsChannel.broadcast_append_to(
-        "conversation_#{conversation_id}",
-        target: "toast_container",
-        partial: "shared/toast",
-        locals: {
-          type: "error",
-          title: "Error",
-          message: response[:message],
-          timeout: 8000
-        }
-      )
+      ToastHelper.show_toast("conversation_#{conversation_id}", "error", "Error", response[:message], 8000)
     else
       assistant_message = Message.create!(
         role: "assistant",
