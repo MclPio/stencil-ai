@@ -5,15 +5,13 @@ class ProcessLlmChatJob < ApplicationJob
 
   def perform(conversation_id)
     response = send_conversation_to_chat(conversation_id)
-    # { error: true, message: "Service unavailable" }
-    # { error: false, content: response.dig("choices", 0, "message", "content") }
 
     if response[:error]
       ToastHelper.show_toast("conversation_#{conversation_id}", "error", "Error", response[:message], 8000)
     else
       assistant_message = Message.create!(
         role: "assistant",
-        content: response,
+        content: response[:content],
         conversation_id: conversation_id
       )
 
