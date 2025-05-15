@@ -1,4 +1,4 @@
-class Spec < ApplicationRecord
+class Artifact < ApplicationRecord
   belongs_to :project
 
   def has_artifacts

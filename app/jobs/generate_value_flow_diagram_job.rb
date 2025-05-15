@@ -4,14 +4,14 @@ class GenerateValueFlowDiagramJob < ApplicationJob
 
   def perform(conversation_id)
     conversation = Conversation.find(conversation_id)
-    spec = conversation.project.spec
+    artifact = conversation.project.artifact
 
     value_flow_diagram_response = generate_value_flow_diagram(conversation_id)
-    spec.update(value_flow_diagram: value_flow_diagram_response[:mermaid])
+    artifact.update(value_flow_diagram: value_flow_diagram_response[:mermaid])
 
     assistant_message = Message.create!(
       role: "assistant",
-      content: "Value Flow generated! View it in your project spec.\n\nExplanation: #{value_flow_diagram_response[:explanation]}",
+      content: "Value Flow generated! View it in your project artifact.\n\nExplanation: #{value_flow_diagram_response[:explanation]}",
       conversation_id: conversation_id
     )
 

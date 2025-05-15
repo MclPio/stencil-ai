@@ -4,14 +4,14 @@ class GenerateTopLevelRoadMapJob < ApplicationJob
 
   def perform(conversation_id)
     conversation = Conversation.find(conversation_id)
-    spec = conversation.project.spec
+    artifact = conversation.project.artifact
 
     top_level_roadmap_response = generate_top_level_roadmap(conversation_id)
-    spec.update(top_level_roadmap_diagram: top_level_roadmap_response[:mermaid])
+    artifact.update(top_level_roadmap_diagram: top_level_roadmap_response[:mermaid])
 
     assistant_message = Message.create!(
       role: "assistant",
-      content: "Roadmap generated! View it in your project spec.\n\nExplanation: #{top_level_roadmap_response[:explanation]}",
+      content: "Roadmap generated! View it in your project artifact.\n\nExplanation: #{top_level_roadmap_response[:explanation]}",
       conversation_id: conversation_id
     )
 

@@ -14,6 +14,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_165840) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
+  create_table "artifacts", force: :cascade do |t|
+    t.text "content"
+    t.text "user_flow"
+    t.text "model_erd"
+    t.text "roadmap_flow"
+    t.bigint "project_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "top_level_roadmap_diagram"
+    t.text "value_flow_diagram"
+    t.index ["project_id"], name: "index_artifacts_on_project_id"
+  end
+
   create_table "conversations", force: :cascade do |t|
     t.string "title"
     t.integer "total_input_tokens", default: 0
@@ -54,19 +67,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_165840) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
-  create_table "specs", force: :cascade do |t|
-    t.text "content"
-    t.text "user_flow"
-    t.text "model_erd"
-    t.text "roadmap_flow"
-    t.bigint "project_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.text "top_level_roadmap_diagram"
-    t.text "value_flow_diagram"
-    t.index ["project_id"], name: "index_specs_on_project_id"
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "email_address", null: false
     t.string "password_digest", null: false
@@ -76,9 +76,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_165840) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "artifacts", "projects"
   add_foreign_key "conversations", "projects"
   add_foreign_key "messages", "conversations"
   add_foreign_key "projects", "users"
   add_foreign_key "sessions", "users"
-  add_foreign_key "specs", "projects"
 end

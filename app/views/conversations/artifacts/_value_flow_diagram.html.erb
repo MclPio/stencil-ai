@@ -1,13 +1,13 @@
 <!-- Raw Mermaid Code -->
 <div class="mb-6">
   <h2 class="text-xl font-bold mb -2">Mermaid JS Code</h2>
-  <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto"><code><%= @conversation.project.spec.value_flow_diagram %></code></pre>
+  <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto"><code><%= @conversation.project.artifact.value_flow_diagram %></code></pre>
 </div>
 
 <!-- Rendered Diagram -->
 <div class="mb-6">
   <h2 class="text-xl font-bold mb-2">Value Flow</h2>
   <div id="mermaid-diagram-value-flow" class="mermaid bg-white p-4 border rounded-lg" data-svg-zoom-target="diagram">
-    <%= @conversation.project.spec.value_flow_diagram %>
+    <%= @conversation.project.artifact.value_flow_diagram %>
   </div>
 </div>

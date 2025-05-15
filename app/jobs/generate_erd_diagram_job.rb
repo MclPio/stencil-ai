@@ -4,14 +4,14 @@ class GenerateErdDiagramJob < ApplicationJob
 
   def perform(conversation_id)
     conversation = Conversation.find(conversation_id)
-    spec = conversation.project.spec
+    artifact = conversation.project.artifact
 
     erd_response = generate_erd_model(conversation_id)
-    spec.update(model_erd: erd_response[:mermaid])
+    artifact.update(model_erd: erd_response[:mermaid])
 
     assistant_message = Message.create!(
       role: "assistant",
-      content: "ERD diagram generated! View it in your project spec.\n\nExplanation: #{erd_response[:explanation]}",
+      content: "ERD diagram generated! View it in your project artifact.\n\nExplanation: #{erd_response[:explanation]}",
       conversation_id: conversation_id
     )
 

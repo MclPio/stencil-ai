@@ -24,13 +24,13 @@ default: &default
 
 development:
   <<: *default
-  database: spec_maker_development
+  database: artifact_maker_development
 
-  # The specified database role being used to connect to PostgreSQL.
+  # The artifactified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
   # When left blank, PostgreSQL will use the default role. This is
   # the same name as the operating system user running Rails.
-  #username: spec_maker
+  #username: artifact_maker
 
   # The password associated with the PostgreSQL role (username).
   #password:
@@ -58,7 +58,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: spec_maker_test
+  database: artifact_maker_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -69,32 +69,32 @@ test:
 #
 #   DATABASE_URL="postgres://myuser:mypass@localhost/somedatabase"
 #
-# If the connection URL is provided in the special DATABASE_URL environment
+# If the connection URL is provided in the artifactial DATABASE_URL environment
 # variable, Rails will automatically merge its configuration values on top of
-# the values provided in this file. Alternatively, you can specify a connection
+# the values provided in this file. Alternatively, you can artifactify a connection
 # URL environment variable explicitly:
 #
 #   production:
 #     url: <%= ENV["MY_APP_DATABASE_URL"] %>
 #
 # Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
-# for a full overview on how database connection configuration can be specified.
+# for a full overview on how database connection configuration can be artifactified.
 #
 production:
   primary: &primary_production
     <<: *default
-    database: spec_maker_production
-    username: spec_maker
-    password: <%= ENV["SPEC_MAKER_DATABASE_PASSWORD"] %>
+    database: artifact_maker_production
+    username: artifact_maker
+    password: <%= ENV["artifact_MAKER_DATABASE_PASSWORD"] %>
   cache:
     <<: *primary_production
-    database: spec_maker_production_cache
+    database: artifact_maker_production_cache
     migrations_paths: db/cache_migrate
   queue:
     <<: *primary_production
-    database: spec_maker_production_queue
+    database: artifact_maker_production_queue
     migrations_paths: db/queue_migrate
   cable:
     <<: *primary_production
-    database: spec_maker_production_cable
+    database: artifact_maker_production_cable
     migrations_paths: db/cable_migrate

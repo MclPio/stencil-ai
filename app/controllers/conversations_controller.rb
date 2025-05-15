@@ -14,6 +14,6 @@ class ConversationsController < ApplicationController
     @project = Project.find(params[:project_id])
     @projects = Current.user.projects
     @conversation = @project.conversation
-    @spec = @project.spec
+    @artifact = @project.artifact
   end
 end
