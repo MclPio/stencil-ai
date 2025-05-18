@@ -133,4 +133,51 @@ class OpenRouterClientTest < ActiveSupport::TestCase
     assert_equal true, result[:error]
     assert_equal "An unexpected error occurred", result[:message]
   end
+
+  test "handles optional parameters correctly" do
+    # Track what parameters were passed to the mock
+    received_parameters = nil
+
+    mock_client = Object.new
+    def mock_client.chat(parameters:)
+      # Store the parameters we received for later verification
+      @received_parameters = parameters
+
+      {
+        "choices" => [
+          {
+            "message" => {
+              "content" => "Hello, how can I help you today?"
+            }
+          }
+        ]
+      }
+    end
+
+    # Add a method to access the stored parameters
+    def mock_client.received_parameters
+      @received_parameters
+    end
+
+    @open_router_client.instance_variable_set(:@client, mock_client)
+
+    # Call with optional parameters
+    result = @open_router_client.chat(
+      model: @test_model,
+      messages: @test_messages,
+      temperature: 0.5,
+      response_format: { type: "json_object" },
+      max_tokens: 1000
+    )
+
+    # Verify the result is successful
+    assert_equal false, result[:error]
+
+    # Now verify that all parameters were passed correctly
+    assert_equal @test_model, mock_client.received_parameters[:model]
+    assert_equal @test_messages, mock_client.received_parameters[:messages]
+    assert_equal 0.5, mock_client.received_parameters[:temperature]
+    assert_equal({ type: "json_object" }, mock_client.received_parameters[:response_format])
+    assert_equal 1000, mock_client.received_parameters[:max_tokens]
+  end
 end
