@@ -1,35 +1,71 @@
 require "test_helper"
+require "minitest/mock"
 
 class OpenRouterClientTest < ActiveSupport::TestCase
   setup do
-    # Stub the credentials
-    Rails.application.credentials.stubs(:open_router_key).returns('fake-api-key')
-    mock_credentials = OpenStruct.new(
-      open_router_key: { 
-        access_key_id: 'test_key',
-        secret_access_key: 'test_secret'
-      },
-      stripe: {
-        api_key: 'test_stripe_key'
+    @open_router_client = OpenRouterClient.new
+    @test_model = "google/gemini-2.0-flash-exp:free"
+    @test_messages = [ { role: "user", content: "Hello" } ]
+  end
+
+  test "initializes with correct configuration" do
+    assert_instance_of(OpenRouterClient, @open_router_client)
+    assert_equal Rails.application.credentials.open_router_key, @open_router_client.instance_variable_get(:@client).access_token
+    assert_equal OpenRouterClient::API_BASE_URL, @open_router_client.instance_variable_get(:@client).uri_base
+  end
+
+  test "successful chat returns expected content" do
+    mock_client = Object.new
+    def mock_client.chat(parameters:)
+      {
+        "choices" => [
+          {
+            "message" => {
+              "content" => "Hello, how can I help you today?"
+            }
+          }
+        ]
       }
+    end
+
+    @open_router_client.instance_variable_set(:@client, mock_client)
+
+    result = @open_router_client.chat(
+      model: @test_model,
+      messages: @test_messages
     )
 
-    # Create a mock for OpenAI::Client
-    @client_mock = Minitest::Mock.new
-    # Stub the OpenAI::Client.new to return the mock
-    OpenAI::Client.stubs(:new).with(
-      access_token: 'fake-api-key',
-      log_errors: true,
-      uri_base: OpenRouterClient::API_BASE_URL
-    ).returns(@client_mock)
-
-    # Instantiate the class
-    @open_router_client = OpenRouterClient.new
+    assert_equal false, result[:error]
+    assert_equal "Hello, how can I help you today?", result[:content]
   end
 
-  test 'initializes with correct configuration' do
-    assert_not_nil @open_router_client
-    # Verify the mock was used (implicitly tested by the stub)
+  test "successful chat returns a JSON object" do
+    def fake_chat
+      {DERP: "HALP"}
+    end
+
+    @open_router_client.stub :chat, fake_chat
+
+    xd = @open_router_client.chat(
+      model: @test_model,
+      messages: @test_messages
+    )
+
+    puts xd
   end
 
+  # test "response with error" do
+  # end
+
+  # test "Unexpected response is handled" do
+  # end
+
+  # test "Faraday::Error is handled" do
+  # end
+
+  # test "JSON::ParserError is handled" do
+  # end
+
+  # test "any other unexpected error is handled" do
+  # end
 end

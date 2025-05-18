@@ -8,7 +8,7 @@ module GeneralChatHelper
     messages = [ { role: "system", content: system_prompt } ] + message_history
 
     client.chat(
-      model: "google/gemini-2.0-flash-exp:free",
+      model: "deepseek/deepseek-r1:free",
       messages: messages
     )
   end
