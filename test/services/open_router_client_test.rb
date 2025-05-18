@@ -39,33 +39,98 @@ class OpenRouterClientTest < ActiveSupport::TestCase
     assert_equal "Hello, how can I help you today?", result[:content]
   end
 
-  test "successful chat returns a JSON object" do
-    def fake_chat
-      {DERP: "HALP"}
+  test "response with error code" do
+    mock_client = Object.new
+    def mock_client.chat(parameters:)
+      {
+        "error" => {
+            "code" => "420"
+        }
+      }
     end
 
-    @open_router_client.stub :chat, fake_chat
+    @open_router_client.instance_variable_set(:@client, mock_client)
 
-    xd = @open_router_client.chat(
+    result = @open_router_client.chat(
       model: @test_model,
       messages: @test_messages
     )
 
-    puts xd
+    assert_equal true, result[:error]
+    assert_equal "Service unavailable", result[:message]
   end
 
-  # test "response with error" do
-  # end
+  test "Unexpected response is handled" do
+    mock_client = Object.new
+    def mock_client.chat(parameters:)
+      {
+        "choices" => {
+          "message" => {
+            "something_other_than_content" => "HEHE"
+          }
+        }
+      }
+    end
 
-  # test "Unexpected response is handled" do
-  # end
+    @open_router_client.instance_variable_set(:@client, mock_client)
 
-  # test "Faraday::Error is handled" do
-  # end
+    result = @open_router_client.chat(
+      model: @test_model,
+      messages: @test_messages
+    )
 
-  # test "JSON::ParserError is handled" do
-  # end
+    assert_equal true, result[:error]
+    assert_equal "Received unexpected response from provider", result[:message]
+  end
 
-  # test "any other unexpected error is handled" do
-  # end
+  test "Faraday::Error is handled" do
+    mock_client = Object.new
+    def mock_client.chat(parameters:)
+      raise Faraday::Error
+    end
+
+    @open_router_client.instance_variable_set(:@client, mock_client)
+
+    result = @open_router_client.chat(
+      model: @test_model,
+      messages: @test_messages
+    )
+
+    assert_equal true, result[:error]
+    assert_equal "Unable to connect to service provider", result[:message]
+  end
+
+  test "JSON::ParserError is handled" do
+    mock_client = Object.new
+    def mock_client.chat(parameters:)
+      raise JSON::ParserError
+    end
+
+    @open_router_client.instance_variable_set(:@client, mock_client)
+
+    result = @open_router_client.chat(
+      model: @test_model,
+      messages: @test_messages
+    )
+
+    assert_equal true, result[:error]
+    assert_equal "Error processing response", result[:message]
+  end
+
+  test "any other unexpected error is handled" do
+    mock_client = Object.new
+    def mock_client.chat(parameters:)
+      raise "error"
+    end
+
+    @open_router_client.instance_variable_set(:@client, mock_client)
+
+    result = @open_router_client.chat(
+      model: @test_model,
+      messages: @test_messages
+    )
+
+    assert_equal true, result[:error]
+    assert_equal "An unexpected error occurred", result[:message]
+  end
 end
