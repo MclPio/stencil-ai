@@ -2,28 +2,53 @@ module ConversationHelper
   extend ActiveSupport::Concern
 
   def check_enough_info(conversation_id)
-    client = OpenAI::Client.new(access_token: Rails.application.credentials.open_router_key, log_errors: true)
+    client = OpenRouterClient.new
 
     conversation = Conversation.find(conversation_id)
     message_history = conversation.formatted_messages
+    messages = [
+      { role: "system", content: system_prompt },
+      { role: "user", content: "Evaluate the SaaS product idea from the conversation so far." }
+    ] + message_history
 
     response = client.chat(
-      parameters: {
-        model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: system_prompt },
-          { role: "user", content: "Evaluate the SaaS product idea from the conversation so far." }
-        ] + message_history,
-        temperature: 0.3,
-        response_format: { type: "json_object" }
+      model: "meta-llama/llama-3.3-8b-instruct:free",
+      messages: messages,
+      temperature: 0.3,
+      response_format: {
+        "type": "json_schema",
+        "json_schema": {
+          "name": "info",
+          "strict": true,
+          "schema": {
+            "type": "object",
+            "properties": {
+              "enough": {
+                "type": "boolean",
+                "description": "If enough information has been provided by the chat or the user requested to bypass"
+              },
+              "explanation": {
+                "type": "string",
+                "description": "A brief reason why it’s enough or what’s missing."
+              },
+              "suggestions": {
+                "type": "string",
+                "description": "A list of 1-3 simple, actionable questions or prompts to fill gaps (e.g., 'What’s your timeline for this?'), or an empty array if enough."
+              }
+            },
+            "required": ["enough"],
+            "additionalProperties": false
+          }
+        }
       }
     )
 
-    raw_content = response.dig("choices", 0, "message", "content")
+    raw_content = response[:content]
     # puts "Raw LLM Response: #{raw_content}"
 
     parsed_response = parse_response(raw_content)
     # puts "Parsed Response: #{parsed_response}"
+
     parsed_response
   end
 
