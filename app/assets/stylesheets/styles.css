@@ -12,6 +12,7 @@
 
 .chat-form__textarea {
   width: 100%;
+  padding: 0.5rem;
 }
 
 .chat-form__input-groups {
