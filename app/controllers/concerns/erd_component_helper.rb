@@ -2,23 +2,43 @@ module ErdComponentHelper
   extend ActiveSupport::Concern
 
   def generate_erd_model(conversation_id)
-    client = OpenAI::Client.new(access_token: Rails.application.credentials.open_router_key, log_errors: true)
+    client = OpenRouterClient.new
     conversation = Conversation.find(conversation_id)
     message_history = conversation.formatted_messages
+    messages = [
+      { role: "system", content: erd_system_prompt },
+      { role: "user", content: "Generate a valid Mermaid JS ERD diagram based on the conversation." }
+    ] + message_history
 
     response = client.chat(
-      parameters: {
-        model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: erd_system_prompt },
-          { role: "user", content: "Generate a valid Mermaid JS ERD diagram based on the conversation." }
-        ] + message_history,
-        temperature: 0.2,
-        response_format: { type: "json_object" }
+      model: "meta-llama/llama-3.3-8b-instruct:free",
+      messages: messages,
+      temperature: 0.3,
+      response_format: {
+        "type": "json_schema",
+        "json_schema": {
+          "name": "info",
+          "strict": true,
+          "schema": {
+            "type": "object",
+            "properties": {
+              "mermaid": {
+                "type": "string",
+                "description": "mermaid js code only"
+              },
+              "explanation": {
+                "type": "string",
+                "description": "An explanation of the mermaid creation and any additional comments go here"
+              }
+            },
+            "required": ["mermaid", "explanation"],
+            "additionalProperties": false
+          }
+        }
       }
     )
 
-    raw_content = response.dig("choices", 0, "message", "content")
+    raw_content = response[:content]
     # puts "Raw LLM Response: #{raw_content}"
 
     parsed_response = parse_erd_response(raw_content)
