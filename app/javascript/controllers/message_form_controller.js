@@ -44,10 +44,10 @@ export default class extends Controller {
   }
 
   resetForm(event) {
-    this.element.reset()
+    const textarea = this.textareaTarget
+    textarea.value = "";
 
     // Manually trigger the resize to reset the textarea height
-    const textarea = this.textareaTarget
     textarea.style.height = 'auto'
     textarea.style.height = `${textarea.scrollHeight}px`
 
