@@ -1,4 +1,3 @@
-<%= turbo_stream_from "conversation_#{@conversation.id}" %>
 <div id="conversations" class="max-w-3xl mx-auto mb-54">
   <% @conversation.user_assistant_messages.sort.each do |message| %>
     <%= render partial: "conversations/#{message.role}_role", locals: { message: message } %>

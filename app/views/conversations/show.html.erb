@@ -1,3 +1,4 @@
+<%= turbo_stream_from "conversation_#{@conversation.id}" %>
 <div id="toast_container" class="toast-container"></div>
 <div class="flex w-full" data-controller="artifact" data-artifact-project-id-value=<%= @project.id %>>
   <%= render partial: "projects/menu", locals: { project: @project, projects: @projects } %>

@@ -21,5 +21,16 @@ class GenerateErdDiagramJob < ApplicationJob
       partial: "conversations/assistant_role",
       locals: { message: assistant_message }
     )
+
+    Turbo::StreamsChannel.broadcast_replace_to(
+        "conversation_#{conversation_id}",
+        target: "artifact-open-button",
+        html: "<button id='artifact-open-button' data-action='click->artifact#open' data-artifact-target='openButton' class='btn btn-outline btn-primary btn-sm'>
+                <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' class='size-6'>
+                    <path stroke-linecap='round' stroke-linejoin='round' d='M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18' />
+                  </svg>
+              </button>",
+        locals: { message: assistant_message }
+      )
   end
 end
