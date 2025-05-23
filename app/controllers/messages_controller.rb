@@ -13,10 +13,10 @@ class MessagesController < ApplicationController
         format.html { redirect_to @message.conversation }
       end
 
-      if params[:message][:general_chat] == "0"
+      if params[:message][:chat_type] == "Artifact Chat"
         puts("ARTIFACT LLM chat")
         ProcessLlmResponseJob.perform_later(message_params[:conversation_id])
-      elsif params[:message][:general_chat] == "1"
+      elsif params[:message][:chat_type] == "General Chat"
         puts("GENERAL LLM chat")
         ProcessLlmChatJob.perform_later(message_params[:conversation_id])
       end

@@ -4,9 +4,8 @@
     <div class="chat-form__border">
       <%= form.text_area :content, autofocus: true, data: { controller: 'auto-expand', action: "input->auto-expand#resize keydown->message-form#handleKeydown", 'message-form-target': 'textarea' }, class:"min-h-[6rem] max-h-[12rem] resize-none chat-form__textarea", placeholder:"Lets Build, provide me a detailed writeup about your project" %>
       <div class="chat-form__input-groups">
-        <div class="chat-form__input-checkbox">
-          <%= form.label :general_chat, "General Chat" %>
-          <%= form.checkbox :general_chat %>
+        <div class="chat-form__input-select-chat">
+          <%= form.select :chat_type, ["General Chat", "Artifact Chat"], {}, { class: "select" } %>
         </div>
         <%= form.button class: "btn btn-primary p-2 rounded-full chat-form__input-submit", data: {'message-form-target': 'submit' } do %>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
