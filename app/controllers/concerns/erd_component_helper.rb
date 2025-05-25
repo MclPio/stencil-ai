@@ -14,6 +14,7 @@ module ErdComponentHelper
       model: "meta-llama/llama-3.3-8b-instruct:free",
       messages: messages,
       temperature: 0.3,
+      usage: { "include": true },
       response_format: {
         "type": "json_schema",
         "json_schema": {
@@ -38,12 +39,7 @@ module ErdComponentHelper
       }
     )
 
-    raw_content = response[:content]
-    # puts "Raw LLM Response: #{raw_content}"
-
-    parsed_response = parse_erd_response(raw_content)
-    # puts "Parsed Response: #{parsed_response}"
-    parsed_response
+    parse_response(response)
   end
 
   private
@@ -86,13 +82,17 @@ module ErdComponentHelper
     PROMPT
   end
 
-  def parse_erd_response(content)
-    parsed = JSON.parse(content, symbolize_names: true)
+  def parse_response(response)
+    content = JSON.parse(response[:content])
+
     {
-      mermaid: parsed[:mermaid].to_s,
-      explanation: parsed[:explanation].to_s.presence || "No explanation provided."
+      error: response[:error],
+      enough: content.dig("enough"),
+      explanation: content.dig("explanation"),
+      mermaid: content.dig("mermaid"),
+      tokens: response[:tokens]
     }
   rescue JSON::ParserError
-    { mermaid: "erDiagram\nERROR ||--o{ UNKNOWN : \"Invalid syntax\"", explanation: "Invalid JSON response: '#{content}'" }
+    { error: true, enough: false, message: "Invalid JSON response" }
   end
 end
