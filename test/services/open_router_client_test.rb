@@ -24,7 +24,12 @@ class OpenRouterClientTest < ActiveSupport::TestCase
               "content" => "Hello, how can I help you today?"
             }
           }
-        ]
+        ],
+        "usage" => {
+          "prompt_tokens" => 0,
+          "completion_tokens" => 4,
+          "total_tokens" => 4
+        }
       }
     end
 
@@ -32,11 +37,13 @@ class OpenRouterClientTest < ActiveSupport::TestCase
 
     result = @open_router_client.chat(
       model: @test_model,
-      messages: @test_messages
+      messages: @test_messages,
+      usage: { "include": true }
     )
 
     assert_equal false, result[:error]
     assert_equal "Hello, how can I help you today?", result[:content]
+    assert_equal 4, result[:tokens]
   end
 
   test "response with error code" do
@@ -136,7 +143,7 @@ class OpenRouterClientTest < ActiveSupport::TestCase
 
   test "handles optional parameters correctly" do
     # Track what parameters were passed to the mock
-    received_parameters = nil
+    @received_parameters = nil
 
     mock_client = Object.new
     def mock_client.chat(parameters:)
@@ -150,7 +157,12 @@ class OpenRouterClientTest < ActiveSupport::TestCase
               "content" => "Hello, how can I help you today?"
             }
           }
-        ]
+        ],
+        "usage" => {
+          "prompt_tokens" => 0,
+          "completion_tokens" => 4,
+          "total_tokens" => 4
+        }
       }
     end
 

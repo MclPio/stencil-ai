@@ -31,7 +31,12 @@ class OpenRouterClient
         return { error: true, message: "Service unavailable" }
       end
 
-      unless response.dig("choices", 0, "message", "content") # need another one to account for tokens
+      unless response.dig("choices", 0, "message", "content")
+        Rails.logger.error("Provider returned unexpected response structure")
+        return { error: true, message: "Received unexpected response from provider" }
+      end
+
+      unless response.dig("usage", "total_tokens")
         Rails.logger.error("Provider returned unexpected response structure")
         return { error: true, message: "Received unexpected response from provider" }
       end
