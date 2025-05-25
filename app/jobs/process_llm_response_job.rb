@@ -27,8 +27,8 @@ class ProcessLlmResponseJob < ApplicationJob
 
       if response[:enough]
         GenerateErdDiagramJob.perform_later(conversation_id)
-        # GenerateTopLevelRoadMapJob.perform_later(conversation_id)
-        # GenerateValueFlowDiagramJob.perform_later(conversation_id)
+        GenerateTopLevelRoadMapJob.perform_later(conversation_id)
+        GenerateValueFlowDiagramJob.perform_later(conversation_id)
       end
 
     end
