@@ -9,6 +9,8 @@ class ProcessLlmChatJob < ApplicationJob
     if response[:error]
       ToastHelper.show_toast("conversation_#{conversation_id}", "error", "Error", response[:message], 8000)
     else
+      Conversation.find(conversation_id).total_token.update(total: response[:tokens])
+
       assistant_message = Message.create!(
         role: "assistant",
         content: response[:content],

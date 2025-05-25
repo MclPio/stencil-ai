@@ -2,15 +2,8 @@ class Conversation < ApplicationRecord
   belongs_to :project
 
   has_many :messages, dependent: :destroy
-
-  def total_tokens
-    total_input_tokens + total_output_tokens
-  end
-
-  # HOW TO SET TOKEN LIMITS MAYBE MOVE THIS TO PROJECTS LATER OR USER ACCOUNT...
-  # def token_limit_reached?(limit)
-  #   total_tokens >= limit
-  # end
+  has_one :total_token, dependent: :destroy
+  after_create :create_total_token
 
   def user_assistant_messages
     messages.filter { |message| message.role != "system" }

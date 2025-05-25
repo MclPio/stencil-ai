@@ -8,8 +8,9 @@ module GeneralChatHelper
     messages = [ { role: "system", content: system_prompt } ] + message_history
 
     client.chat(
-      model: "deepseek/deepseek-r1:free",
-      messages: messages
+      model: "meta-llama/llama-3.3-8b-instruct:free",
+      messages: messages,
+      usage: { "include": true }
     )
   end
 

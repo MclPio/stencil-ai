@@ -10,7 +10,7 @@ class OpenRouterClient
   end
 
   # Generic method to make any chat API call
-  def chat(model:, messages:, temperature: 0.7, response_format: nil, max_tokens: nil)
+  def chat(model:, messages:, temperature: 0.7, response_format: nil, max_tokens: nil, usage: nil)
     parameters = {
       model: model,
       messages: messages,
@@ -20,6 +20,7 @@ class OpenRouterClient
     # Add optional parameters only if they're provided
     parameters[:response_format] = response_format if response_format
     parameters[:max_tokens] = max_tokens if max_tokens
+    parameters[:usage] = usage if usage
 
     begin
       response = @client.chat(parameters: parameters)
@@ -30,12 +31,12 @@ class OpenRouterClient
         return { error: true, message: "Service unavailable" }
       end
 
-      unless response.dig("choices", 0, "message", "content")
+      unless response.dig("choices", 0, "message", "content") # need another one to account for tokens
         Rails.logger.error("Provider returned unexpected response structure")
         return { error: true, message: "Received unexpected response from provider" }
       end
 
-      { error: false, content: response.dig("choices", 0, "message", "content") }
+      { error: false, content: response.dig("choices", 0, "message", "content"), tokens: response.dig("usage", "total_tokens") }
 
     rescue Faraday::Error => e
       Rails.logger.error("Network error in provider communication: #{e.class}")
