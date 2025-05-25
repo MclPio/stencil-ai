@@ -15,6 +15,7 @@ module ConversationHelper
       model: "meta-llama/llama-3.3-8b-instruct:free",
       messages: messages,
       temperature: 0.3,
+      usage: { "include": true },
       response_format: {
         "type": "json_schema",
         "json_schema": {
@@ -42,14 +43,7 @@ module ConversationHelper
         }
       }
     )
-
-    raw_content = response[:content]
-    # puts "Raw LLM Response: #{raw_content}"
-
-    parsed_response = parse_response(raw_content)
-    # puts "Parsed Response: #{parsed_response}"
-
-    parsed_response
+    parse_response(response)
   end
 
   private
@@ -78,15 +72,17 @@ module ConversationHelper
     PROMPT
   end
 
-  def parse_response(content)
-    parsed = JSON.parse(content, symbolize_names: true)
+  def parse_response(response)
+    content = JSON.parse(response[:content])
 
     {
-      enough: parsed[:enough] == true,
-      explanation: parsed[:explanation].to_s,
-      suggestions: parsed[:suggestions]
+      error: response[:error],
+      enough: content.dig("enough"),
+      explanation: content.dig("explanation"),
+      suggestions: content.dig("suggestions"),
+      tokens: response[:tokens]
     }
   rescue JSON::ParserError
-    { enough: false, explanation: "Invalid JSON response: '#{content}'" }
+    { error: true, enough: false, message: "Invalid JSON response" }
   end
 end

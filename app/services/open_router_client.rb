@@ -32,12 +32,12 @@ class OpenRouterClient
       end
 
       unless response.dig("choices", 0, "message", "content")
-        Rails.logger.error("Provider returned unexpected response structure")
+        Rails.logger.error("Provider returned unexpected response structure CONTENT")
         return { error: true, message: "Received unexpected response from provider" }
       end
 
       unless response.dig("usage", "total_tokens")
-        Rails.logger.error("Provider returned unexpected response structure")
+        Rails.logger.error("Provider returned unexpected response structure TOKEN")
         return { error: true, message: "Received unexpected response from provider" }
       end
 
