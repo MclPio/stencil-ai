@@ -10,6 +10,8 @@ class Message < ApplicationRecord
   private
 
   def below_token_limit
-    conversation.total_token.total <= 96000
+    if conversation.total_token.total > 96000
+      errors.add(:base, "Conversation has exceeded the token limit of 96,000")
+    end
   end
 end
