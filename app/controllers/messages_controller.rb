@@ -1,5 +1,6 @@
 class MessagesController < ApplicationController
   include ConversationHelper
+  include ToastHelper
 
   def create
     @message = Message.new(message_params)
@@ -21,7 +22,7 @@ class MessagesController < ApplicationController
         ProcessLlmChatJob.perform_later(message_params[:conversation_id])
       end
     else
-      render :new, status: :unprocessable_entity
+      ToastHelper.show_toast("conversation_#{message_params[:conversation_id]}", "error", "Error",  @message.errors.full_messages.join(", "), 8000)
     end
   end
 
