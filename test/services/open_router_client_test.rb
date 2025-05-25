@@ -167,7 +167,8 @@ class OpenRouterClientTest < ActiveSupport::TestCase
       messages: @test_messages,
       temperature: 0.5,
       response_format: { type: "json_object" },
-      max_tokens: 1000
+      max_tokens: 1000,
+      usage: { "include": true },
     )
 
     # Verify the result is successful
@@ -179,5 +180,6 @@ class OpenRouterClientTest < ActiveSupport::TestCase
     assert_equal 0.5, mock_client.received_parameters[:temperature]
     assert_equal({ type: "json_object" }, mock_client.received_parameters[:response_format])
     assert_equal 1000, mock_client.received_parameters[:max_tokens]
+    assert_equal true, mock_client.received_parameters[:usage][:include]
   end
 end
