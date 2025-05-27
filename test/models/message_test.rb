@@ -10,7 +10,7 @@ class MessageTest < ActiveSupport::TestCase
     new_message = Message.build(conversation: conversation, content: "hello world")
 
     assert_not new_message.save, "Message was saved despite exceeding token limit"
-    assert_includes new_message.errors.full_messages, "Conversation has exceeded the token limit of 96,000"
+    assert_includes new_message.errors.full_messages, "Conversation has exceeded the token limit of 96000"
     assert_not new_message.persisted?, "Message was persisted despite validation failure"
   end
 end

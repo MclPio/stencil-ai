@@ -5,6 +5,8 @@ class Conversation < ApplicationRecord
   has_one :total_token, dependent: :destroy
   after_create :create_total_token
 
+  TOKEN_LIMIT = 96_000
+
   def user_assistant_messages
     messages.filter { |message| message.role != "system" }
   end
