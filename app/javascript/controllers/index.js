@@ -10,6 +10,9 @@ application.register("artifact", ArtifactController)
 import ArtifactSelectController from "./artifact_select_controller"
 application.register("artifact-select", ArtifactSelectController)
 
+import AssistantUserChatController from "./assistant_user_chat_controller"
+application.register("assistant-user-chat", AssistantUserChatController)
+
 import AutoExpandController from "./auto_expand_controller"
 application.register("auto-expand", AutoExpandController)
 
