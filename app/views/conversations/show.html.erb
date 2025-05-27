@@ -8,7 +8,11 @@
     <main class="container mx-auto px-4 pt-24 pb-8 flex-grow">
       <div data-controller="chat-scroll">
         <%= render partial: "chat", locals: { conversation: @conversation  } %>
-        <%= render partial: "message_form", locals: { conversation: @conversation } %>
+        <% if @conversation.reached_token_limit %>
+          <%= render partial: "message_form_disabled", locals: { conversation: @conversation } %>
+        <% else %>
+          <%= render partial: "message_form", locals: { conversation: @conversation } %>
+        <% end %>
       </div>
     </main>
   </div>

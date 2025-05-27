@@ -2,7 +2,7 @@
   <%= form.hidden_field :conversation_id, value: conversation.id %>
   <div class="chat-form">
     <div class="chat-form__border">
-      <%= form.text_area :content, autofocus: true, data: { controller: 'auto-expand', action: "input->auto-expand#resize keydown->message-form#handleKeydown", 'message-form-target': 'textarea' }, class:"textarea mb-2 min-h-[6rem] max-h-[12rem] resize-none chat-form__textarea", placeholder:"Lets Build, provide me a detailed writeup about your project" %>
+      <%= form.text_area :content, autofocus: true, data: { controller: 'auto-expand', action: "input->auto-expand#resize keydown->message-form#handleKeydown", 'message-form-target': 'textarea' }, class:"textarea mb-2 min-h-[6rem] max-h-[12rem] resize-none chat-form__textarea", placeholder:"Token limit reached", disabled: true %>
       <div class="chat-form__input-groups">
         <div class="chat-form__input-select-chat">
           <%= form.select :chat_type, ["General Chat", "Artifact Chat"], {}, { class: "select" } %>
