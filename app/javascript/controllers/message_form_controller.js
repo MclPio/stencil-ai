@@ -1,62 +1,75 @@
 // app/javascript/controllers/message_form_controller.js
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = [ "textarea", "submit" ]
+  static targets = ["textarea", "submit", "buttonContent"];
+  static values = { loading: Boolean };
+
+  connect() {
+    this.updateSubmitButton();
+    this.loadingValue = false;
+  }
+
+  startLoading() {
+    this.loadingValue = true;
+    this.textareaTarget.disabled = true;
+    this.submitTarget.disabled = true;
+    this.updateButtonContent();
+  }
+
+  resetForm(event) {
+    this.loadingValue = false;
+    this.textareaTarget.disabled = false;
+    this.textareaTarget.value = "";
+    this.textareaTarget.style.height = "auto";
+    this.textareaTarget.style.height = `${this.textareaTarget.scrollHeight}px`;
+    this.textareaTarget.focus();
+    this.updateSubmitButton();
+    this.updateButtonContent();
+  }
 
   handleKeydown(event) {
-    // Submit on Enter (but not with Shift)
     if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault()
-      this.maybeSubmitForm()
+      event.preventDefault();
+      this.maybeSubmitForm();
     }
-    // Update submit button state
-    this.updateSubmitButton()
+    this.updateSubmitButton();
   }
 
   updateSubmitButton() {
-    const textarea = this.textareaTarget
-    const submitButton = this.submitTarget
+    const textarea = this.textareaTarget;
+    const submitButton = this.submitTarget;
 
-    // Trim to check for actual content
-    const hasContent = textarea.value.trim().length > 0
+    const hasContent = textarea.value.trim().length > 0;
 
-    // Disable/enable button based on content
-    submitButton.disabled = !hasContent
-
-    // Optional: Add visual indication
-    if (hasContent) {
-      submitButton.classList.remove('btn-disabled')
-      submitButton.classList.add('btn-primary')
-    } else {
-      submitButton.classList.add('btn-disabled')
-      submitButton.classList.remove('btn-primary')
+    if (!this.loadingValue) {
+      submitButton.disabled = !hasContent;
+      submitButton.classList.toggle("btn-disabled", !hasContent);
+      submitButton.classList.toggle("btn-primary", hasContent);
     }
   }
 
   maybeSubmitForm() {
-    const textarea = this.textareaTarget
-
-    // Only submit if there's non-whitespace content
+    const textarea = this.textareaTarget;
     if (textarea.value.trim().length > 0) {
-      this.element.requestSubmit()
+      this.element.requestSubmit();
     }
   }
 
-  resetForm(event) {
-    const textarea = this.textareaTarget
-    textarea.value = "";
-
-    // Manually trigger the resize to reset the textarea height
-    textarea.style.height = 'auto'
-    textarea.style.height = `${textarea.scrollHeight}px`
-
-    // Reset submit button state
-    this.updateSubmitButton()
+  updateButtonContent() {
+    if (this.loadingValue) {
+      this.buttonContentTarget.innerHTML =
+        '<span class="loading loading-spinner loading-sm"></span>';
+    } else {
+      this.buttonContentTarget.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+          <path d="M208.49,120.49a12,12,0,0,1-17,0L140,69V216a12,12,0,0,1-24,0V69L64.49,120.49a12,12,0,0,1-17-17l72-72a12,12,0,0,1,17,0l72,72A12,12,0,0,1,208.49,120.49Z"></path>
+        </svg>
+      `;
+    }
   }
 
-  connect() {
-    // Initial state setup
-    this.updateSubmitButton()
+  loadingValueChanged() {
+    this.updateButtonContent();
   }
 }

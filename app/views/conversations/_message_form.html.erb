@@ -1,16 +1,26 @@
-<%= form_with model: Message.new, url: messages_url, html: { class: "", id: "conversation-message-form", data: { controller: "message-form", turbo_frame: "_top", action: "turbo:submit-end->message-form#resetForm input->message-form#updateSubmitButton" } } do |form| %>
+<%= form_with model: Message.new, url: messages_url, html: { class: "", id: "conversation-message-form", data: { controller: "message-form", turbo_frame: "_top", action: "turbo:submit-start->message-form#startLoading turbo:submit-end->message-form#resetForm input->message-form#updateSubmitButton" } } do |form| %>
   <%= form.hidden_field :conversation_id, value: conversation.id %>
   <div class="chat-form">
     <div class="chat-form__border">
-      <%= form.text_area :content, autofocus: true, data: { controller: 'auto-expand', action: "input->auto-expand#resize keydown->message-form#handleKeydown", 'message-form-target': 'textarea' }, class:"textarea mb-2 min-h-[6rem] max-h-[12rem] resize-none chat-form__textarea", placeholder:"Lets Build, provide me a detailed writeup about your project" %>
+      <% if form.object.errors.any? %>
+        <%= render "conversations/message_form_disabled", conversation: conversation %>
+      <% else %>
+        <%= form.text_area :content, autofocus: true, disabled: false, data: { controller: 'auto-expand', action: "input->auto-expand#resize keydown->message-form#handleKeydown", 'message-form-target': 'textarea' }, class: "textarea mb-2 min-h-[6rem] max-h-[12rem] resize-none chat-form__textarea", placeholder: "Lets Build, provide me a detailed writeup about your project" %>
+      <% end %>
       <div class="chat-form__input-groups">
         <div class="chat-form__input-select-chat">
           <%= form.select :chat_type, ["General Chat", "Artifact Chat"], {}, { class: "select" } %>
         </div>
-        <%= form.button class: "btn btn-primary p-2 rounded-full chat-form__input-submit", data: {'message-form-target': 'submit' } do %>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
-            <path d="M208.49,120.49a12,12,0,0,1-17,0L140,69V216a12,12,0,0,1-24,0V69L64.49,120.49a12,12,0,0,1-17-17l72-72a12,12,0,0,1,17,0l72,72A12,12,0,0,1,208.49,120.49Z"></path>
-          </svg>
+        <%= form.button class: "btn btn-primary p-2 rounded-full chat-form__input-submit", data: { 'message-form-target': 'submit' } do %>
+          <span data-message-form-target="buttonContent">
+            <% if @loading %>
+              <span class="loading loading-spinner loading-sm"></span>
+            <% else %>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M208.49,120.49a12,12,0,0,1-17,0L140,69V216a12,12,0,0,1-24,0V69L64.49,120.49a12,12,0,0,1-17-17l72-72a12,12,0,0,1,17,0l72,72A12,12,0,0,1,208.49,120.49Z"></path>
+              </svg>
+            <% end %>
+          </span>
         <% end %>
       </div>
     </div>
