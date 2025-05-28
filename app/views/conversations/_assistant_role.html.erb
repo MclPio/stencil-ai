@@ -1,17 +1,19 @@
 <div class="card bg-base-100 border border-base-300 shadow-sm rounded-lg mb-4">
   <div class="p-4">
-    <p class="message-content"><%= message.content %></p>
-    <% if message.suggestions.any? %>
-      <ul class="mt-3 list-disc list-inside text-sm text-base-content/80">
-        <% message.suggestions.each do |suggestion| %>
-          <li class="mb-1 last:mb-0"><%= suggestion %></li>
-        <% end %>
-      </ul>
-    <% end %>
+    <p class="message-content" data-assistant-user-chat-target="messageContent" data-id=<%= message.id %>>
+      <%= message.content %>
+        <% if message.suggestions.any? %>
+        <ul class="mt-3 list-disc list-inside text-sm text-base-content/80">
+          <% message.suggestions.each do |suggestion| %>
+            <li class="mb-1 last:mb-0"><%= suggestion %></li>
+          <% end %>
+        </ul>
+      <% end %>
+    </p>
   </div>
-  <button class="btn btn-ghost btn-circle">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184" />
+  <button class="btn btn-ghost btn-circle btn-xs" data-assistant-user-chat-target="copyMessage" data-id=<%= message.id %> data-action="assistant-user-chat#copy">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+      <path fill-rule="evenodd" d="M10.986 3H12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h1.014A2.25 2.25 0 0 1 7.25 1h1.5a2.25 2.25 0 0 1 2.236 2ZM9.5 4v-.75a.75.75 0 0 0-.75-.75h-1.5a.75.75 0 0 0-.75.75V4h3Z" clip-rule="evenodd" />
     </svg>
   </button>
 </div>
