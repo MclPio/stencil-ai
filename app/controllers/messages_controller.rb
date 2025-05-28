@@ -17,8 +17,7 @@ class MessagesController < ApplicationController
       if params[:message][:chat_type] == "Artifact Chat"
         ProcessLlmResponseJob.perform_later(message_params[:conversation_id])
       elsif params[:message][:chat_type] == "General Chat"
-        # ProcessLlmChatJob.perform_later(message_params[:conversation_id])
-        sleep(3)
+        ProcessLlmChatJob.perform_later(message_params[:conversation_id])
       end
     else
       if @message.errors[:base].include?("Conversation has exceeded the token limit of #{Conversation::TOKEN_LIMIT}")
