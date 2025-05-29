@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_29_222518) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_29_225951) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -84,10 +84,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_29_222518) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  create_table "weekly_consumptions", force: :cascade do |t|
+    t.integer "credits", default: 0, null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_weekly_consumptions_on_user_id"
+  end
+
   add_foreign_key "artifacts", "projects"
   add_foreign_key "conversations", "projects"
   add_foreign_key "messages", "conversations"
   add_foreign_key "projects", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "total_tokens", "conversations"
+  add_foreign_key "weekly_consumptions", "users"
 end
