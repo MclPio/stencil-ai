@@ -7,4 +7,14 @@ class User < ApplicationRecord
   has_many :projects, dependent: :destroy
 
   enum :account_type, { free: 0, paid: 1, admin: 2 }, prefix: true
+
+  validate :under_user_limit, on: :create
+
+  private
+
+  def under_user_limit
+    if User.count >= 100
+      errors.add(:base, "The app only allows 100 users")
+    end
+  end
 end
