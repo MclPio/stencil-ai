@@ -18,10 +18,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_29_225951) do
     t.string "name", null: false
     t.text "prompt", null: false
     t.text "content"
-    t.boolean "public", default: true
+    t.boolean "published", default: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["published"], name: "index_artifacts_on_published"
     t.index ["user_id"], name: "index_artifacts_on_user_id"
   end
 

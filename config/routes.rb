@@ -21,8 +21,8 @@ Rails.application.routes.draw do
     end
 
     resource :conversation, only: [ :show ]
-    resource :artifact, only: [ :show ]
   end
+  resources :artifacts
   resources :messages, only: [ :create ]
   get "/projects/:project_id/artifacts/:type", to: "conversations#artifact"
 end
