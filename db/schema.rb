@@ -15,16 +15,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_29_225951) do
   enable_extension "pg_catalog.plpgsql"
 
   create_table "artifacts", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "prompt", null: false
     t.text "content"
-    t.text "user_flow"
-    t.text "model_erd"
-    t.text "roadmap_flow"
-    t.bigint "project_id", null: false
+    t.boolean "public", default: true
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "top_level_roadmap_diagram"
-    t.text "value_flow_diagram"
-    t.index ["project_id"], name: "index_artifacts_on_project_id"
+    t.index ["user_id"], name: "index_artifacts_on_user_id"
   end
 
   create_table "conversations", force: :cascade do |t|
@@ -39,8 +37,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_29_225951) do
   create_table "messages", force: :cascade do |t|
     t.integer "role", null: false
     t.text "content", null: false
-    t.integer "input_tokens"
-    t.integer "output_tokens"
     t.bigint "conversation_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -92,7 +88,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_29_225951) do
     t.index ["user_id"], name: "index_weekly_consumptions_on_user_id"
   end
 
-  add_foreign_key "artifacts", "projects"
+  add_foreign_key "artifacts", "users"
   add_foreign_key "conversations", "projects"
   add_foreign_key "messages", "conversations"
   add_foreign_key "projects", "users"

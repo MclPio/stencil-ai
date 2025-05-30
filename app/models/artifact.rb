@@ -1,7 +1,7 @@
 class Artifact < ApplicationRecord
-  belongs_to :project
+  belongs_to :user
 
   def has_artifacts
-    model_erd.present? || user_flow.present? || roadmap_flow.present?
+    true # need to put logic later
   end
 end

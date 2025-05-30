@@ -1,11 +1,10 @@
 class Project < ApplicationRecord
   belongs_to :user
-  has_one :artifact, dependent: :destroy
   has_one :conversation, dependent: :destroy
 
   validate :validate_project_limit_for_user, on: :create
 
-  after_create -> { create_conversation; create_artifact }
+  after_create -> { create_conversation }
 
   private
 

@@ -12,40 +12,30 @@ message_collections = [
   {
     "role": "system",
     "content": "You are a helpful assistant, give coding feedback or something",
-    "input_tokens": 10,
-    "output_tokens": nil,
     "created_at": "2025-03-22T10:00:00Z",
     "updated_at": "2025-03-22T10:00:00Z"
   },
   {
     "role": "user",
     "content": "Hello, can you help me with my project?",
-    "input_tokens": 10,
-    "output_tokens": nil,
     "created_at": "2025-03-22T10:00:00Z",
     "updated_at": "2025-03-22T10:00:00Z"
   },
   {
     "role": "assistant",
     "content": "Of course! What do you need assistance with?",
-    "input_tokens": nil,
-    "output_tokens": 12,
     "created_at": "2025-03-22T10:01:00Z",
     "updated_at": "2025-03-22T10:01:00Z"
   },
   {
     "role": "user",
     "content": "I’m stuck on setting up the database schema.",
-    "input_tokens": 9,
-    "output_tokens": nil,
     "created_at": "2025-03-22T10:02:00Z",
     "updated_at": "2025-03-22T10:02:00Z"
   },
   {
     "role": "assistant",
     "content": "Let’s start with your models. What tables do you need?",
-    "input_tokens": nil,
-    "output_tokens": 11,
     "created_at": "2025-03-22T10:03:00Z",
     "updated_at": "2025-03-22T10:03:00Z"
   },
@@ -72,8 +62,6 @@ message_collections = [
     Aliquam bibendum viverra nibh non sodales. In enim quam, convallis ac placerat vel, malesuada et enim. In in metus quis ex luctus gravida at vel felis.
     Aenean rutrum mauris non congue gravida. Donec pretium odio ut luctus iaculis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
     Fusce sagittis ac ante scelerisque molestie. Donec volutpat interdum turpis vel porta. Praesent id accumsan felis, quis sollicitudin arcu. Nam at suscipit odio.",
-    "input_tokens": nil,
-    "output_tokens": 738,
     "created_at": "2025-03-22T10:03:00Z",
     "updated_at": "2025-03-22T10:03:00Z"
   }
@@ -85,7 +73,8 @@ user = User.create!(email_address: "user0@world.co", password: "1234", name: "Jo
   project = Project.create!(title: "AI Oven #{i}", user: user)
   conversation = project.conversation
   messages = message_collections.each do |message|
-    Message.create!(role: message[:role], content: message[:content], input_tokens: message[:input_tokens],
-                output_tokens: message[:output_tokens], conversation: conversation)
+    Message.create!(role: message[:role], content: message[:content], conversation: conversation)
   end
 end
+
+

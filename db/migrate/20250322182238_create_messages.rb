@@ -3,8 +3,6 @@ class CreateMessages < ActiveRecord::Migration[8.0]
     create_table :messages do |t|
       t.integer :role, null: false
       t.text :content, null: false
-      t.integer :input_tokens
-      t.integer :output_tokens
       t.references :conversation, null: false, foreign_key: true
 
       t.timestamps

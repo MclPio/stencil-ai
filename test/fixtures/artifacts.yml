@@ -1,8 +1,8 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  name: AI Oven
   content: hellos
-  model_erd: erDiagram
-  project: one
-  top_level_roadmap_diagram: timeline
-  value_flow_diagram: graph TD
+  prompt: make a mermaid diagram that looks like shrek
+  public: true
+  user: one
