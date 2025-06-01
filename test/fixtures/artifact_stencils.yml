@@ -1,17 +1,21 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  prompt: MyText
-  description: MyString
-  published: false
-  user: one
-  usage_count: 1
+  name: ArtifactStencil One
+  prompt: "Prompt for stencil one"
+  description: "Description for stencil one"
+  published: true
+  user: one # Refers to users.yml :one
+  usage_count: 0
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
 
 two:
-  name: MyString
-  prompt: MyText
-  description: MyString
-  published: false
-  user: two
-  usage_count: 1
+  name: ArtifactStencil Two
+  prompt: "Prompt for stencil two"
+  description: "Description for stencil two"
+  published: true
+  user: two # Refers to users.yml :two
+  usage_count: 0
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>

@@ -1,8 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  content: hellos
-  user: one
-  project: one
-  conversation: one
-  artifact_stencil: one
+  content: "Hello world artifact content"
+  project: one # Assumes a :one fixture exists in projects.yml
+  favorite_artifact_stencil: one # Assumes a :one fixture exists in favorite_artifact_stencils.yml
+
+two:
+  content: "Another artifact"
+  project: two # Assumes a :two fixture exists in projects.yml
+  favorite_artifact_stencil: two # Assumes a :two fixture exists in favorite_artifact_stencils.yml
