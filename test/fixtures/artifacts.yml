@@ -1,8 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: AI Oven
-  content: hellos
-  prompt: make a mermaid diagram that looks like shrek
-  public: true
-  user: one
+  content: "Hello world artifact content"
+  project: one # Assumes a :one fixture exists in projects.yml
+  favorite_artifact_stencil: one # Assumes a :one fixture exists in favorite_artifact_stencils.yml
+
+two:
+  content: "Another artifact"
+  project: two # Assumes a :two fixture exists in projects.yml
+  favorite_artifact_stencil: two # Assumes a :two fixture exists in favorite_artifact_stencils.yml

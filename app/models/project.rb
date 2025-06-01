@@ -1,6 +1,7 @@
 class Project < ApplicationRecord
   belongs_to :user
   has_one :conversation, dependent: :destroy
+  has_many :artifacts, dependent: :destroy
 
   validate :validate_project_limit_for_user, on: :create
 

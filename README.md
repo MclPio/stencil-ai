@@ -1,24 +1,25 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+```mermaid
+---
+title: Artifacts Refactor
+---
+flowchart LR
+    ArtifactStencils
+    Users
+    Artifacts
+    FavoriteArtifacts
+    Conversations
+    Messages
+    Projects
+    WeeklyConsumptions
 
-Things you may want to cover:
+    ArtifactStencils --> FavoriteArtifacts
+    Users --> FavoriteArtifacts
+    FavoriteArtifacts --> Artifacts
+    Artifacts --> Conversations
+    Artifacts --> Messages
+    Artifacts --> Projects
+    Users --> WeeklyConsumptions
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```

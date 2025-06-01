@@ -2,8 +2,10 @@ class User < ApplicationRecord
   has_secure_password
   has_many :sessions, dependent: :destroy
   has_one :weekly_consumption, dependent: :destroy
-  has_many :artifacts, dependent: :destroy
+  has_many :favorite_artifact_stencils
+  has_many :artifacts, through: :favorite_artifact_stencils
   has_many :projects, dependent: :destroy
+  has_many :artifact_stencils
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
