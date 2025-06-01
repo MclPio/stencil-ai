@@ -10,19 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_29_225951) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_01_011542) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
-  create_table "artifacts", force: :cascade do |t|
+  create_table "artifact_stencils", force: :cascade do |t|
     t.string "name", null: false
     t.text "prompt", null: false
-    t.text "content"
-    t.boolean "published", default: false
+    t.string "description", null: false
+    t.boolean "published", default: false, null: false
     t.bigint "user_id", null: false
+    t.integer "usage_count", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["published"], name: "index_artifacts_on_published"
+    t.index ["user_id"], name: "index_artifact_stencils_on_user_id"
+  end
+
+  create_table "artifacts", force: :cascade do |t|
+    t.text "content"
+    t.bigint "user_id", null: false
+    t.bigint "project_id", null: false
+    t.bigint "artifact_stencil_id", null: false
+    t.bigint "conversation_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["artifact_stencil_id"], name: "index_artifacts_on_artifact_stencil_id"
+    t.index ["conversation_id"], name: "index_artifacts_on_conversation_id"
+    t.index ["project_id"], name: "index_artifacts_on_project_id"
     t.index ["user_id"], name: "index_artifacts_on_user_id"
   end
 
@@ -33,6 +47,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_29_225951) do
     t.datetime "updated_at", null: false
     t.boolean "reached_token_limit", default: false
     t.index ["project_id"], name: "index_conversations_on_project_id"
+  end
+
+  create_table "favorite_artifact_stencils", force: :cascade do |t|
+    t.bigint "artifact_stencil_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["artifact_stencil_id"], name: "index_favorite_artifact_stencils_on_artifact_stencil_id"
+    t.index ["user_id", "artifact_stencil_id"], name: "idx_on_user_id_artifact_stencil_id_67c1ed707a", unique: true
+    t.index ["user_id"], name: "index_favorite_artifact_stencils_on_user_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -89,8 +113,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_29_225951) do
     t.index ["user_id"], name: "index_weekly_consumptions_on_user_id"
   end
 
+  add_foreign_key "artifact_stencils", "users"
+  add_foreign_key "artifacts", "artifact_stencils"
+  add_foreign_key "artifacts", "conversations"
+  add_foreign_key "artifacts", "projects"
   add_foreign_key "artifacts", "users"
   add_foreign_key "conversations", "projects"
+  add_foreign_key "favorite_artifact_stencils", "artifact_stencils"
+  add_foreign_key "favorite_artifact_stencils", "users"
   add_foreign_key "messages", "conversations"
   add_foreign_key "projects", "users"
   add_foreign_key "sessions", "users"

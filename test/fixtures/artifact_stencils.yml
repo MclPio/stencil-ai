@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  prompt: MyText
+  description: MyString
+  published: false
+  user: one
+  usage_count: 1
+
+two:
+  name: MyString
+  prompt: MyText
+  description: MyString
+  published: false
+  user: two
+  usage_count: 1
