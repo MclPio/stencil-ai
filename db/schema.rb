@@ -28,16 +28,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_01_011542) do
 
   create_table "artifacts", force: :cascade do |t|
     t.text "content"
-    t.bigint "user_id", null: false
     t.bigint "project_id", null: false
-    t.bigint "artifact_stencil_id", null: false
-    t.bigint "conversation_id", null: false
+    t.bigint "favorite_artifact_stencil_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["artifact_stencil_id"], name: "index_artifacts_on_artifact_stencil_id"
-    t.index ["conversation_id"], name: "index_artifacts_on_conversation_id"
+    t.index ["favorite_artifact_stencil_id"], name: "index_artifacts_on_favorite_artifact_stencil_id"
     t.index ["project_id"], name: "index_artifacts_on_project_id"
-    t.index ["user_id"], name: "index_artifacts_on_user_id"
   end
 
   create_table "conversations", force: :cascade do |t|
@@ -114,10 +110,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_01_011542) do
   end
 
   add_foreign_key "artifact_stencils", "users"
-  add_foreign_key "artifacts", "artifact_stencils"
-  add_foreign_key "artifacts", "conversations"
+  add_foreign_key "artifacts", "favorite_artifact_stencils"
   add_foreign_key "artifacts", "projects"
-  add_foreign_key "artifacts", "users"
   add_foreign_key "conversations", "projects"
   add_foreign_key "favorite_artifact_stencils", "artifact_stencils"
   add_foreign_key "favorite_artifact_stencils", "users"
