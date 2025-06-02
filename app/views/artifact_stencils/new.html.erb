@@ -1,0 +1,88 @@
+<%= render "layouts/navbar" %>
+<div class="container mx-auto px-4 py-8 max-w-4xl">
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold mb-2">New Artifact Stencil</h1>
+    <p class="text-lg text-base-content/70">Create a reusable template for generating artifacts</p>
+  </div>
+
+  <div class="grid gap-6 md:grid-cols-3">
+    <!-- Main Form -->
+    <div class="md:col-span-2">
+      <div class="card bg-base-100 shadow">
+        <div class="card-body">
+          <%= form_with model: @artifact_stencil || ArtifactStencil.new, local: true do |form| %>
+            
+            <div class="form-control mb-6">
+              <%= form.label :name, "Name", class: "label" %>
+              <%= form.text_field :name, 
+                  class: "input input-bordered w-full", 
+                  required: true,
+                  'aria-describedby': "name-help" %>
+              <div class="label">
+                <span class="label-text-alt" id="name-help">A descriptive name for your stencil</span>
+              </div>
+            </div>
+
+            <div class="form-control mb-6">
+              <%= form.label :description, "Description", class: "label" %>
+              <%= form.text_area :description, 
+                  class: "textarea textarea-bordered", 
+                  rows: 3,
+                  required: true,
+                  'aria-describedby': "description-help" %>
+              <div class="label">
+                <span class="label-text-alt" id="description-help">Explain what this stencil creates</span>
+              </div>
+            </div>
+
+            <div class="form-control mb-6">
+              <%= form.label :prompt, "Prompt Template", class: "label" %>
+              <%= form.text_area :prompt, 
+                  class: "textarea textarea-bordered font-mono", 
+                  rows: 8,
+                  required: true,
+                  'aria-describedby': "prompt-help" %>
+              <div class="label">
+                <span class="label-text-alt" id="prompt-help">The prompt template for generating artifacts</span>
+              </div>
+            </div>
+
+            <div class="flex gap-4 pt-4 border-t border-base-300">
+              <%= form.submit "Create Stencil", class: "btn btn-primary" %>
+              <%= link_to "Cancel", root_path, class: "btn btn-ghost" %>
+            </div>
+
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="space-y-6">
+      <!-- Settings -->
+      <div class="card bg-base-100 shadow">
+        <div class="card-body">
+          <h3 class="card-title text-lg">Settings</h3>
+          <div class="form-control">
+            <label class="label cursor-pointer">
+              <input type="checkbox" name="artifact_stencil[published]" class="checkbox" form="new_artifact_stencil">
+              <span class="label-text">Make this stencil public</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tips -->
+      <div class="card bg-base-100 shadow">
+        <div class="card-body">
+          <h3 class="card-title text-lg">Tips</h3>
+          <div class="space-y-2 text-sm">
+            <div>• Use clear, specific instructions</div>
+            <div>• Include placeholders like {topic}</div>
+            <div>• Provide examples when helpful</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
