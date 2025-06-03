@@ -5,6 +5,8 @@
     <p class="text-lg text-base-content/70">Create a reusable template for generating artifacts</p>
   </div>
 
+  <%= render partial: "errors", locals: { artifact_stencil: @artifact_stencil } %>
+
   <div class="grid gap-6 md:grid-cols-3">
     <!-- Main Form -->
     <div class="md:col-span-2">

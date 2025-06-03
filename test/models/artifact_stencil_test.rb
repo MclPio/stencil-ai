@@ -110,4 +110,82 @@ class ArtifactStencilTest < ActiveSupport::TestCase
     new_artifact.destroy
     # Do not destroy fav_stencil as it's from fixtures.
   end
+
+  test "user cannot create more than their limit of 2 stencils" do
+    @user.artifact_stencils.destroy_all
+    # Create 2 stencils successfully
+    2.times do |i|
+      stencil = ArtifactStencil.new(
+        name: "Test Name #{i}",
+        description: "Test Description #{i}",
+        prompt: "Test Prompt #{i}",
+        user: @user
+      )
+      assert stencil.save, "Stencil #{i} should save within limit of #{ArtifactStencil::ACCOUNT_TYPE_LIMITS['free']}"
+    end
+
+    # Verify the user has exactly 2 stencils
+    assert_equal ArtifactStencil::ACCOUNT_TYPE_LIMITS['free'], @user.artifact_stencils.count, "User should have #{ArtifactStencil::ACCOUNT_TYPE_LIMITS['free']} stencils"
+
+    # Attempt to create a third stencil (should fail)
+    stencil = ArtifactStencil.new(
+      name: "Test Name 3",
+      description: "Test Description 3",
+      prompt: "Test Prompt 3",
+      user: @user
+    )
+
+    assert_not stencil.valid?, "Third stencil should not be valid due to limit"
+    assert_includes stencil.errors[:base], "You've reached your limit of #{ArtifactStencil::ACCOUNT_TYPE_LIMITS['free']} artifact stencils for your free account"
+    assert_not stencil.save, "Third stencil should not save due to validation"
+  end
+
+  test "paid user cannot create more than 5 stencils" do
+    @user.artifact_stencils.destroy_all
+    @user.update(account_type: "paid")
+    limit = ArtifactStencil::ACCOUNT_TYPE_LIMITS['paid']
+
+    # Create 5 stencils successfully
+    limit.times do |i|
+      stencil = ArtifactStencil.new(
+        name: "Test Name #{i}",
+        description: "Test Description #{i}",
+        prompt: "Test Prompt #{i}",
+        user: @user
+      )
+      assert stencil.save, "Stencil #{i} should save within limit of #{limit}"
+    end
+
+    assert_equal limit, @user.artifact_stencils.count, "User should have #{limit} stencils"
+
+    # Attempt to create a 6th stencil
+    stencil = ArtifactStencil.new(
+      name: "Test Name 6",
+      description: "Test Description 6",
+      prompt: "Test Prompt 6",
+      user: @user
+    )
+
+    assert_not stencil.valid?, "Sixth stencil should not be valid due to limit"
+    assert_includes stencil.errors[:base], "You've reached your limit of #{limit} artifact stencils for your paid account"
+    assert_not stencil.save, "Sixth stencil should not save"
+  end
+
+  test "stencil without user triggers user_id validation" do
+    stencil = ArtifactStencil.new(
+      name: "Test Name",
+      description: "Test Description",
+      prompt: "Test Prompt",
+      user: nil
+    )
+
+    assert_not stencil.valid?, "Stencil should not be valid without a user"
+    assert_includes stencil.errors[:user_id], "can't be blank"
+  end
+
+  test "ACCOUNT_TYPE_LIMITS constant is defined correctly" do
+    expected = { 'free' => 2, 'paid' => 5, 'admin' => 20 }
+    assert_equal expected, ArtifactStencil::ACCOUNT_TYPE_LIMITS
+    assert_predicate ArtifactStencil::ACCOUNT_TYPE_LIMITS, :frozen?
+  end
 end
