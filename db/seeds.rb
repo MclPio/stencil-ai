@@ -67,15 +67,33 @@ message_collections = [
   }
 ]
 
-user = User.create!(email_address: "user0@world.co", password: "1234", name: "Joe Smith", account_type: "admin")
-user = User.create!(email_address: "user1@world.co", password: "1234", name: "Joe Smith", account_type: "admin")
+user0 = User.create!(email_address: "user0@world.co", password: "1234", name: "Joe Smith", account_type: "admin")
+user1 = User.create!(email_address: "user1@world.co", password: "1234", name: "Mikey Hanma", account_type: "admin")
 
 5.times do |i|
-  project = Project.create!(title: "AI Oven #{i}", user: user)
+  project = Project.create!(title: "AI Oven #{i}", user: user0)
   conversation = project.conversation
-  messages = message_collections.each do |message|
+  message_collections.each do |message|
     Message.create!(role: message[:role], content: message[:content], conversation: conversation)
   end
 end
 
+5.times do |i|
+  project = Project.create!(title: "AI Oven #{i}", user: user1)
+  conversation = project.conversation
+  message_collections.each do |message|
+    Message.create!(role: message[:role], content: message[:content], conversation: conversation)
+  end
+end
 
+5.times do |i|
+  stencil = ArtifactStencil.create!(name: "Stencil #{i}", prompt: "I like pizza, say it with me WAHOOO #{i}",
+                          description: "HALLO", published: true, user: user0)
+  favorite_stencil = FavoriteArtifactStencil.create!(artifact_stencil: stencil, user: user1)
+end
+
+5.times do |i|
+  stencil = ArtifactStencil.create!(name: "Stencil #{i}", prompt: "I like pizza, say it with me WAHOOO #{i}",
+                          description: "HALLO", published: true, user: user1)
+  favorite_stencil = FavoriteArtifactStencil.create!(artifact_stencil: stencil, user: user0)
+end

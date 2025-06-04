@@ -1,3 +1,38 @@
-<% @favorite_artifact_stencils.each do |f| %>
-  <p><%= f %></p>
-<% end %>
+<%= render "layouts/navbar" %>
+<div class="container mx-auto px-4 py-8 max-w-4xl">
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold mb-2">Favorite Artifact Stencils</h1>
+    <p class="text-lg text-base-content/70">Your collection of favorite reusable templates</p>
+  </div>
+
+  <% if @favorite_artifact_stencils.empty? %>
+    <div class="card bg-base-100 shadow">
+      <div class="card-body">
+        <p class="text-base-content/70">You haven't favorited any artifact stencils yet.</p>
+        <%= link_to "Create a new stencil", new_artifact_stencil_path, class: "btn btn-primary mt-4" %>
+      </div>
+    </div>
+  <% else %>
+    <div class="grid gap-6">
+      <% @favorite_artifact_stencils.each do |f| %>
+        <div class="card bg-base-100 shadow">
+          <div class="card-body">
+            <h2 class="card-title text-xl">
+              <%= f[:name] %>
+              <% if f[:published] %>
+                <span class="badge badge-success ml-2">Public</span>
+              <% else %>
+                <span class="badge badge-ghost ml-2">Private</span>
+              <% end %>
+            </h2>
+            <p class="text-base-content/70 mt-2"><%= f[:description] %></p>
+            <p class="text-sm text-base-content/60 mt-1">Created by: <%= f[:user] %></p>
+            <div class="mt-4">
+              <%= link_to "View Stencil", artifact_stencil_path(f[:id]), class: "btn btn-primary btn-sm" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

@@ -4,7 +4,7 @@ class FavoriteArtifactStencilsController < ApplicationController
 
   def index
     @favorite_artifact_stencils = FavoriteArtifactStencil.where(user: Current.user).includes(:artifact_stencil).map do |fas|
-      { id: fas.artifact_stencil.id, name: fas.artifact_stencil.name, description: fas.artifact_stencil.description }
+      { id: fas.artifact_stencil.id, name: fas.artifact_stencil.name, description: fas.artifact_stencil.description, published: fas.artifact_stencil.published, user: fas.artifact_stencil.user.name }
     end
   end
 
