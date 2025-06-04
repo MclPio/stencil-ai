@@ -3,12 +3,23 @@ class FavoriteArtifactStencilsController < ApplicationController
   before_action :authorize_user, only: %i[ destroy ]
 
   def index
+    @favorite_artifact_stencils = FavoriteArtifactStencil.where(user: Current.user).map do |fas|
+      [ fas.artifact_stencil.id, fas.artifact_stencil.name, fas.artifact_stencil.description ]
+    end
   end
 
   def create
+    @favorite_artifact_stencil = Current.user.favorite_artifact_stencils.new(favorite_artifact_stencil_params)
+    if @favorite_artifact_stencil.save
+      redirect_to favorite_artifact_stencils_path, notice: "Stencil added."
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def destroy
+    @favorite_artifact_stencil.destroy
+    redirect_to favorite_artifact_stencils_path, notice: "Stencil removed successfully."
   end
 
   private
