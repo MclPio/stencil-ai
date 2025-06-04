@@ -2,7 +2,7 @@
 
 one:
   email_address: user_one@example.com
-  password_digest: <%= BCrypt::Password.create('password') %>
+  password_digest: <%= BCrypt::Password.create('1234') %>
   name: User One
   account_type: 0 # Assuming 0 is a valid default
   created_at: <%= Time.current %>
@@ -10,7 +10,7 @@ one:
 
 two:
   email_address: user_two@example.com
-  password_digest: <%= BCrypt::Password.create('password') %>
+  password_digest: <%= BCrypt::Password.create('1234') %>
   name: User Two
   account_type: 0
   created_at: <%= Time.current %>
