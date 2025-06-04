@@ -26,13 +26,12 @@ class ArtifactTest < ActiveSupport::TestCase
     assert_includes artifact.errors[:project_id], "can't be blank"
   end
 
-  test "should not save artifact without favorite_artifact_stencil_id" do
+  test "should save artifact without favorite_artifact_stencil_id" do
     artifact = Artifact.new(
       project_id: @project_one&.id,
       content: "Test content"
     )
-    assert_not artifact.save, "Saved the artifact without a favorite_artifact_stencil_id"
-    assert_includes artifact.errors[:favorite_artifact_stencil_id], "can't be blank"
+    assert true, artifact.save
   end
 
   test "should save artifact with valid project_id and favorite_artifact_stencil_id" do

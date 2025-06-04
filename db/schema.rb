@@ -29,7 +29,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_01_011542) do
   create_table "artifacts", force: :cascade do |t|
     t.text "content"
     t.bigint "project_id", null: false
-    t.bigint "favorite_artifact_stencil_id", null: false
+    t.bigint "favorite_artifact_stencil_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["favorite_artifact_stencil_id"], name: "index_artifacts_on_favorite_artifact_stencil_id"

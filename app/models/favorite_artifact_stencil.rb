@@ -1,7 +1,7 @@
 class FavoriteArtifactStencil < ApplicationRecord
   belongs_to :artifact_stencil
   belongs_to :user
-  has_many :artifacts, dependent: :destroy # Added dependent: :destroy for good measure
+  has_many :artifacts, dependent: :nullify
 
   validates :artifact_stencil_id, presence: true
   validates :user_id, presence: true
