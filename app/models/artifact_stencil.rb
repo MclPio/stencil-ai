@@ -9,7 +9,6 @@ class ArtifactStencil < ApplicationRecord
   validates :prompt, presence: true # Schema indicates prompt is null: false
 
   validate :user_within_stencil_limit, on: :create
-  after_create :create_favorite_artifact_stencil # Need to test this...
 
   ACCOUNT_TYPE_LIMITS = {
     'free' => 2,
