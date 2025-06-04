@@ -39,13 +39,14 @@
         </div>
       </div>
 
-      <!-- Actions -->
-      <div class="card bg-base-100 shadow">
-        <div class="card-body">
-          <h3 class="card-title text-lg">Actions</h3>
-          <div class="space-y-2">
-            <% if @artifact_stencil.published %>
-              <% if Current.user && !FavoriteArtifactStencil.exists?(user: Current.user, artifact_stencil: @artifact_stencil) %>
+    <!-- Actions -->
+    <div class="card bg-base-100 shadow">
+      <div class="card-body">
+        <h3 class="card-title text-lg">Actions</h3>
+        <div class="space-y-2">
+          <% if Current.user %>
+            <% if Current.user == @artifact_stencil.user || @artifact_stencil.published %>
+              <% if !FavoriteArtifactStencil.exists?(user: Current.user, artifact_stencil: @artifact_stencil) %>
                 <%= button_to "Subscribe", favorite_artifact_stencils_path,
                     params: { favorite_artifact_stencil: { artifact_stencil_id: @artifact_stencil.id, user_id: Current.user.id } },
                     method: :post,
@@ -53,21 +54,22 @@
               <% else %>
                 <% favorite = FavoriteArtifactStencil.find_by(user: Current.user, artifact_stencil: @artifact_stencil) %>
                 <%= button_to "Unsubscribe", favorite_artifact_stencil_path(favorite),
-                  method: :delete,
-                  data: { turbo_confirm: "Are you sure you want to unsubscribe?" },
-                  class: "btn btn-warning btn-sm w-full" %>
+                    method: :delete,
+                    data: { turbo_confirm: "Are you sure you want to unsubscribe?" },
+                    class: "btn btn-warning btn-sm w-full" %>
               <% end %>
             <% end %>
+          <% end %>
 
-            <% if Current.user == @artifact_stencil.user %>
-              <%= button_to "Delete", @artifact_stencil, 
-                  method: :delete,
-                  data: { turbo_confirm: "Are you sure you want to delete this stencil?" },
-                  class: "btn btn-error btn-outline btn-sm w-full" %>
-              <% end %>
-          </div>
+          <% if Current.user == @artifact_stencil.user %>
+            <%= button_to "Delete", @artifact_stencil,
+                method: :delete,
+                data: { turbo_confirm: "Are you sure you want to delete this stencil?" },
+                class: "btn btn-error btn-outline btn-sm w-full" %>
+          <% end %>
         </div>
       </div>
+    </div>
 
       <!-- Meta Information -->
       <div class="card bg-base-100 shadow">

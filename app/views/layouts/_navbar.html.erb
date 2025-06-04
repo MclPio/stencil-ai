@@ -1,10 +1,11 @@
 <% if Current.user %>
   <div class="navbar bg-base-100 shadow-sm">
     <div class="flex-1">
-      <%= link_to "Artifacts", root_path, class: "btn btn-ghost text-xl"%>
+      <%= link_to "Home", root_path, class: "btn btn-ghost text-xl"%>
     </div>
     <div class="flex-none">
       <ul class="menu menu-horizontal px-1 items-center gap-2">
+        <li><%= link_to "Stencils", favorite_artifact_stencils_path, class: "px-4 py-2" %></li>
         <li><%= link_to "Projects", projects_path, class: "px-4 py-2" %></li>
         <li><%= link_to "Sign Out", session_path, method: :delete, data: { turbo_method: :delete }, class: "btn btn-neutral" %></li>
       </ul>
