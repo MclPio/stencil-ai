@@ -20,7 +20,7 @@ class FavoriteArtifactStencilsControllerTest < ActionDispatch::IntegrationTest
     assert_response :redirect
   end
 
-  test "index includes user's own artifacts and favorite artifact from other users" do
+  test "index includes favorite artifact" do
     post session_url, params: { email_address: @user.email_address, password: "1234" }
 
     post favorite_artifact_stencils_url, params: {

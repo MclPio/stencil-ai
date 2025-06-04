@@ -13,13 +13,12 @@
       <div class="card bg-base-100 shadow">
         <div class="card-body">
           <%= form_with model: @artifact_stencil || ArtifactStencil.new, local: true do |form| %>
-            
             <div class="form-control mb-6">
               <%= form.label :name, "Name", class: "label" %>
               <%= form.text_field :name, 
                   class: "input input-bordered w-full", 
                   required: true,
-                  'aria-describedby': "name-help" %>
+                  aria: { describedby: "name-help" } %>
               <div class="label">
                 <span class="label-text-alt" id="name-help">A descriptive name for your stencil</span>
               </div>
@@ -31,7 +30,7 @@
                   class: "textarea textarea-bordered", 
                   rows: 3,
                   required: true,
-                  'aria-describedby': "description-help" %>
+                  aria: { describedby: "description-help" } %>
               <div class="label">
                 <span class="label-text-alt" id="description-help">Explain what this stencil creates</span>
               </div>
@@ -43,17 +42,25 @@
                   class: "textarea textarea-bordered font-mono", 
                   rows: 8,
                   required: true,
-                  'aria-describedby': "prompt-help" %>
+                  aria: { describedby: "prompt-help" } %>
               <div class="label">
                 <span class="label-text-alt" id="prompt-help">The prompt template for generating artifacts</span>
               </div>
+            </div>
+
+            <!-- Settings -->
+            <div class="form-control mb-6">
+              <h3 class="card-title text-lg mb-2">Settings</h3>
+              <%= form.label :published, class: "label cursor-pointer flex items-center gap-2" do %>
+                <%= form.check_box :published, class: "checkbox" %>
+                <span class="label-text">Make this stencil public</span>
+              <% end %>
             </div>
 
             <div class="flex gap-4 pt-4 border-t border-base-300">
               <%= form.submit "Create Stencil", class: "btn btn-primary" %>
               <%= link_to "Cancel", root_path, class: "btn btn-ghost" %>
             </div>
-
           <% end %>
         </div>
       </div>
@@ -61,19 +68,6 @@
 
     <!-- Sidebar -->
     <div class="space-y-6">
-      <!-- Settings -->
-      <div class="card bg-base-100 shadow">
-        <div class="card-body">
-          <h3 class="card-title text-lg">Settings</h3>
-          <div class="form-control">
-            <label class="label cursor-pointer">
-              <input type="checkbox" name="artifact_stencil[published]" class="checkbox" form="new_artifact_stencil">
-              <span class="label-text">Make this stencil public</span>
-            </label>
-          </div>
-        </div>
-      </div>
-
       <!-- Tips -->
       <div class="card bg-base-100 shadow">
         <div class="card-body">

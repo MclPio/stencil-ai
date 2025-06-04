@@ -44,8 +44,19 @@
         <div class="card-body">
           <h3 class="card-title text-lg">Actions</h3>
           <div class="space-y-2">
-            <% if @artifact_stencil.published || Current.user == @artifact_stencil.user %>
-              <%= link_to "Use This Stencil", "#", class: "btn btn-primary btn-sm w-full" %>
+            <% if @artifact_stencil.published %>
+              <% if Current.user && !FavoriteArtifactStencil.exists?(user: Current.user, artifact_stencil: @artifact_stencil) %>
+                <%= button_to "Subscribe", favorite_artifact_stencils_path,
+                    params: { favorite_artifact_stencil: { artifact_stencil_id: @artifact_stencil.id, user_id: Current.user.id } },
+                    method: :post,
+                    class: "btn btn-primary btn-sm w-full" %>
+              <% else %>
+                <% favorite = FavoriteArtifactStencil.find_by(user: Current.user, artifact_stencil: @artifact_stencil) %>
+                <%= button_to "Unsubscribe", favorite_artifact_stencil_path(favorite),
+                  method: :delete,
+                  data: { turbo_confirm: "Are you sure you want to unsubscribe?" },
+                  class: "btn btn-warning btn-sm w-full" %>
+              <% end %>
             <% end %>
 
             <% if Current.user == @artifact_stencil.user %>
