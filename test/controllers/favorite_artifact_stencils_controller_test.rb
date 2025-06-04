@@ -20,6 +20,25 @@ class FavoriteArtifactStencilsControllerTest < ActionDispatch::IntegrationTest
     assert_response :redirect
   end
 
+  test "index includes user's own artifacts and favorite artifact from other users" do
+    post session_url, params: { email_address: @user.email_address, password: "1234" }
+
+    post favorite_artifact_stencils_url, params: {
+      favorite_artifact_stencil: {
+        artifact_stencil_id: @artifact_stencil_two.id,
+        user_id: @user.id
+      }
+    }
+
+    get favorite_artifact_stencils_url
+
+    assert_match @artifact_stencil.name, response.body
+    assert_match @artifact_stencil.description, response.body
+
+    assert_match @artifact_stencil_two.name, response.body
+    assert_match @artifact_stencil_two.description, response.body
+  end
+
   test "should create favorite_artifact_stencil for authenticated user with valid params" do
     post session_url, params: { email_address: @user.email_address, password: "1234" }
     assert_difference "FavoriteArtifactStencil.count", 1 do
