@@ -10,6 +10,8 @@ class FavoriteArtifactStencilsController < ApplicationController
     @user_artifact_stencils = Current.user.artifact_stencils.map do |i|
       { id: i.id, name: i.name, description: i.description, published: i.published, user: i.user.name }
     end
+
+    @free_artifact_stencils = ArtifactStencil.first
   end
 
   def create

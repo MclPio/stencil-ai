@@ -1,5 +1,5 @@
 <%= render "layouts/navbar" %>
-<div class="container mx-auto px-4 py-8 max-w-4xl">
+<div class="container mx-auto px-4 py-8 max-w-4xl" data-controller="tab-switcher">
   <div class="mb-6 flex justify-between items-center">
     <div>
       <h1 class="text-3xl font-bold mb-2">Favorite Artifact Stencils</h1>
@@ -7,23 +7,14 @@
     </div>
     <%= link_to "New Stencil", new_artifact_stencil_path, class: "btn btn-primary" %>
   </div>
-
-  <% if @favorite_artifact_stencils.empty? && @user_artifact_stencils.empty? %>
-    <div class="card bg-base-100 shadow">
-      <div class="card-body">
-        <p class="text-base-content/70">You haven't favorited any artifact stencils yet.</p>
-        <%= link_to "Create a new stencil", new_artifact_stencil_path, class: "btn btn-primary mt-4" %>
-      </div>
-    </div>
-  <% else %>
     <div role="tablist" class="tabs tabs-border">
-      <a role="tab" class="tab tab-active">Favorite Stencils</a>
-      <a role="tab" class="tab">My Stencils</a>
-      <a role="tab" class="tab">Free Stencils</a>
+      <a role="tab" class="tab tab-active" data-tab-switcher-target="tab" data-action="tab-switcher#selectTab" data-tab-id="favorites">Favorite Stencils</a>
+      <a role="tab" class="tab" data-tab-switcher-target="tab" data-action="tab-switcher#selectTab" data-tab-id="users">My Stencils</a>
+      <a role="tab" class="tab" data-tab-switcher-target="tab" data-action="tab-switcher#selectTab" data-tab-id="free">Free Stencils</a>
     </div>
     
     <%# FAVORITE %>
-    <div class="grid gap-6">
+    <div class="grid gap-6" data-tab-switcher-target="panel" data-panel-id="favorites">
       <% @favorite_artifact_stencils.each do |f| %>
         <div class="card bg-base-100 shadow">
           <div class="card-body">
@@ -46,7 +37,38 @@
     </div>
 
     <%# MY STENCILS %>
+    <div class="grid gap-6 hidden" data-tab-switcher-target="panel" data-panel-id="users">
+      <% @user_artifact_stencils.each do |f| %>
+        <div class="card bg-base-100 shadow">
+          <div class="card-body">
+            <h2 class="card-title text-xl">
+              <%= f[:name] %>
+              <% if f[:published] %>
+                <span class="badge badge-success ml-2">Public</span>
+              <% else %>
+                <span class="badge badge-ghost ml-2">Private</span>
+              <% end %>
+            </h2>
+            <p class="text-base-content/70 mt-2"><%= f[:description] %></p>
+            <p class="text-sm text-base-content/60 mt-1">Created by: <%= f[:user] %></p>
+            <div class="mt-4">
+              <%= link_to "View Stencil", artifact_stencil_path(f[:id]), class: "btn btn-primary btn-sm" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
 
     <%# ADMIN STENCILS %>
-  <% end %>
+    <div class="grid gap-6 hidden" data-tab-switcher-target="panel" data-panel-id="free">
+        <div class="card bg-base-100 shadow">
+          <div class="card-body">
+            <h2 class="card-title text-xl">
+              <p>Admin stencils would go here</p>
+            </h2>
+            <div class="mt-4">
+            </div>
+          </div>
+        </div>
+    </div>
 </div>
