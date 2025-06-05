@@ -11,7 +11,7 @@ class FavoriteArtifactStencilsController < ApplicationController
       { id: i.id, name: i.name, description: i.description, published: i.published, user: i.user.name }
     end
 
-    @free_artifact_stencils = ArtifactStencil.first
+    @free_artifact_stencils = {} # MUST UPDATE WITH OFFICIAL STENCILS...
   end
 
   def create
