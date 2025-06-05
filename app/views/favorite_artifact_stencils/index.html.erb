@@ -8,7 +8,7 @@
     <%= link_to "New Stencil", new_artifact_stencil_path, class: "btn btn-primary" %>
   </div>
 
-  <% if @favorite_artifact_stencils.empty? %>
+  <% if @favorite_artifact_stencils.empty? && @user_artifact_stencils.empty? %>
     <div class="card bg-base-100 shadow">
       <div class="card-body">
         <p class="text-base-content/70">You haven't favorited any artifact stencils yet.</p>
@@ -16,6 +16,13 @@
       </div>
     </div>
   <% else %>
+    <div role="tablist" class="tabs tabs-border">
+      <a role="tab" class="tab tab-active">Favorite Stencils</a>
+      <a role="tab" class="tab">My Stencils</a>
+      <a role="tab" class="tab">Free Stencils</a>
+    </div>
+    
+    <%# FAVORITE %>
     <div class="grid gap-6">
       <% @favorite_artifact_stencils.each do |f| %>
         <div class="card bg-base-100 shadow">
@@ -37,5 +44,9 @@
         </div>
       <% end %>
     </div>
+
+    <%# MY STENCILS %>
+
+    <%# ADMIN STENCILS %>
   <% end %>
 </div>
