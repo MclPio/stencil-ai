@@ -50,11 +50,31 @@
 
             <!-- Settings -->
             <div class="form-control mb-6">
-              <h3 class="card-title text-lg mb-2">Settings</h3>
-              <%= form.label :published, class: "label cursor-pointer flex items-center gap-2" do %>
-                <%= form.check_box :published, class: "checkbox" %>
-                <span class="label-text">Make this stencil public</span>
+              <h3 class="card-title text-lg mb-4">Settings</h3>
+
+              <!-- Published Checkbox -->
+              <%= form.label :published, class: "label cursor-pointer flex items-center gap-3 mb-4" do %>
+                <%= form.check_box :published, class: "checkbox checkbox-primary" %>
+                <span class="label-text text-base-content/80">Make this stencil public</span>
               <% end %>
+
+              <!-- Type Radio Buttons -->
+              <fieldset class="space-y-3" required aria-describedby="category-help">
+                <legend class="label label-text font-medium text-base-content/90 mb-2">Output Type</legend>
+                <div class="flex flex-col gap-3">
+                  <%= form.label :category_regular_text, class: "cursor-pointer flex items-center gap-3" do %>
+                    <%= form.radio_button :category, "regular_text", class: "radio radio-primary", required: true %>
+                    <span class="label-text text-base-content/80">Generate Text</span>
+                  <% end %>
+                  <%= form.label :category_mermaid, class: "cursor-pointer flex items-center gap-3" do %>
+                    <%= form.radio_button :category, "mermaid", class: "radio radio-primary" %>
+                    <span class="label-text text-base-content/80">Generate Mermaid Diagram</span>
+                  <% end %>
+                </div>
+                <div class="label">
+                  <span class="label-text-alt text-base-content/60" id="category-help">Select the type of artifact this stencil will generate</span>
+                </div>
+              </fieldset>
             </div>
 
             <div class="flex gap-4 pt-4 border-t border-base-300">

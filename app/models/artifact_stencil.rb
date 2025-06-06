@@ -6,9 +6,12 @@ class ArtifactStencil < ApplicationRecord
   validates :user_id, presence: true
   validates :name, presence: true
   validates :description, presence: true
-  validates :prompt, presence: true # Schema indicates prompt is null: false
+  validates :prompt, presence: true
+  validates :category, presence: true
 
   validate :user_within_stencil_limit, on: :create
+
+  enum :category, { regular_text: 0, mermaid: 1 }, default: :regular_text
 
   ACCOUNT_TYPE_LIMITS = {
     'free' => 2,

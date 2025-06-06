@@ -33,7 +33,7 @@ class ArtifactStencilsController < ApplicationController
   end
 
   def artifact_stencil_params
-    params.expect(artifact_stencil: [ :name, :description, :prompt, :published ])
+    params.expect(artifact_stencil: [ :name, :description, :prompt, :published, :category ])
   end
 
   def authorize_user

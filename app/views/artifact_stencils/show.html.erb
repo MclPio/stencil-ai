@@ -1,8 +1,11 @@
 <%= render "layouts/navbar" %>
 <div class="container mx-auto px-4 py-8 max-w-4xl">
-  <div class="mb-6">
-    <h1 class="text-3xl font-bold mb-2"><%= @artifact_stencil.name %></h1>
-    <p class="text-lg text-base-content/70"><%= @artifact_stencil.description %></p>
+  <div class="flex justify-between items-center">
+    <div class="mb-6">
+      <h1 class="text-3xl font-bold mb-2"><%= @artifact_stencil.name %></h1>
+      <p class="text-lg text-base-content/70"><%= @artifact_stencil.description %></p>
+    </div>
+    <%= link_to "New Stencil", new_artifact_stencil_path, class: "btn btn-primary" %>
   </div>
 
   <div class="grid gap-6 md:grid-cols-3">
@@ -29,6 +32,12 @@
               <span class="text-sm font-medium">Visibility:</span>
               <div class="badge <%= @artifact_stencil.published? ? 'badge-success' : 'badge-neutral' %>">
                 <%= @artifact_stencil.published? ? 'Public' : 'Private' %>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-medium">Category:</span>
+              <div class="badge badge-info">
+                <%= @artifact_stencil.category %>
               </div>
             </div>
             <div class="flex items-center gap-2">
