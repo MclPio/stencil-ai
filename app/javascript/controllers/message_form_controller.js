@@ -2,12 +2,54 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["textarea", "submit", "buttonContent"];
+  static targets = ["stencilModal", "stencilIds", "selectedCount", "textarea", "submit", "buttonContent"];
   static values = { loading: Boolean };
 
   connect() {
     this.updateSubmitButton();
     this.loadingValue = false;
+    this.selectedIds = new Set();
+  }
+
+  openStencilModal() {
+    this.stencilModalTarget.showModal();
+  }
+
+  closeStencilModal() {
+    this.stencilModalTarget.close();
+  }
+
+
+  updateStencilIds(event) {
+    const checkbox = event.target;
+    const id = checkbox.dataset.stencilId;
+
+    if (checkbox.checked) {
+      this.selectedIds.add(id);
+    } else {
+      this.selectedIds.delete(id);
+    }
+
+    // Update hidden field
+    this.stencilIdsTarget.value = Array.from(this.selectedIds).join(",");
+    
+    // Update badge count
+    if (this.hasSelectedCountTarget) {
+      this.selectedCountTarget.textContent = this.selectedIds.size;
+    }
+  }
+
+  resetForm() {
+    // Your existing reset logic
+    this.selectedIds.clear();
+    this.stencilIdsTarget.value = "";
+    if (this.hasSelectedCountTarget) {
+      this.selectedCountTarget.textContent = "0";
+    }
+    // Uncheck all checkboxes in the modal
+    this.stencilModalTarget.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+      checkbox.checked = false;
+    });
   }
 
   startLoading() {
