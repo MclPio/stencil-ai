@@ -14,9 +14,9 @@ class MessagesController < ApplicationController
         format.html { redirect_to @message.conversation }
       end
 
-      if params[:message][:chat_type] == "Artifact Chat"
+      if params[:message][:artifact_stencil_ids].present? && params[:message][:artifact_stencil_ids].reject(&:blank?).any?
         ProcessLlmResponseJob.perform_later(message_params[:conversation_id])
-      elsif params[:message][:chat_type] == "General Chat"
+      else
         ProcessLlmChatJob.perform_later(message_params[:conversation_id])
       end
     else

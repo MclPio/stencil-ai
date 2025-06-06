@@ -19,9 +19,6 @@
           </button>
         </div>
 
-        <div class="chat-form__input-select-chat">
-          <%= form.select :chat_type, ["General Chat", "Artifact Chat"], {}, { class: "select" } %>
-        </div>
         <%= form.button class: "btn btn-primary p-2 rounded-full chat-form__input-submit", data: { 'message-form-target': 'submit' } do %>
           <span data-message-form-target="buttonContent">
             <% if @loading %>
