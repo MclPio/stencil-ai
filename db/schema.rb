@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_01_011542) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_06_203634) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -32,6 +32,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_01_011542) do
     t.bigint "favorite_artifact_stencil_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "artifact_stencil_id"
     t.index ["favorite_artifact_stencil_id"], name: "index_artifacts_on_favorite_artifact_stencil_id"
     t.index ["project_id"], name: "index_artifacts_on_project_id"
   end
@@ -110,6 +111,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_01_011542) do
   end
 
   add_foreign_key "artifact_stencils", "users"
+  add_foreign_key "artifacts", "artifact_stencils"
   add_foreign_key "artifacts", "favorite_artifact_stencils"
   add_foreign_key "artifacts", "projects"
   add_foreign_key "conversations", "projects"
