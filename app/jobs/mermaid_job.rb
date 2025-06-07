@@ -2,16 +2,17 @@ class MermaidJob < ApplicationJob
   queue_as :default
   include ToastHelper
 
-  def perform(conversation_id, stencil_id)
-    response = generate_mermaid_diagram(conversation_id, stencil_id)
-    artifact = Conversation.find(conversation_id).project.artifacts.find_by(stencil_id: stencil_id) # Sketchy query...
+  def perform(conversation_id, artifact_stencil_id)
+    response = generate_mermaid_diagram(conversation_id, artifact_stencil_id)
+    conversation = Conversation.find(conversation_id)
+    artifact = conversation.project.artifacts.find_or_create_by(artifact_stencil_id: artifact_stencil_id )
 
     if response[:error]
       ToastHelper.show_toast("conversation_#{conversation_id}", "error", "Error", response[:message], 8000)
     else
       Conversation.find(conversation_id).total_token.update(total: response[:tokens])
 
-      artifact.update(content: response[:mermaid])
+      artifact&.update(content: response[:mermaid])
 
       assistant_message = Message.create!(
         role: "assistant",
@@ -28,19 +29,16 @@ class MermaidJob < ApplicationJob
     end
   end
 
-  def generate_mermaid_diagram(conversation_id, stencil_id)
+  def generate_mermaid_diagram(conversation_id, artifact_stencil_id)
     client = OpenRouterClient.new
-    stencil = ArtifactStencil.find(stencil_id)
+    stencil = ArtifactStencil.find(artifact_stencil_id)
     stencil_prompt = stencil.prompt
 
     conversation = Conversation.find(conversation_id)
     message_history = conversation.formatted_messages
-    messages = [
-      { role: "system", content: stencil_prompt },
-      { role: "user", content: stencil_description }
-    ] + message_history
-    { role: "assistant", content: conversation.project.artifacts.find_by(stencil_id: stencil_id)} # note: find old mermaid chart if applicable...
+    messages = [{ role: "system", content: stencil_prompt }] + message_history
 
+    print("messages: #{messages}")
     response = client.chat(
       model: "meta-llama/llama-3.3-8b-instruct:free",
       messages: messages,
@@ -86,5 +84,9 @@ class MermaidJob < ApplicationJob
     }
   rescue JSON::ParserError
     { error: true, message: "Invalid JSON response" }
+  end
+
+  def query_artifact(conversation, artifact_stencil_id)
+    conversation.project.artifacts.find_by(artifact_stencil_id:)&.content
   end
 end

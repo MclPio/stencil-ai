@@ -13,9 +13,11 @@ class MessagesController < ApplicationController
         end
         format.html { redirect_to @message.conversation }
       end
-
+      # THIS IS TECHNICAL DEBT
       if params[:message][:artifact_stencil_ids].present? && params[:message][:artifact_stencil_ids].reject(&:blank?).any?
-        ProcessLlmResponseJob.perform_later(message_params[:conversation_id])
+        params[:message][:artifact_stencil_ids].first.split(',').map(&:to_i).each do |id|
+          MermaidJob.perform_later(message_params[:conversation_id], id)
+        end
       else
         ProcessLlmChatJob.perform_later(message_params[:conversation_id])
       end
