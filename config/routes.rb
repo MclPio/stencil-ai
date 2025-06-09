@@ -22,7 +22,7 @@ Rails.application.routes.draw do
 
     resource :conversation, only: [ :show ]
   end
-  resources :artifacts
+
   resources :messages, only: [ :create ]
   get "/projects/:project_id/artifacts/:type", to: "conversations#artifact"
   resources :artifact_stencils, only: [ :new, :create, :show, :destroy ]
