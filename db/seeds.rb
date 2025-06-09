@@ -7,6 +7,7 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+Dir[Rails.root.join('db', 'stencils', '*.rb')].each { |file| require file }
 
 message_collections = [
   {
@@ -47,30 +48,18 @@ message_collections = [
     Nunc tempus neque id vehicula rhoncus. Cras ultrices porta massa, in ultrices lectus volutpat blandit.
     Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Fusce lobortis finibus eros sit amet laoreet.
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin rhoncus non orci a aliquet. Aliquam erat volutpat. Fusce placerat nunc in est imperdiet semper.
-    Vivamus elit nisi, hendrerit non ultricies sit amet, placerat vitae risus. Fusce sed tellus est. Suspendisse ut cursus turpis. Donec iaculis eros magna,
-    nec sollicitudin lectus dignissim non. Donec at sapien sed sem pellentesque varius. Mauris vitae viverra nulla. In hac habitasse platea dictumst.
-    Nam vehicula ante non felis convallis sollicitudin. Maecenas finibus nisi a purus pulvinar dapibus. Duis nisi nisi, tempor ut lacus a,
-    tristique ullamcorper neque. Suspendisse sed orci a odio placerat maximus. Donec in blandit eros. Sed blandit tincidunt viverra.
-    Etiam in efficitur mauris. Aenean sollicitudin faucibus elementum. Etiam ullamcorper cursus volutpat. Nulla consequat lorem at laoreet pretium.
-    Aliquam non viverra purus. Nam viverra, est vel hendrerit tincidunt, justo tortor euismod lorem, quis dapibus lorem tortor non arcu.
-    Cras sit amet volutpat metus. Suspendisse potenti. Ut egestas dolor in dui mollis, quis tristique libero iaculis. Fusce egestas vehicula tempus.
-    Nulla at dui ut nunc laoreet blandit. Vivamus quis nisi volutpat, accumsan quam ut, commodo justo. Aenean tincidunt posuere accumsan.
-    Maecenas non eros quis nisl faucibus dapibus a dapibus ante. Maecenas neque elit, posuere id efficitur sit amet, malesuada in nulla.
-    Donec quam turpis, sodales at elit consequat, luctus lobortis nibh. Sed sapien massa, rutrum nec mattis in, tincidunt ultrices mauris.
-    Praesent fringilla aliquet tellus nec fringilla. Proin aliquam porta purus. Sed semper nulla ligula, vel iaculis ante hendrerit nec. Morbi placerat nunc elit,
-    sit amet vehicula diam eleifend a. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam aliquam ac odio eget viverra.
-    Aliquam bibendum viverra nibh non sodales. In enim quam, convallis ac placerat vel, malesuada et enim. In in metus quis ex luctus gravida at vel felis.
-    Aenean rutrum mauris non congue gravida. Donec pretium odio ut luctus iaculis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
-    Fusce sagittis ac ante scelerisque molestie. Donec volutpat interdum turpis vel porta. Praesent id accumsan felis, quis sollicitudin arcu. Nam at suscipit odio.",
+    Vivamus elit nisi, hendrerit non ultricies sit amet, placerat vitae risus. Fusce sed tellus est. Suspendisse ut cursus turpis. Donec iaculis eros magna",
     "created_at": "2025-03-22T10:03:00Z",
     "updated_at": "2025-03-22T10:03:00Z"
   }
 ]
 
-user0 = User.create!(email_address: "user0@world.co", password: "1234", name: "Joe Smith", account_type: "admin")
-user1 = User.create!(email_address: "user1@world.co", password: "1234", name: "Mikey Hanma", account_type: "admin")
+stencil_admin = User.create!(email_address: "stencil@world.co", password: "1234", name: "free_stencil", account_type: "admin")
 
-5.times do |i|
+user0 = User.create!(email_address: "user0@world.co", password: "1234", name: "Joe Smith", account_type: "paid")
+user1 = User.create!(email_address: "user1@world.co", password: "1234", name: "Mikey Hanma", account_type: "paid")
+
+2.times do |i|
   project = Project.create!(title: "AI Oven #{i}", user: user0)
   conversation = project.conversation
   message_collections.each do |message|
@@ -78,7 +67,7 @@ user1 = User.create!(email_address: "user1@world.co", password: "1234", name: "M
   end
 end
 
-5.times do |i|
+2.times do |i|
   project = Project.create!(title: "AI Oven #{i}", user: user1)
   conversation = project.conversation
   message_collections.each do |message|
@@ -86,14 +75,24 @@ end
   end
 end
 
-5.times do |i|
+2.times do |i|
   stencil = ArtifactStencil.create!(name: "Stencil #{i}", prompt: "I like pizza, say it with me WAHOOO #{i}",
                           description: "HALLO", published: true, user: user0)
   favorite_stencil = FavoriteArtifactStencil.create!(artifact_stencil: stencil, user: user1)
 end
 
-5.times do |i|
+2.times do |i|
   stencil = ArtifactStencil.create!(name: "Stencil #{i}", prompt: "I like pizza, say it with me WAHOOO #{i}",
                           description: "HALLO", published: true, user: user1)
   favorite_stencil = FavoriteArtifactStencil.create!(artifact_stencil: stencil, user: user0)
+end
+
+[ Stencils::Erd, Stencils::Roadmap, Stencils::ValueFlow ].each do |stencil|
+  stencil_admin.artifact_stencils.create!(
+    name: stencil.name,
+    description: stencil.description,
+    prompt: stencil.system_prompt,
+    category: stencil.category,
+    published: true
+  )
 end
