@@ -55,14 +55,14 @@ export default class extends Controller {
     this.textareaTarget.focus();
     this.updateSubmitButton();
     this.updateButtonContent();
-    this.selectedIds.clear();
-    this.stencilIdsTarget.value = "";
-    if (this.hasSelectedCountTarget) {
-      this.selectedCountTarget.textContent = "0";
-    }
-    this.stencilModalTarget.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-      checkbox.checked = false;
-    });
+    // this.selectedIds.clear();
+    // this.stencilIdsTarget.value = "";
+    // if (this.hasSelectedCountTarget) {
+    //   this.selectedCountTarget.textContent = "0";
+    // }
+    // this.stencilModalTarget.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+    //   checkbox.checked = false;
+    // });
   }
 
   handleKeydown(event) {
