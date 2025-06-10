@@ -1,6 +1,8 @@
 <%= form_with model: Message.new, url: messages_url, html: { class: "", id: "conversation-message-form", data: { controller: "message-form", turbo_frame: "_top", action: "turbo:submit-start->message-form#startLoading turbo:submit-end->message-form#resetForm input->message-form#updateSubmitButton" } } do |form| %>
   <%= form.hidden_field :conversation_id, value: conversation.id %>
   <%= form.hidden_field :artifact_stencil_ids, multiple: true, data: { 'message-form-target': 'stencilIds' } %>
+  <%= form.hidden_field :favorite_artifact_stencil_ids, multiple: true, data: { 'message-form-target': 'favoriteIds' } %>
+
   <div class="chat-form">
     <div class="chat-form__border">
       <% if form.object.errors.any? %>
@@ -47,7 +49,8 @@
                      class="checkbox checkbox-primary" 
                      value="<%= stencil.id %>" 
                      data-action="change->message-form#updateStencilIds"
-                     data-stencil-id="<%= stencil.id %>">
+                     data-stencil-id="<%= stencil.id %>"
+                     data-favorite-id="<%= favorite.id %>">
               <span class="label-text text-base-content/80"><%= stencil.name %></span>
             </label>
           <% end %>

@@ -13,10 +13,10 @@ class MessagesController < ApplicationController
         end
         format.html { redirect_to @message.conversation }
       end
-      # THIS IS TECHNICAL DEBT
-      if params[:message][:artifact_stencil_ids].present? && params[:message][:artifact_stencil_ids].reject(&:blank?).any?
-        params[:message][:artifact_stencil_ids].first.split(',').map(&:to_i).each do |id|
-          MermaidJob.perform_later(message_params[:conversation_id], id)
+
+      if ids_exist
+        id_set.each do |artifact_stencil_id, favorite_artifact_stencil_id|
+          MermaidJob.perform_later(message_params[:conversation_id], artifact_stencil_id, favorite_artifact_stencil_id)
         end
       else
         ProcessLlmChatJob.perform_later(message_params[:conversation_id])
@@ -38,5 +38,18 @@ class MessagesController < ApplicationController
 
   def message_params
     params.expect(message: [ :content, :conversation_id ])
+  end
+
+  def ids_exist
+    if params[:message][:artifact_stencil_ids].present? && params[:message][:artifact_stencil_ids].reject(&:blank?).any?
+      params[:message][:favorite_artifact_stencil_ids].present? && params[:message][:favorite_artifact_stencil_ids].reject(&:blank?).any?
+    end
+  end
+
+  def id_set
+    a = params[:message][:artifact_stencil_ids].first.split(",").map(&:to_i)
+    fav = params[:message][:favorite_artifact_stencil_ids].first.split(",").map(&:to_i)
+
+    a.zip(fav)
   end
 end

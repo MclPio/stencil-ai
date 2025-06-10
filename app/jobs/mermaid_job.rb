@@ -2,10 +2,10 @@ class MermaidJob < ApplicationJob
   queue_as :default
   include ToastHelper
 
-  def perform(conversation_id, artifact_stencil_id)
+  def perform(conversation_id, artifact_stencil_id, favorite_artifact_stencil_id)
     response = generate_mermaid_diagram(conversation_id, artifact_stencil_id)
     conversation = Conversation.find(conversation_id)
-    artifact = conversation.project.artifacts.find_or_create_by(artifact_stencil_id: artifact_stencil_id )
+    artifact = conversation.project.artifacts.find_or_create_by(artifact_stencil_id: artifact_stencil_id, favorite_artifact_stencil_id: favorite_artifact_stencil_id) # add fav id
 
     if response[:error]
       ToastHelper.show_toast("conversation_#{conversation_id}", "error", "Error", response[:message], 8000)
@@ -26,6 +26,12 @@ class MermaidJob < ApplicationJob
         partial: "conversations/assistant_role",
         locals: { message: assistant_message }
       )
+
+      # Turbo::StreamsChannel.broadcast_replace_to(
+      #   "conversation_#{conversation_id}",
+      #   target: "conversations",
+      #   partial: "conversations/artifact_open_button",
+      #   locals: {project: conversation.project})
     end
   end
 
@@ -38,7 +44,6 @@ class MermaidJob < ApplicationJob
     message_history = conversation.formatted_messages
     messages = [{ role: "system", content: stencil_prompt }] + message_history
 
-    print("messages: #{messages}")
     response = client.chat(
       model: "meta-llama/llama-3.3-8b-instruct:free",
       messages: messages,

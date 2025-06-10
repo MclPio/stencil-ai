@@ -2,13 +2,14 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["stencilModal", "stencilIds", "selectedCount", "textarea", "submit", "buttonContent"];
+  static targets = ["stencilModal", "stencilIds", "favoriteIds", "selectedCount", "textarea", "submit", "buttonContent"];
   static values = { loading: Boolean };
 
   connect() {
     this.updateSubmitButton();
     this.loadingValue = false;
     this.selectedIds = new Set();
+    this.selectedFavoriteIds = new Set();
   }
 
   openStencilModal() {
@@ -23,15 +24,20 @@ export default class extends Controller {
   updateStencilIds(event) {
     const checkbox = event.target;
     const id = checkbox.dataset.stencilId;
+    const favoriteId = checkbox.dataset.favoriteId
 
     if (checkbox.checked) {
       this.selectedIds.add(id);
+      this.selectedFavoriteIds.add(favoriteId);
     } else {
       this.selectedIds.delete(id);
+      this.selectedFavoriteIds.delete(favoriteId);
     }
 
     // Update hidden field
     this.stencilIdsTarget.value = Array.from(this.selectedIds).join(",");
+    this.favoriteIdsTarget.value = Array.from(this.selectedFavoriteIds).join(",");
+
     
     // Update badge count
     if (this.hasSelectedCountTarget) {
