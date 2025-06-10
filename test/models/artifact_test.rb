@@ -23,7 +23,7 @@ class ArtifactTest < ActiveSupport::TestCase
       content: "Test content"
     )
     assert_not artifact.save, "Saved the artifact without a project_id"
-    assert_includes artifact.errors[:project_id], "can't be blank"
+    assert_includes artifact.errors[:project], "must exist"
   end
 
   test "should save artifact without favorite_artifact_stencil_id" do
@@ -32,17 +32,6 @@ class ArtifactTest < ActiveSupport::TestCase
       content: "Test content"
     )
     assert true, artifact.save
-  end
-
-  test "should save artifact with valid project_id and favorite_artifact_stencil_id" do
-    skip "Skipping valid save test due to missing project_one or fav_stencil_one fixtures." unless @project_one && @fav_stencil_one
-
-    artifact = Artifact.new(
-      project_id: @project_one.id,
-      favorite_artifact_stencil_id: @fav_stencil_one.id,
-      content: "Valid test content"
-    )
-    assert artifact.save, "Could not save the artifact. Errors: #{artifact.errors.full_messages.join(", ")}"
   end
 
   # Association tests

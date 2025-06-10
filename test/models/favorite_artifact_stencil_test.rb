@@ -127,4 +127,17 @@ class FavoriteArtifactStencilTest < ActiveSupport::TestCase
     assert_includes fav_stencil_fixture.artifacts, new_artifact, "Newly created artifact not found in association."
     assert fav_stencil_fixture.artifacts.count >= 1, "Artifact count should be at least 1."
   end
+
+  test "should increase usage_count in artifact_stencils after_create" do
+    previous_count = @stencil_two.usage_count
+    FavoriteArtifactStencil.create!(user: @user_one, artifact_stencil: @stencil_two)
+    assert_equal @stencil_two.usage_count, (previous_count + 1)
+  end
+
+  test "should decrease usage_count in artifact_stencils after_destroy" do
+    favorite = FavoriteArtifactStencil.create!(user: @user_one, artifact_stencil: @stencil_two)
+    previous_count = @stencil_two.usage_count
+    favorite.destroy
+    assert_equal @stencil_two.usage_count, (previous_count - 1)
+  end
 end
