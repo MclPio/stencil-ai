@@ -8,7 +8,6 @@
           <span class="text-lg font-medium"><%= project.title %></span>
         </div>
         <%= link_to "Chat", project_conversation_path(project), class: "btn btn-primary btn-soft" %>
-        <%= link_to "Artifacts", artifact_path(project), class: "btn btn-secondary btn-soft" %>
         <%= button_to "Delete", project, method: :delete, data: { turbo_confirm: "Are you sure? Your associated artifacts and chat will be destroyed." }, class: "btn btn-error btn-md btn-outline hover:bg-error hover:text-white" %>
       </li>
     <% end %>

@@ -5,7 +5,7 @@ class ConversationsController < ApplicationController
   end
 
   def artifact
-    render partial: "conversations/artifacts/#{params[:type]}"
+    render partial: "conversations/artifacts/mermaid", locals: { artifact_id: params[:artifact_id] }
   end
 
   private
@@ -14,6 +14,5 @@ class ConversationsController < ApplicationController
     @project = Project.find(params[:project_id])
     @projects = Current.user.projects
     @conversation = @project.conversation
-    @artifacts = Current.user.artifacts
   end
 end

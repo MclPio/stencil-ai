@@ -5,9 +5,9 @@
     id="artifact-selection"
     data-action="artifact-select#select" data-artifact-select-target="selection" data-artifact-target="selection" class="select select-primary"
     aria-label="Diagram selection">
-      <option value="model_erd">Model ERD</option>
-      <option value="top_level_roadmap_diagram">Top Level Roadmap</option>
-      <option value="value_flow_diagram">Value Flow Diagram</option>
+      <% @project.artifacts.each do |artifact| %>
+        <option value=<%= artifact.id %>><%= artifact.artifact_stencil.name %></option>
+      <% end %>
     </select>
     <button class="btn btn-outline btn-primary btn-sm" data-action="click->artifact#close"
     aria-label="Close diagram">
