@@ -1,0 +1,8 @@
+<select 
+id="artifact-selection"
+data-action="artifact-select#select" data-artifact-select-target="selection" data-artifact-target="selection" class="select select-primary"
+aria-label="Diagram selection">
+  <% project.artifacts.each do |artifact| %>
+    <option value=<%= artifact.id %>><%= artifact.artifact_stencil.name %></option>
+  <% end %>
+</select>

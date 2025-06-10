@@ -27,11 +27,19 @@ class MermaidJob < ApplicationJob
         locals: { message: assistant_message }
       )
 
-      # Turbo::StreamsChannel.broadcast_replace_to(
-      #   "conversation_#{conversation_id}",
-      #   target: "conversations",
-      #   partial: "conversations/artifact_open_button",
-      #   locals: {project: conversation.project})
+      Turbo::StreamsChannel.broadcast_replace_to( # SHOULD ONLY HAPPEN WHEN THERE WERE NO PREVIOUS ARTIFACTS
+        "conversation_#{conversation_id}",
+        target: "artifact-open-button",
+        partial: "conversations/artifact_open_button",
+        locals: {project: conversation.project}
+      )
+
+      Turbo::StreamsChannel.broadcast_replace_to( # DOES NOT REFETCH CONTENT!
+        "conversation_#{conversation_id}",
+        target: "artifact-selection",
+        partial: "conversations/artifact_selection",
+        locals: {project: conversation.project}
+      )
     end
   end
 

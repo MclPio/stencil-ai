@@ -1,14 +1,7 @@
 <div data-controller="artifact-select" data-artifact-select-project-id-value=<%= @project.id %>>
   <div class="flex justify-between items-center p-4 border-b border-base-300">
     <label for="artifact-selection" class="sr-only">Select diagram type</label>
-    <select 
-    id="artifact-selection"
-    data-action="artifact-select#select" data-artifact-select-target="selection" data-artifact-target="selection" class="select select-primary"
-    aria-label="Diagram selection">
-      <% @project.artifacts.each do |artifact| %>
-        <option value=<%= artifact.id %>><%= artifact.artifact_stencil.name %></option>
-      <% end %>
-    </select>
+    <%= render partial: "artifact_selection", locals: { project: @project} %>
     <button class="btn btn-outline btn-primary btn-sm" data-action="click->artifact#close"
     aria-label="Close diagram">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
