@@ -2,7 +2,7 @@ class Invite < ApplicationRecord
   belongs_to :admin, class_name: "User", foreign_key: :created_by_id
   belongs_to :user, class_name: "User", optional: true, foreign_key: :used_by_id
 
-  before_validation :generate_code
+  before_validation :generate_code, on: :create
 
   validates :invite_code, presence: true, uniqueness: true
   validates :activated, inclusion: { in: [ true, false ] }
@@ -11,7 +11,7 @@ class Invite < ApplicationRecord
   validate :expires_at_must_be_future, if: -> { expires_at.present? }
 
   def active?
-    activated && (expires_at.nil? || expires_at.future?)
+    activated && used_by_id.nil? && (expires_at.nil? || expires_at.future?)
   end
 
   def deactivate!
@@ -25,7 +25,7 @@ class Invite < ApplicationRecord
   private
 
   def generate_code
-    self.invite_code = SecureRandom.alphanumeric(10)
+    self.invite_code = SecureRandom.alphanumeric(10) if invite_code.blank?
   end
 
   def expires_at_must_be_future

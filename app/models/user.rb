@@ -18,6 +18,8 @@ class User < ApplicationRecord
 
   validate :under_user_limit, on: :create
 
+  after_create_commit :mark_invite_as_used
+
   private
 
   def under_user_limit
@@ -27,18 +29,15 @@ class User < ApplicationRecord
   end
 
   def invite_code_must_be_valid
-    puts("INVITE CODE: #{invite_code}")
-    invite = Invite.find_by(invite_code: invite_code)
-    puts("INVITE: #{invite.inspect}")
-    unless invite&.active?
-      errors.add(:invite_code, "is invalid or expired")
-      puts("errors:!!!!!!!!!!")
-      puts(errors.messages)
-      return
-    end
+    @invite = Invite.find_by(invite_code: invite_code)
 
-    # Mark the invite as used after successful validation
-    # This runs in the same transaction as user creation
-    after_create_commit { invite.update!(used_by_id: id) }
+    unless @invite&.active?
+      errors.add(:invite_code, "is invalid or expired")
+    end
+  end
+
+  def mark_invite_as_used
+    return unless @invite && persisted?
+    @invite.update!(used_by_id: id, activated: false)
   end
 end
