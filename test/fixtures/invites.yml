@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  invite_code: MyString
+  activated: false
+  created_by_id: 1
+  redeemed_by_id: 1
+  expires_at: 2025-06-11 15:21:11
+
+two:
+  invite_code: MyString
+  activated: false
+  created_by_id: 1
+  redeemed_by_id: 1
+  expires_at: 2025-06-11 15:21:11

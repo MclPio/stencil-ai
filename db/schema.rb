@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_06_214219) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_11_192111) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -55,6 +55,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_06_214219) do
     t.index ["artifact_stencil_id"], name: "index_favorite_artifact_stencils_on_artifact_stencil_id"
     t.index ["user_id", "artifact_stencil_id"], name: "idx_on_user_id_artifact_stencil_id_67c1ed707a", unique: true
     t.index ["user_id"], name: "index_favorite_artifact_stencils_on_user_id"
+  end
+
+  create_table "invites", force: :cascade do |t|
+    t.string "invite_code", null: false
+    t.boolean "activated", default: false
+    t.integer "created_by_id", null: false
+    t.integer "used_by_id"
+    t.datetime "expires_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by_id"], name: "index_invites_on_created_by_id"
+    t.index ["invite_code"], name: "index_invites_on_invite_code", unique: true
+    t.index ["used_by_id"], name: "index_invites_on_used_by_id"
   end
 
   create_table "messages", force: :cascade do |t|
