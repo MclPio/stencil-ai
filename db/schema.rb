@@ -59,7 +59,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_11_192111) do
 
   create_table "invites", force: :cascade do |t|
     t.string "invite_code", null: false
-    t.boolean "activated", default: false
+    t.boolean "activated", default: true
     t.integer "created_by_id", null: false
     t.integer "used_by_id"
     t.datetime "expires_at"

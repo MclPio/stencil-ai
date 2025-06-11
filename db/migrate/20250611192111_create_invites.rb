@@ -2,7 +2,7 @@ class CreateInvites < ActiveRecord::Migration[8.0]
   def change
     create_table :invites do |t|
       t.string :invite_code, null: false
-      t.boolean :activated, default: false
+      t.boolean :activated, default: true
       t.integer :created_by_id, null: false
       t.integer :used_by_id
       t.datetime :expires_at

@@ -14,6 +14,11 @@
       </div>
 
       <div class="form-control">
+        <%= form.label :invite_code, class: "label" %>
+        <%= form.text_field :invite_code, required: true, placeholder: "Invite code", value: params[:invite_code], class: "input input-bordered w-full" %>
+      </div>
+
+      <div class="form-control">
         <%= form.label :password, class: "label" %>
         <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "input input-bordered w-full" %>
       </div>
