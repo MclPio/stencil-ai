@@ -32,14 +32,13 @@ class User < ApplicationRecord
   end
 
   def invite_code_must_be_valid
-    @invite = Invite.find_by(invite_code: invite_code)
-
-    unless @invite&.active?
+    unless Invite.valid_code?(invite_code)
       errors.add(:invite_code, "is invalid or expired")
     end
   end
 
   def mark_invite_as_used
+    @invite = Invite.find_by(invite_code: invite_code)
     return unless @invite && persisted?
     @invite.update!(used_by_id: id)
   end
