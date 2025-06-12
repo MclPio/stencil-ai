@@ -6,17 +6,12 @@ class Invite < ApplicationRecord
   before_destroy :ensure_destroyable
 
   validates :invite_code, presence: true, uniqueness: true
-  validates :activated, inclusion: { in: [ true, false ] }
   validates :created_by_id, presence: true
 
   validate :expires_at_must_be_future, if: -> { expires_at.present? }
 
   def active?
-    activated && used_by_id.nil? && (expires_at.nil? || expires_at.future?)
-  end
-
-  def deactivate!
-    update!(activated: false)
+    used_by_id.nil? && (expires_at.nil? || expires_at.future?)
   end
 
   def self.valid_code?(code)

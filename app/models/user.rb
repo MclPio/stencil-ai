@@ -21,7 +21,7 @@ class User < ApplicationRecord
 
   validate :under_user_limit, on: :create
 
-  after_create_commit :mark_invite_as_used
+  after_create :mark_invite_as_used
 
   private
 
@@ -41,6 +41,6 @@ class User < ApplicationRecord
 
   def mark_invite_as_used
     return unless @invite && persisted?
-    @invite.update!(used_by_id: id, activated: false)
+    @invite.update!(used_by_id: id)
   end
 end

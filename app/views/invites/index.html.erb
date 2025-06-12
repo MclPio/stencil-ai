@@ -46,7 +46,7 @@
                 <% end %>
               </td>
               <td>
-                <% if !invite.activated? && invite.user %>
+                <% if invite.user %>
                   <div class="flex items-center gap-2">
                     <div class="avatar placeholder">
                       <div class="bg-neutral text-neutral-content rounded-full w-6 h-6">
