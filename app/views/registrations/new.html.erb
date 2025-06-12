@@ -2,30 +2,117 @@
   <div class="card w-full max-w-md bg-base-100 shadow-xl p-6">
     <h1 class="text-3xl font-bold text-center mb-6">Sign Up</h1>
 
+    <!-- Display general validation errors -->
+    <% if @user.errors.any? %>
+      <div class="alert alert-error mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <div>
+          <h3 class="font-bold">Please fix the following errors:</h3>
+          <ul class="list-disc list-inside mt-1 text-sm">
+            <% @user.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    <% end %>
+
     <%= form_with model: @user, url: registration_url, class: "space-y-4" do |form| %>
       <div class="form-control">
-        <%= form.label :email_address, class: "label" %>
-        <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "input input-bordered w-full" %>
+        <%= form.label :email_address, class: "label" do %>
+          <span class="label-text">Email Address</span>
+        <% end %>
+        <%= form.email_field :email_address, 
+            required: true, 
+            autofocus: true, 
+            autocomplete: "username", 
+            placeholder: "Enter your email address", 
+            value: params[:email_address], 
+            class: "input input-bordered w-full #{@user.errors[:email_address].any? ? 'input-error' : ''}" %>
+        <% if @user.errors[:email_address].any? %>
+          <div class="label">
+            <span class="label-text-alt text-error">
+              <%= @user.errors[:email_address].first %>
+            </span>
+          </div>
+        <% end %>
       </div>
 
       <div class="form-control">
-        <%= form.label :name, class: "label" %>
-        <%= form.text_field :name, required: true, autocomplete: "name", placeholder: "Enter your name", value: params[:name], class: "input input-bordered w-full" %>
+        <%= form.label :name, class: "label" do %>
+          <span class="label-text">Name</span>
+        <% end %>
+        <%= form.text_field :name, 
+            required: true, 
+            autocomplete: "name", 
+            placeholder: "Enter your name", 
+            value: params[:name], 
+            class: "input input-bordered w-full #{@user.errors[:name].any? ? 'input-error' : ''}" %>
+        <% if @user.errors[:name].any? %>
+          <div class="label">
+            <span class="label-text-alt text-error">
+              <%= @user.errors[:name].first %>
+            </span>
+          </div>
+        <% end %>
       </div>
 
       <div class="form-control">
-        <%= form.label :invite_code, class: "label" %>
-        <%= form.text_field :invite_code, required: true, placeholder: "Invite code", value: params[:invite_code], class: "input input-bordered w-full" %>
+        <%= form.label :invite_code, class: "label" do %>
+          <span class="label-text">Invite Code</span>
+        <% end %>
+        <%= form.text_field :invite_code, 
+            required: true, 
+            placeholder: "Enter your invite code", 
+            value: params[:invite_code], 
+            class: "input input-bordered w-full #{@user.errors[:invite_code].any? ? 'input-error' : ''}" %>
+        <% if @user.errors[:invite_code].any? %>
+          <div class="label">
+            <span class="label-text-alt text-error">
+              <%= @user.errors[:invite_code].first %>
+            </span>
+          </div>
+        <% end %>
       </div>
 
       <div class="form-control">
-        <%= form.label :password, class: "label" %>
-        <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "input input-bordered w-full" %>
+        <%= form.label :password, class: "label" do %>
+          <span class="label-text">Password</span>
+        <% end %>
+        <%= form.password_field :password, 
+            required: true, 
+            autocomplete: "new-password", 
+            placeholder: "Enter your password", 
+            maxlength: 72, 
+            class: "input input-bordered w-full #{@user.errors[:password].any? ? 'input-error' : ''}" %>
+        <% if @user.errors[:password].any? %>
+          <div class="label">
+            <span class="label-text-alt text-error">
+              <%= @user.errors[:password].first %>
+            </span>
+          </div>
+        <% end %>
       </div>
 
       <div class="form-control">
-        <%= form.label :password_confirmation, class: "label" %>
-        <%= form.password_field :password_confirmation, required: true, autocomplete: "current-password", placeholder: "Confirm your password", maxlength: 72, class: "input input-bordered w-full" %>
+        <%= form.label :password_confirmation, class: "label" do %>
+          <span class="label-text">Confirm Password</span>
+        <% end %>
+        <%= form.password_field :password_confirmation, 
+            required: true, 
+            autocomplete: "new-password", 
+            placeholder: "Confirm your password", 
+            maxlength: 72, 
+            class: "input input-bordered w-full #{@user.errors[:password_confirmation].any? ? 'input-error' : ''}" %>
+        <% if @user.errors[:password_confirmation].any? %>
+          <div class="label">
+            <span class="label-text-alt text-error">
+              <%= @user.errors[:password_confirmation].first %>
+            </span>
+          </div>
+        <% end %>
       </div>
 
       <div class="flex flex-col items-center gap-4 mt-6">

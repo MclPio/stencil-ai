@@ -3,6 +3,7 @@ class Invite < ApplicationRecord
   belongs_to :user, class_name: "User", optional: true, foreign_key: :used_by_id
 
   before_validation :generate_code, on: :create
+  before_destroy :ensure_destroyable
 
   validates :invite_code, presence: true, uniqueness: true
   validates :activated, inclusion: { in: [ true, false ] }
@@ -30,5 +31,12 @@ class Invite < ApplicationRecord
 
   def expires_at_must_be_future
     errors.add(:expires_at, "must be in the future") if expires_at <= Time.current
+  end
+
+  def ensure_destroyable
+    if used_by_id.present?
+      errors.add(:base, "Cannot delete invite code that has been used by a registered user")
+      throw(:abort)
+    end
   end
 end

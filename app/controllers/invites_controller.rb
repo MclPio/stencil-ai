@@ -12,14 +12,18 @@ class InvitesController < ApplicationController
   def create
     @invite = Current.user.invites.new(invite_params)
     if @invite.save
-      redirect_to @invite
+      redirect_to invites_path
     else
       render :new, status: :unprocessable_entity
     end
   end
 
-  def show
-    @invite = Invites.find(params[:id])
+  def destroy
+    @invite = Invite.find(params[:id])
+    @invite.destroy!
+    redirect_to invites_path, notice: "Invite code was successfully deleted."
+  rescue ActiveRecord::RecordNotDestroyed
+    redirect_to invites_path, alert: @invite.errors.full_messages.join(', ')
   end
 
   private

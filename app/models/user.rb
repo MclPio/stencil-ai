@@ -7,6 +7,9 @@ class User < ApplicationRecord
   has_many :projects, dependent: :destroy
   has_many :artifact_stencils
 
+  validates :email_address, uniqueness: true, presence: true
+  validates :name, presence: true
+
   has_many :invites, foreign_key: :created_by_id
   has_one :used_invite, class_name: "Invite", foreign_key: :used_by_id
   attr_accessor :invite_code

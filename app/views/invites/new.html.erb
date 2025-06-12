@@ -1,2 +1,80 @@
-<h1>Invites#new</h1>
-<p>Find me in app/views/invites/new.html.erb</p>
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-2xl mx-auto">
+    <div class="flex items-center gap-4 mb-6">
+      <%= link_to invites_path, class: "btn btn-ghost btn-sm" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Back
+      <% end %>
+      <h1 class="text-3xl font-bold">Create New Invite</h1>
+    </div>
+
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body">
+        <%= form_with model: @invite, local: true, class: "space-y-6" do |form| %>
+          
+          <!-- Display validation errors -->
+          <% if @invite.errors.any? %>
+            <div class="alert alert-error">
+              <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <h3 class="font-bold">There were some errors with your submission:</h3>
+                <ul class="list-disc list-inside mt-2">
+                  <% @invite.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          <% end %>
+
+          <!-- Expires At Field -->
+          <div class="form-control">
+            <%= form.label :expires_at, class: "label" do %>
+              <span class="label-text font-semibold">Expiration Date & Time</span>
+              <span class="label-text-alt text-base-content/60">(Optional)</span>
+            <% end %>
+            <%= form.datetime_local_field :expires_at, 
+                class: "input input-bordered w-full #{@invite.errors[:expires_at].any? ? 'input-error' : ''}", 
+                placeholder: "Select expiration date and time",
+                min: Time.current.strftime("%Y-%m-%dT%H:%M") %>
+            <div class="label">
+              <span class="label-text-alt text-base-content/60">
+                Leave blank for invite codes that never expire
+              </span>
+              <% if @invite.errors[:expires_at].any? %>
+                <span class="label-text-alt text-error">
+                  <%= @invite.errors[:expires_at].first %>
+                </span>
+              <% end %>
+            </div>
+          </div>
+
+          <!-- Info Card -->
+          <div class="alert alert-info">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <div>
+              <h3 class="font-bold">How it works</h3>
+              <div class="text-sm mt-1">
+                A unique invite code will be automatically generated when you create this invite. 
+                Share this code with users to allow them to register for your application.
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="card-actions justify-end pt-4">
+            <%= link_to "Cancel", invites_path, class: "btn btn-ghost" %>
+            <%= form.submit "Generate Invite Code", class: "btn btn-primary" %>
+          </div>
+
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
