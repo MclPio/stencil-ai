@@ -13,137 +13,152 @@
     </div>
   <% end %>
 
-  <!-- Profile Overview -->
-  <div class="card bg-base-100 shadow-xl mb-8">
-    <div class="card-body">
-      <h2 class="card-title text-2xl font-bold">Profile</h2>
-      <p class="text-base text-gray-500 mb-4">Your account information.</p>
-      <div class="space-y-2">
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Name</span>
-          </label>
-          <p class="input input-bordered w-full bg-gray-100"><%= @user.name || "Not set" %></p>
-        </div>
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Email Address</span>
-          </label>
-          <p class="input input-bordered w-full bg-gray-100"><%= @user.email_address %></p>
+  <!-- Tabs -->
+  <div class="tabs tabs-boxed bg-base-100 shadow-xl mb-8">
+    <%= link_to "Profile", edit_registration_path, class: "tab tab-lg #{params[:tab].nil? || params[:tab] == 'profile' ? 'tab-active' : ''}" %>
+    <%= link_to "Change Name", edit_registration_path(tab: 'name'), class: "tab tab-lg #{params[:tab] == 'name' ? 'tab-active' : ''}" %>
+    <%= link_to "Change Email", edit_registration_path(tab: 'email'), class: "tab tab-lg #{params[:tab] == 'email' ? 'tab-active' : ''}" %>
+    <%= link_to "Change Password", edit_registration_path(tab: 'password'), class: "tab tab-lg #{params[:tab] == 'password' ? 'tab-active' : ''}" %>
+    <%= link_to "Delete Account", edit_registration_path(tab: 'delete'), class: "tab tab-lg #{params[:tab] == 'delete' ? 'tab-active' : ''}" %>
+  </div>
+
+  <!-- Tab Content -->
+  <div id="settings_content">
+    <% case params[:tab] %>
+    <% when "name" %>
+      <!-- Change Name Form -->
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title text-2xl font-bold">Change Name</h2>
+          <p class="text-base text-gray-500 mb-4">Update your display name.</p>
+
+          <%= form_with model: @user, url: registration_path, method: :patch, class: "space-y-4" do |form| %>
+            <div class="form-control">
+              <%= form.label :current_password, class: "label" %>
+              <%= form.password_field :current_password, required: true, autocomplete: "current-password", placeholder: "Enter your current password", class: "input input-bordered w-full", maxlength: 72 %>
+            </div>
+
+            <div class="form-control">
+              <%= form.label :name, class: "label" %>
+              <%= form.text_field :name, required: true, autocomplete: "name", placeholder: "Enter your name", class: "input input-bordered w-full", value: @user.name %>
+              <% if @user.errors[:name].any? %>
+                <span class="text-error text-sm"><%= @user.errors[:name].join(", ") %></span>
+              <% end %>
+            </div>
+
+            <div class="flex justify-between items-center">
+              <%= form.submit "Update Name", class: "btn btn-primary" %>
+              <%= link_to "Cancel", root_path, class: "btn btn-ghost" %>
+            </div>
+          <% end %>
         </div>
       </div>
-    </div>
-  </div>
+    <% when "email" %>
+      <!-- Change Email Form -->
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title text-2xl font-bold">Change Email Address</h2>
+          <p class="text-base text-gray-500 mb-4">Update your email address for account access.</p>
 
-  <!-- Name Update Form -->
-  <div class="card bg-base-100 shadow-xl mb-8">
-    <div class="card-body">
-      <h2 class="card-title text-2xl font-bold">Change Name</h2>
-      <p class="text-base text-gray-500 mb-4">Update your display name.</p>
+          <%= form_with model: @user, url: registration_path, method: :patch, class: "space-y-4" do |form| %>
+            <div class="form-control">
+              <%= form.label :current_password, class: "label" %>
+              <%= form.password_field :current_password, required: true, autocomplete: "current-password", placeholder: "Enter your current password", class: "input input-bordered w-full", maxlength: 72 %>
+            </div>
 
-      <%= form_with model: @user, url: registration_path, method: :patch, class: "space-y-4" do |form| %>
-        <div class="form-control">
-          <%= form.label :current_password, class: "label" %>
-          <%= form.password_field :current_password, required: true, autocomplete: "current-password", placeholder: "Enter your current password", class: "input input-bordered w-full", maxlength: 72 %>
-        </div>
+            <div class="form-control">
+              <%= form.label :email_address, class: "label" %>
+              <%= form.email_field :email_address, required: true, autocomplete: "email", placeholder: "Enter your new email address", class: "input input-bordered w-full", value: @user.email_address %>
+              <% if @user.errors[:email_address].any? %>
+                <span class="text-error text-sm"><%= @user.errors[:email_address].join(", ") %></span>
+              <% end %>
+            </div>
 
-        <div class="form-control">
-          <%= form.label :name, class: "label" %>
-          <%= form.text_field :name, required: true, autocomplete: "name", placeholder: "Enter your name", class: "input input-bordered w-full", value: @user.name %>
-          <% if @user.errors[:name].any? %>
-            <span class="text-error text-sm"><%= @user.errors[:name].join(", ") %></span>
+            <div class="flex justify-between items-center">
+              <%= form.submit "Update Email", class: "btn btn-primary" %>
+              <%= link_to "Cancel", root_path, class: "btn btn-ghost" %>
+            </div>
           <% end %>
         </div>
+      </div>
+    <% when "password" %>
+      <!-- Change Password Form -->
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title text-2xl font-bold">Change Password</h2>
+          <p class="text-base text-gray-500 mb-4">Update your password to keep your account secure.</p>
 
-        <div class="flex justify-between items-center">
-          <%= form.submit "Update Name", class: "btn btn-primary" %>
-          <%= link_to "Cancel", root_path, class: "btn btn-ghost" %>
-        </div>
-      <% end %>
-    </div>
-  </div>
+          <%= form_with model: @user, url: registration_path, method: :patch, class: "space-y-4" do |form| %>
+            <div class="form-control">
+              <%= form.label :current_password, class: "label" %>
+              <%= form.password_field :current_password, required: true, autocomplete: "current-password", placeholder: "Enter your current password", class: "input input-bordered w-full", maxlength: 72 %>
+            </div>
 
-  <!-- Email Address Change Form -->
-  <div class="card bg-base-100 shadow-xl mb-8">
-    <div class="card-body">
-      <h2 class="card-title text-2xl font-bold">Change Email Address</h2>
-      <p class="text-base text-gray-500 mb-4">Update your email address for account access.</p>
+            <div class="form-control">
+              <%= form.label :password, "New Password", class: "label" %>
+              <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "Enter your new password", class: "input input-bordered w-full", maxlength: 72 %>
+              <% if @user.errors[:password].any? %>
+                <span class="text-error text-sm"><%= @user.errors[:password].join(", ") %></span>
+              <% end %>
+            </div>
 
-      <%= form_with model: @user, url: registration_path, method: :patch, class: "space-y-4" do |form| %>
-        <div class="form-control">
-          <%= form.label :current_password, class: "label" %>
-          <%= form.password_field :current_password, required: true, autocomplete: "current-password", placeholder: "Enter your current password", class: "input input-bordered w-full", maxlength: 72 %>
-        </div>
+            <div class="form-control">
+              <%= form.label :password_confirmation, class: "label" %>
+              <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Confirm your new password", class: "input input-bordered w-full", maxlength: 72 %>
+              <% if @user.errors[:password_confirmation].any? %>
+                <span class="text-error text-sm"><%= @user.errors[:password_confirmation].join(", ") %></span>
+              <% end %>
+            </div>
 
-        <div class="form-control">
-          <%= form.label :email_address, class: "label" %>
-          <%= form.email_field :email_address, required: true, autocomplete: "email", placeholder: "Enter your new email address", class: "input input-bordered w-full", value: @user.email_address %>
-          <% if @user.errors[:email_address].any? %>
-            <span class="text-error text-sm"><%= @user.errors[:email_address].join(", ") %></span>
+            <div class="flex justify-between items-center">
+              <%= form.submit "Update Password", class: "btn btn-primary" %>
+              <%= link_to "Cancel", root_path, class: "btn btn-ghost" %>
+            </div>
           <% end %>
         </div>
+      </div>
+    <% when "delete" %>
+      <!-- Delete Account Form -->
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title text-2xl font-bold text-error">Delete Account</h2>
+          <p class="text-base text-gray-500 mb-4">Permanently delete your account. This action cannot be undone.</p>
 
-        <div class="flex justify-between items-center">
-          <%= form.submit "Update Email", class: "btn btn-primary" %>
-          <%= link_to "Cancel", root_path, class: "btn btn-ghost" %>
-        </div>
-      <% end %>
-    </div>
-  </div>
+          <%= form_with url: registration_path, method: :delete, class: "space-y-4", data: { turbo_confirm: "Are you sure you want to delete your account? This action cannot be undone." } do |form| %>
+            <div class="form-control">
+              <%= form.label :current_password, class: "label" %>
+              <%= form.password_field :current_password, required: true, autocomplete: "current-password", placeholder: "Enter your current password", class: "input input-bordered w-full", maxlength: 72 %>
+            </div>
 
-  <!-- Password Change Form -->
-  <div class="card bg-base-100 shadow-xl mb-8">
-    <div class="card-body">
-      <h2 class="card-title text-2xl font-bold">Change Password</h2>
-      <p class="text-base text-gray-500 mb-4">Update your password to keep your account secure.</p>
-
-      <%= form_with model: @user, url: registration_path, method: :patch, class: "space-y-4" do |form| %>
-        <div class="form-control">
-          <%= form.label :current_password, class: "label" %>
-          <%= form.password_field :current_password, required: true, autocomplete: "current-password", placeholder: "Enter your current password", class: "input input-bordered w-full", maxlength: 72 %>
-        </div>
-
-        <div class="form-control">
-          <%= form.label :password, "New Password", class: "label" %>
-          <% if @user.errors[:password].any? %>
-            <span class="text-error text-sm"><%= @user.errors[:password].join(", ") %></span>
-          <% end %>
-          <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "Enter your new password", class: "input input-bordered w-full", maxlength: 72 %>
-        </div>
-
-        <div class="form-control">
-          <%= form.label :password_confirmation, class: "label" %>
-          <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Confirm your new password", class: "input input-bordered w-full", maxlength: 72 %>
-          <% if @user.errors[:password_confirmation].any? %>
-            <span class="text-error text-sm"><%= @user.errors[:password_confirmation].join(", ") %></span>
+            <div class="flex justify-between items-center">
+              <%= form.submit "Delete Account", class: "btn btn-error" %>
+              <%= link_to "Cancel", root_path, class: "btn btn-ghost" %>
+            </div>
           <% end %>
         </div>
-
-        <div class="flex justify-between items-center">
-          <%= form.submit "Update Password", class: "btn btn-primary" %>
-          <%= link_to "Cancel", root_path, class: "btn btn-ghost" %>
+      </div>
+    <% else %>
+      <!-- Profile Display (Default) -->
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title text-2xl font-bold">Profile</h2>
+          <p class="text-base text-gray-500 mb-4">Your account information.</p>
+          <div class="space-y-2">
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Name</span>
+              </label>
+              <p class="input input-bordered w-full bg-gray-100"><%= @user.name || "Not set" %></p>
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Email Address</span>
+              </label>
+              <p class="input input-bordered w-full bg-gray-100"><%= @user.email_address %></p>
+            </div>
+          </div>
         </div>
-      <% end %>
-    </div>
-  </div>
-
-  <!-- Account Deletion Form -->
-  <div class="card bg-base-100 shadow-xl">
-    <div class="card-body">
-      <h2 class="card-title text-2xl font-bold text-error">Delete Account</h2>
-      <p class="text-base text-gray-500 mb-4">Permanently delete your account. This action cannot be undone.</p>
-
-      <%= form_with url: registration_path, method: :delete, class: "space-y-4", data: { turbo_confirm: "Are you sure you want to delete your account? This action cannot be undone." } do |form| %>
-        <div class="form-control">
-          <%= form.label :current_password, class: "label" %>
-          <%= form.password_field :current_password, required: true, autocomplete: "current-password", placeholder: "Enter your current password", class: "input input-bordered w-full", maxlength: 72 %>
-        </div>
-
-        <div class="flex justify-between items-center">
-          <%= form.submit "Delete Account", class: "btn btn-error" %>
-          <%= link_to "Cancel", root_path, class: "btn btn-ghost" %>
-        </div>
-      <% end %>
-    </div>
+      </div>
+    <% end %>
   </div>
 </div>
