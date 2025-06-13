@@ -6,9 +6,6 @@ class RegistrationsController < ApplicationController
     @user = User.new
   end
 
-  def edit
-  end
-
   def create
     @user = User.new(registration_params)
     if @user.save
@@ -19,18 +16,78 @@ class RegistrationsController < ApplicationController
     end
   end
 
-  def destroy
-    if Current.user.destroy
-      terminate_session
-      redirect_to new_session_path, notice: "Your account has been successfully deleted."
+  def edit
+    @user = Current.user
+  end
+
+  def update
+    @user = Current.user
+    if @user.authenticate(params[:current_password])
+      if params[:user][:name].present?
+        # Handle name update
+        if @user.update(name_params)
+          flash[:notice] = "Name updated successfully."
+          redirect_to edit_registration_path
+        else
+          flash[:alert] = @user.errors.full_messages.join(", ")
+          render :edit, status: :unprocessable_entity
+        end
+      elsif params[:user][:email_address].present?
+        # Handle email address update
+        if @user.update(email_params)
+          flash[:notice] = "Email address updated successfully."
+          redirect_to edit_registration_path
+        else
+          flash[:alert] = @user.errors.full_messages.join(", ")
+          render :edit, status: :unprocessable_entity
+        end
+      elsif params[:user][:password].present?
+        # Handle password update
+        if @user.update(password_params)
+          flash[:notice] = "Password updated successfully."
+          redirect_to edit_registration_path
+        else
+          flash[:alert] = @user.errors.full_messages.join(", ")
+          render :edit, status: :unprocessable_entity
+        end
+      else
+        flash[:alert] = "Please provide a new name, email address, or password."
+        render :edit, status: :unprocessable_entity
+      end
     else
-      render :new, status: :unprocessable_entity
+      flash[:alert] = "Current password is incorrect."
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @user = Current.user
+    if @user.authenticate(params[:current_password])
+      @user.destroy
+      terminate_session
+      flash[:notice] = "Your account has been successfully deleted."
+      redirect_to new_session_path
+    else
+      flash[:alert] = "Current password is incorrect. Account deletion failed."
+      render :edit, status: :unprocessable_entity
     end
   end
 
   private
 
   def registration_params
-    params.require(:user).permit(:name, :email_address, :password, :password_confirmation, :invite_code)
+    params.expect(user: [ :name, :email_address, :password, :password_confirmation, :invite_code ])
+  end
+
+  def password_params
+    params.expect(user: [ :password, :password_confirmation ])
+  end
+
+  def email_params
+    params.expect(user: [ :email_address ])
+  end
+
+  def name_params
+    params.expect(user: [ :name ])
   end
 end
