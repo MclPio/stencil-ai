@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "projects#index"
   get "/home", to: "pages#home"
-  resource :registration, only: %i[new create]
+  resource :registration, only: %i[new create destroy]
   resources :invites, only: [ :index, :new, :create, :destroy ]
 
   resources :projects, only: %i[new create index update destroy] do
