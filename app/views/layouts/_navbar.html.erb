@@ -1,13 +1,39 @@
 <% if Current.user %>
   <div class="navbar bg-base-100 shadow-sm">
     <div class="flex-1">
-      <%= link_to "Home", root_path, class: "btn btn-ghost text-xl"%>
+      <div class="ml-2 text-xl font-bold">Artifacts</div>
     </div>
     <div class="flex-none">
       <ul class="menu menu-horizontal px-1 items-center gap-2">
-        <li><%= link_to "Stencils", favorite_artifact_stencils_path, class: "px-4 py-2" %></li>
-        <li><%= link_to "Projects", projects_path, class: "px-4 py-2" %></li>
-        <li><%= link_to "Sign Out", session_path, method: :delete, data: { turbo_method: :delete }, class: "btn btn-neutral" %></li>
+        <li>
+          <%= link_to "Stencils", favorite_artifact_stencils_path, class: "btn btn-ghost px-4 py-2 text-base font-medium hover:bg-base-200 #{request.path == favorite_artifact_stencils_path ? 'btn-active' : ''}" %>
+        </li>
+        <li>
+          <%= link_to "Projects", projects_path, class: "btn btn-ghost px-4 py-2 text-base font-medium hover:bg-base-200 #{request.path == projects_path ? 'btn-active' : ''}" %>
+        </li>
+        <li>
+          <div class="dropdown dropdown-end">
+            <label tabindex="0" class="btn btn-ghost px-4 py-2 text-base font-medium hover:bg-base-200">
+              <%= Current.user.email_address %>
+              <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </label>
+            <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+              <li>
+                <%= link_to "Settings", edit_registration_path, class: "block px-4 py-2 text-sm font-medium hover:bg-base-200 #{request.path == edit_registration_path ? 'bg-base-200' : ''}" %>
+              </li>
+              <% if Current.user.account_type_admin? %>
+                <li>
+                  <%= link_to "Admin Settings", root_url, class: "block px-4 py-2 text-sm font-medium hover:bg-base-200" %>
+                </li>
+              <% end %>
+              <li>
+                <%= link_to "Sign Out", session_path, method: :delete, data: { turbo_method: :delete }, class: "block px-4 py-2 text-sm font-medium text-error hover:bg-error hover:text-white" %>
+              </li>
+            </ul>
+          </div>
+        </li>
       </ul>
     </div>
   </div>

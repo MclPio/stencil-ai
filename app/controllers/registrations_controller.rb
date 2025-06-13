@@ -6,7 +6,7 @@ class RegistrationsController < ApplicationController
     @user = User.new
   end
 
-  def show
+  def edit
   end
 
   def create
