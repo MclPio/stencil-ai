@@ -22,41 +22,40 @@ class RegistrationsController < ApplicationController
 
   def update
     @user = Current.user
+    tab = params[:user][:redirect_tab] || "profile"
+
     if @user.authenticate(params[:current_password])
       if params[:user][:name].present?
         # Handle name update
         if @user.update(name_params)
-          flash[:notice] = "Name updated successfully."
-          redirect_to edit_registration_path
+          redirect_to edit_registration_path(tab: tab), notice: "Name updated successfully!"
         else
-          flash[:alert] = @user.errors.full_messages.join(", ")
-          render :edit, status: :unprocessable_entity
+          flash.now[:alert] = @user.errors.full_messages.join(", ")
+          render :edit, status: :unprocessable_entity, locals: { tab: tab }
         end
       elsif params[:user][:email_address].present?
         # Handle email address update
         if @user.update(email_params)
-          flash[:notice] = "Email address updated successfully."
-          redirect_to edit_registration_path
+          redirect_to edit_registration_path(tab: tab), notice: "Email updated successfully!"
         else
-          flash[:alert] = @user.errors.full_messages.join(", ")
-          render :edit, status: :unprocessable_entity
+          flash.now[:alert] = @user.errors.full_messages.join(", ")
+          render :edit, status: :unprocessable_entity, locals: { tab: tab }
         end
       elsif params[:user][:password].present?
         # Handle password update
         if @user.update(password_params)
-          flash[:notice] = "Password updated successfully."
-          redirect_to edit_registration_path
+          redirect_to edit_registration_path(tab: tab), notice: "Password updated successfully!"
         else
-          flash[:alert] = @user.errors.full_messages.join(", ")
-          render :edit, status: :unprocessable_entity
+          flash.now[:alert] = @user.errors.full_messages.join(", ")
+          render :edit, status: :unprocessable_entity, locals: { tab: tab }
         end
       else
-        flash[:alert] = "Please provide a new name, email address, or password."
-        render :edit, status: :unprocessable_entity
+        flash.now[:alert] = "Please provide a new name, email address, or password."
+        render :edit, status: :unprocessable_entity, locals: { tab: tab }
       end
     else
-      flash[:alert] = "Current password is incorrect."
-      render :edit, status: :unprocessable_entity
+      flash.now[:alert] = "Current password is incorrect."
+      render :edit, status: :unprocessable_entity, locals: { tab: tab }
     end
   end
 

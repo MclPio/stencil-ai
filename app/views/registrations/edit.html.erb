@@ -1,160 +1,340 @@
 <%= render "layouts/navbar" %>
 <!-- app/views/registrations/edit.html.erb -->
 <div class="container mx-auto px-4 py-8">
-  <!-- Flash Messages -->
+  <!-- Flash Messages with Auto-dismiss -->
   <% if flash[:notice] %>
-    <div class="alert alert-success mb-6">
-      <%= flash[:notice] %>
+    <div class="alert alert-success mb-6" id="flash-notice">
+      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span><%= flash[:notice] %></span>
+      <button type="button" onclick="this.parentElement.remove()" class="btn btn-ghost btn-sm ml-auto">×</button>
     </div>
   <% end %>
   <% if flash[:alert] %>
-    <div class="alert alert-error mb-6">
-      <%= flash[:alert] %>
+    <div class="alert alert-error mb-6" id="flash-alert">
+      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span><%= flash[:alert] %></span>
+      <button type="button" onclick="this.parentElement.remove()" class="btn btn-ghost btn-sm ml-auto">×</button>
     </div>
   <% end %>
 
+  <!-- Page Header -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-base-content">Account Settings</h1>
+    <p class="text-base-content/70 mt-2">Manage your account information and preferences</p>
+  </div>
+
   <!-- Tabs -->
+  <% current_tab = local_assigns[:tab] || params[:tab] || 'profile' %>
   <div class="tabs tabs-boxed bg-base-100 shadow-xl mb-8">
-    <%= link_to "Profile", edit_registration_path, class: "tab tab-lg #{params[:tab].nil? || params[:tab] == 'profile' ? 'tab-active' : ''}" %>
-    <%= link_to "Change Name", edit_registration_path(tab: 'name'), class: "tab tab-lg #{params[:tab] == 'name' ? 'tab-active' : ''}" %>
-    <%= link_to "Change Email", edit_registration_path(tab: 'email'), class: "tab tab-lg #{params[:tab] == 'email' ? 'tab-active' : ''}" %>
-    <%= link_to "Change Password", edit_registration_path(tab: 'password'), class: "tab tab-lg #{params[:tab] == 'password' ? 'tab-active' : ''}" %>
-    <%= link_to "Delete Account", edit_registration_path(tab: 'delete'), class: "tab tab-lg #{params[:tab] == 'delete' ? 'tab-active' : ''}" %>
+    <%= link_to edit_registration_path, class: "tab tab-lg #{current_tab.nil? || current_tab == 'profile' ? 'tab-active' : ''}" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+      </svg>
+      Profile
+    <% end %>
+    <%= link_to edit_registration_path(tab: 'name'), class: "tab tab-lg #{current_tab == 'name' ? 'tab-active' : ''}" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+      </svg>
+      Name
+    <% end %>
+    <%= link_to edit_registration_path(tab: 'email'), class: "tab tab-lg #{current_tab == 'email' ? 'tab-active' : ''}" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+      Email
+    <% end %>
+    <%= link_to edit_registration_path(tab: 'password'), class: "tab tab-lg #{current_tab == 'password' ? 'tab-active' : ''}" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+      </svg>
+      Password
+    <% end %>
+    <%= link_to edit_registration_path(tab: 'delete'), class: "tab tab-lg #{current_tab == 'delete' ? 'tab-active' : ''}" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+      </svg>
+      Delete
+    <% end %>
   </div>
 
   <!-- Tab Content -->
   <div id="settings_content">
-    <% case params[:tab] %>
+    <% case current_tab %>
     <% when "name" %>
       <!-- Change Name Form -->
       <div class="card bg-base-100 shadow-xl">
         <div class="card-body">
-          <h2 class="card-title text-2xl font-bold">Change Name</h2>
-          <p class="text-base text-gray-500 mb-4">Update your display name.</p>
+          <div class="flex items-center mb-4">
+            <div class="avatar placeholder mr-4">
+              <div class="bg-primary text-primary-content rounded-full w-12">
+                <span class="text-xl"><%= @user.name&.first&.upcase || "U" %></span>
+              </div>
+            </div>
+            <div>
+              <h2 class="card-title text-2xl font-bold">Change Name</h2>
+              <p class="text-base-content/70">Update your display name</p>
+            </div>
+          </div>
 
-          <%= form_with model: @user, url: registration_path, method: :patch, class: "space-y-4" do |form| %>
+          <%= form_with model: @user, url: registration_path, method: :patch, class: "space-y-6", data: { turbo_frame: "_top" } do |form| %>
+            <%= form.hidden_field :redirect_tab, value: "name" %>
+            
             <div class="form-control">
-              <%= form.label :current_password, class: "label" %>
-              <%= form.password_field :current_password, required: true, autocomplete: "current-password", placeholder: "Enter your current password", class: "input input-bordered w-full", maxlength: 72 %>
+              <%= form.label :current_password, "Current Password", class: "label label-text font-medium" %>
+              <%= form.password_field :current_password, required: true, autocomplete: "current-password", placeholder: "Enter your current password", class: "input input-bordered w-full focus:input-primary", maxlength: 72 %>
+              <label class="label">
+                <span class="label-text-alt">Required to confirm changes</span>
+              </label>
             </div>
 
             <div class="form-control">
-              <%= form.label :name, class: "label" %>
-              <%= form.text_field :name, required: true, autocomplete: "name", placeholder: "Enter your name", class: "input input-bordered w-full", value: @user.name %>
+              <%= form.label :name, "Display Name", class: "label label-text font-medium" %>
+              <%= form.text_field :name, required: true, autocomplete: "name", placeholder: "Enter your name", class: "input input-bordered w-full focus:input-primary #{'input-error' if @user.errors[:name].any?}", value: @user.name %>
               <% if @user.errors[:name].any? %>
-                <span class="text-error text-sm"><%= @user.errors[:name].join(", ") %></span>
+                <label class="label">
+                  <span class="label-text-alt text-error"><%= @user.errors[:name].join(", ") %></span>
+                </label>
               <% end %>
             </div>
 
-            <div class="flex justify-between items-center">
+            <div class="flex justify-between items-center pt-4">
               <%= form.submit "Update Name", class: "btn btn-primary" %>
-              <%= link_to "Cancel", root_path, class: "btn btn-ghost" %>
+              <%= link_to "Cancel", edit_registration_path, class: "btn btn-ghost" %>
             </div>
           <% end %>
         </div>
       </div>
+
     <% when "email" %>
       <!-- Change Email Form -->
       <div class="card bg-base-100 shadow-xl">
         <div class="card-body">
-          <h2 class="card-title text-2xl font-bold">Change Email Address</h2>
-          <p class="text-base text-gray-500 mb-4">Update your email address for account access.</p>
+          <div class="flex items-center mb-4">
+            <div class="avatar placeholder mr-4">
+              <div class="bg-secondary text-secondary-content rounded-full w-12">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+            </div>
+            <div>
+              <h2 class="card-title text-2xl font-bold">Change Email Address</h2>
+              <p class="text-base-content/70">Update your email address for account access</p>
+            </div>
+          </div>
 
-          <%= form_with model: @user, url: registration_path, method: :patch, class: "space-y-4" do |form| %>
+          <%= form_with model: @user, url: registration_path, method: :patch, class: "space-y-6", data: { turbo_frame: "_top" } do |form| %>
+            <%= form.hidden_field :redirect_tab, value: "email" %>
+            
             <div class="form-control">
-              <%= form.label :current_password, class: "label" %>
-              <%= form.password_field :current_password, required: true, autocomplete: "current-password", placeholder: "Enter your current password", class: "input input-bordered w-full", maxlength: 72 %>
+              <%= form.label :current_password, "Current Password", class: "label label-text font-medium" %>
+              <%= form.password_field :current_password, required: true, autocomplete: "current-password", placeholder: "Enter your current password", class: "input input-bordered w-full focus:input-primary", maxlength: 72 %>
+              <label class="label">
+                <span class="label-text-alt">Required to confirm changes</span>
+              </label>
             </div>
 
             <div class="form-control">
-              <%= form.label :email_address, class: "label" %>
-              <%= form.email_field :email_address, required: true, autocomplete: "email", placeholder: "Enter your new email address", class: "input input-bordered w-full", value: @user.email_address %>
+              <%= form.label :email_address, "Email Address", class: "label label-text font-medium" %>
+              <%= form.email_field :email_address, required: true, autocomplete: "email", placeholder: "Enter your new email address", class: "input input-bordered w-full focus:input-primary #{'input-error' if @user.errors[:email_address].any?}", value: @user.email_address %>
               <% if @user.errors[:email_address].any? %>
-                <span class="text-error text-sm"><%= @user.errors[:email_address].join(", ") %></span>
+                <label class="label">
+                  <span class="label-text-alt text-error"><%= @user.errors[:email_address].join(", ") %></span>
+                </label>
+              <% else %>
+                <label class="label">
+                  <span class="label-text-alt">You'll need to verify your new email address</span>
+                </label>
               <% end %>
             </div>
 
-            <div class="flex justify-between items-center">
+            <div class="flex justify-between items-center pt-4">
               <%= form.submit "Update Email", class: "btn btn-primary" %>
-              <%= link_to "Cancel", root_path, class: "btn btn-ghost" %>
+              <%= link_to "Cancel", edit_registration_path, class: "btn btn-ghost" %>
             </div>
           <% end %>
         </div>
       </div>
+
     <% when "password" %>
       <!-- Change Password Form -->
       <div class="card bg-base-100 shadow-xl">
         <div class="card-body">
-          <h2 class="card-title text-2xl font-bold">Change Password</h2>
-          <p class="text-base text-gray-500 mb-4">Update your password to keep your account secure.</p>
+          <div class="flex items-center mb-4">
+            <div class="avatar placeholder mr-4">
+              <div class="bg-accent text-accent-content rounded-full w-12">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
+            </div>
+            <div>
+              <h2 class="card-title text-2xl font-bold">Change Password</h2>
+              <p class="text-base-content/70">Update your password to keep your account secure</p>
+            </div>
+          </div>
 
-          <%= form_with model: @user, url: registration_path, method: :patch, class: "space-y-4" do |form| %>
+          <%= form_with model: @user, url: registration_path, method: :patch, class: "space-y-6", data: { turbo_frame: "_top" } do |form| %>
+            <%= form.hidden_field :redirect_tab, value: "password" %>
+            
             <div class="form-control">
-              <%= form.label :current_password, class: "label" %>
-              <%= form.password_field :current_password, required: true, autocomplete: "current-password", placeholder: "Enter your current password", class: "input input-bordered w-full", maxlength: 72 %>
+              <%= form.label :current_password, "Current Password", class: "label label-text font-medium" %>
+              <%= form.password_field :current_password, required: true, autocomplete: "current-password", placeholder: "Enter your current password", class: "input input-bordered w-full focus:input-primary", maxlength: 72 %>
             </div>
 
             <div class="form-control">
-              <%= form.label :password, "New Password", class: "label" %>
-              <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "Enter your new password", class: "input input-bordered w-full", maxlength: 72 %>
+              <%= form.label :password, "New Password", class: "label label-text font-medium" %>
+              <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "Enter your new password", class: "input input-bordered w-full focus:input-primary #{'input-error' if @user.errors[:password].any?}", maxlength: 72 %>
               <% if @user.errors[:password].any? %>
-                <span class="text-error text-sm"><%= @user.errors[:password].join(", ") %></span>
+                <label class="label">
+                  <span class="label-text-alt text-error"><%= @user.errors[:password].join(", ") %></span>
+                </label>
+              <% else %>
+                <label class="label">
+                  <span class="label-text-alt">Choose a strong password with at least 8 characters</span>
+                </label>
               <% end %>
             </div>
 
             <div class="form-control">
-              <%= form.label :password_confirmation, class: "label" %>
-              <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Confirm your new password", class: "input input-bordered w-full", maxlength: 72 %>
+              <%= form.label :password_confirmation, "Confirm New Password", class: "label label-text font-medium" %>
+              <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Confirm your new password", class: "input input-bordered w-full focus:input-primary #{'input-error' if @user.errors[:password_confirmation].any?}", maxlength: 72 %>
               <% if @user.errors[:password_confirmation].any? %>
-                <span class="text-error text-sm"><%= @user.errors[:password_confirmation].join(", ") %></span>
+                <label class="label">
+                  <span class="label-text-alt text-error"><%= @user.errors[:password_confirmation].join(", ") %></span>
+                </label>
               <% end %>
             </div>
 
-            <div class="flex justify-between items-center">
+            <div class="flex justify-between items-center pt-4">
               <%= form.submit "Update Password", class: "btn btn-primary" %>
-              <%= link_to "Cancel", root_path, class: "btn btn-ghost" %>
+              <%= link_to "Cancel", edit_registration_path, class: "btn btn-ghost" %>
             </div>
           <% end %>
         </div>
       </div>
+
     <% when "delete" %>
       <!-- Delete Account Form -->
-      <div class="card bg-base-100 shadow-xl">
+      <div class="card bg-base-100 shadow-xl border-error">
         <div class="card-body">
-          <h2 class="card-title text-2xl font-bold text-error">Delete Account</h2>
-          <p class="text-base text-gray-500 mb-4">Permanently delete your account. This action cannot be undone.</p>
+          <div class="flex items-center mb-4">
+            <div class="avatar placeholder mr-4">
+              <div class="bg-error text-error-content rounded-full w-12">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+              </div>
+            </div>
+            <div>
+              <h2 class="card-title text-2xl font-bold text-error">Delete Account</h2>
+              <p class="text-base-content/70">Permanently delete your account and all associated data</p>
+            </div>
+          </div>
 
-          <%= form_with url: registration_path, method: :delete, class: "space-y-4", data: { turbo_confirm: "Are you sure you want to delete your account? This action cannot be undone." } do |form| %>
+          <div class="alert alert-warning mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+            </svg>
+            <div>
+              <h3 class="font-bold">Warning!</h3>
+              <div class="text-xs">This action cannot be undone. All your data will be permanently deleted.</div>
+            </div>
+          </div>
+
+          <%= form_with url: registration_path, method: :delete, class: "space-y-6", data: { turbo_confirm: "Are you absolutely sure you want to delete your account? This action cannot be undone and all your data will be permanently lost.", turbo_frame: "_top" } do |form| %>
             <div class="form-control">
-              <%= form.label :current_password, class: "label" %>
-              <%= form.password_field :current_password, required: true, autocomplete: "current-password", placeholder: "Enter your current password", class: "input input-bordered w-full", maxlength: 72 %>
+              <%= form.label :current_password, "Current Password", class: "label label-text font-medium" %>
+              <%= form.password_field :current_password, required: true, autocomplete: "current-password", placeholder: "Enter your current password to confirm", class: "input input-bordered w-full focus:input-error", maxlength: 72 %>
+              <label class="label">
+                <span class="label-text-alt">Required to confirm account deletion</span>
+              </label>
             </div>
 
-            <div class="flex justify-between items-center">
+            <div class="flex justify-between items-center pt-4">
               <%= form.submit "Delete Account", class: "btn btn-error" %>
-              <%= link_to "Cancel", root_path, class: "btn btn-ghost" %>
+              <%= link_to "Cancel", edit_registration_path, class: "btn btn-ghost" %>
             </div>
           <% end %>
         </div>
       </div>
+
     <% else %>
       <!-- Profile Display (Default) -->
       <div class="card bg-base-100 shadow-xl">
         <div class="card-body">
-          <h2 class="card-title text-2xl font-bold">Profile</h2>
-          <p class="text-base text-gray-500 mb-4">Your account information.</p>
-          <div class="space-y-2">
-            <div class="form-control">
-              <label class="label">
-                <span class="label-text">Name</span>
-              </label>
-              <p class="input input-bordered w-full bg-gray-100"><%= @user.name || "Not set" %></p>
+          <div class="flex items-center mb-6">
+            <div class="avatar placeholder mr-4">
+              <div class="bg-primary text-primary-content rounded-full w-16">
+                <span class="text-2xl font-bold"><%= @user.name&.first&.upcase || "U" %></span>
+              </div>
             </div>
-            <div class="form-control">
-              <label class="label">
-                <span class="label-text">Email Address</span>
-              </label>
-              <p class="input input-bordered w-full bg-gray-100"><%= @user.email_address %></p>
+            <div>
+              <h2 class="card-title text-3xl font-bold"><%= @user.name || "User" %></h2>
+              <p class="text-base-content/70">Account created <%= time_ago_in_words(@user.created_at) %> ago</p>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-4">
+              <div class="form-control">
+                <label class="label">
+                  <span class="label-text font-medium">Display Name</span>
+                </label>
+                <div class="input input-bordered w-full bg-base-200 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  <%= @user.name || "Not set" %>
+                </div>
+              </div>
+              
+              <div class="form-control">
+                <label class="label">
+                  <span class="label-text font-medium">Email Address</span>
+                </label>
+                <div class="input input-bordered w-full bg-base-200 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  <%= @user.email_address %>
+                </div>
+              </div>
+            </div>
+            
+            <div class="space-y-4">
+              <div class="stats bg-base-200 shadow">
+                <div class="stat">
+                  <div class="stat-title">Account Status</div>
+                  <div class="stat-value text-success text-lg">Active</div>
+                  <div class="stat-desc">All systems operational</div>
+                </div>
+              </div>
+              
+              <div class="card bg-base-200">
+                <div class="card-body p-4">
+                  <h3 class="font-medium mb-2">Quick Actions</h3>
+                  <div class="space-y-2">
+                    <%= link_to edit_registration_path(tab: 'name'), class: "btn btn-sm btn-ghost justify-start" do %>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                      Edit Name
+                    <% end %>
+                    <%= link_to edit_registration_path(tab: 'password'), class: "btn btn-sm btn-ghost justify-start" do %>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                      </svg>
+                      Change Password
+                    <% end %>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -162,3 +342,15 @@
     <% end %>
   </div>
 </div>
+
+<script>
+  // Auto-dismiss flash messages after 5 seconds
+  setTimeout(() => {
+    const notices = document.querySelectorAll('#flash-notice, #flash-alert');
+    notices.forEach(notice => {
+      notice.style.transition = 'opacity 0.5s';
+      notice.style.opacity = '0';
+      setTimeout(() => notice.remove(), 500);
+    });
+  }, 5000);
+</script>
