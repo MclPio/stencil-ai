@@ -56,8 +56,11 @@ message_collections = [
 
 stencil_admin = User.create!(email_address: "stencil@world.co", password: "1234", name: "free_stencil", account_type: "admin")
 
-user0 = User.create!(email_address: "user0@world.co", password: "1234", name: "Joe Smith", account_type: "paid")
-user1 = User.create!(email_address: "user1@world.co", password: "1234", name: "Mikey Hanma", account_type: "paid")
+invite0 = Invite.create!(admin: stencil_admin)
+invite1 = Invite.create!(admin: stencil_admin)
+
+user0 = User.create!(email_address: "user0@world.co", password: "1234", name: "Joe Smith", account_type: "paid", invite_code: invite0.invite_code)
+user1 = User.create!(email_address: "user1@world.co", password: "1234", name: "Mikey Hanma", account_type: "paid", invite_code: invite1.invite_code)
 
 2.times do |i|
   project = Project.create!(title: "AI Oven #{i}", user: user0)

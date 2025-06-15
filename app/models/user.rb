@@ -32,6 +32,9 @@ class User < ApplicationRecord
   end
 
   def invite_code_must_be_valid
+    if account_type == "admin"
+      return
+    end
     unless Invite.valid_code?(invite_code)
       errors.add(:invite_code, "is invalid or expired")
     end
