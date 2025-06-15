@@ -9,6 +9,7 @@ class RegistrationsController < ApplicationController
   def create
     @user = User.new(registration_params)
     if @user.save
+      UserMailer.welcome(@user).deliver_later
       start_new_session_for @user
       redirect_to root_path, notice: "Successfully signed up!"
     else
