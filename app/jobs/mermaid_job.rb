@@ -2,21 +2,32 @@ class MermaidJob < ApplicationJob
   queue_as :default
   include ToastHelper
 
-  def perform(conversation_id, artifact_stencil_id, favorite_artifact_stencil_id)
+  def perform(conversation_id, artifact_stencil_id, favorite_artifact_stencil_id, current_user)
     response = generate_mermaid_diagram(conversation_id, artifact_stencil_id)
     conversation = Conversation.find(conversation_id)
     artifact = conversation.project.artifacts.find_or_create_by(artifact_stencil_id: artifact_stencil_id, favorite_artifact_stencil_id: favorite_artifact_stencil_id) # add fav id
 
-    if response[:error]
-      ToastHelper.show_toast("conversation_#{conversation_id}", "error", "Error", response[:message], 8000)
+    if response["error"]
+      ToastHelper.show_toast("conversation_#{conversation_id}", response.dig("error", "type"),
+                        response.dig("error", "code"), response.dig("error", "message"), 8000)
     else
-      Conversation.find(conversation_id).total_token.update(total: response[:tokens])
+      begin
+        OpenRouterUsageTracker.log(response: response, user: current_user)
+      rescue ActiveRecord::RecordInvalid => e
+        Rails.logger.error "Failed to log OpenRouter usage: #{e.message}"
+      end
 
-      artifact&.update(content: response[:mermaid])
+      parsed = parse_response(response)
+      unless parsed
+        ToastHelper.show_toast("conversation_#{conversation_id}", "invalid_response", "json_parse_error", "Invalid format from LLM response.", 8000)
+        return
+      end
+
+      artifact&.update(content: parsed[:mermaid])
 
       assistant_message = Message.create!(
         role: "assistant",
-        content: response[:explanation],
+        content: parsed[:explanation],
         conversation_id: conversation_id
       )
 
@@ -31,14 +42,14 @@ class MermaidJob < ApplicationJob
         "conversation_#{conversation_id}",
         target: "artifact-open-button",
         partial: "conversations/artifact_open_button",
-        locals: {project: conversation.project}
+        locals: { project: conversation.project }
       )
 
       Turbo::StreamsChannel.broadcast_replace_to( # DOES NOT REFETCH CONTENT!
         "conversation_#{conversation_id}",
         target: "artifact-selection",
         partial: "conversations/artifact_selection",
-        locals: {project: conversation.project}
+        locals: { project: conversation.project }
       )
     end
   end
@@ -50,7 +61,7 @@ class MermaidJob < ApplicationJob
 
     conversation = Conversation.find(conversation_id)
     message_history = conversation.formatted_messages
-    messages = [{ role: "system", content: stencil_prompt }] + message_history
+    messages = [ { role: "system", content: stencil_prompt } ] + message_history
 
     response = client.chat(
       model: "meta-llama/llama-3.3-8b-instruct:free",
@@ -80,23 +91,22 @@ class MermaidJob < ApplicationJob
         }
       }
     )
-
-    parse_response(response)
+    response
   end
 
   private
 
   def parse_response(response)
-    content = JSON.parse(response[:content])
+    content_string = response.dig("choices", 0, "message", "content")
+    content_json = JSON.parse(content_string)
 
     {
-      error: response[:error],
-      explanation: content.dig("explanation"),
-      mermaid: content.dig("mermaid"),
-      tokens: response[:tokens]
+      mermaid: content_json["mermaid"],
+      explanation: content_json["explanation"]
     }
-  rescue JSON::ParserError
-    { error: true, message: "Invalid JSON response" }
+  rescue JSON::ParserError => e
+    Rails.logger.error("Failed to parse LLM JSON content: #{e.message}")
+    nil
   end
 
   def query_artifact(conversation, artifact_stencil_id)
