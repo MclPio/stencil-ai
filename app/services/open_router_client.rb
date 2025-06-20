@@ -28,30 +28,46 @@ class OpenRouterClient
       if response["error"]
         error_code = response.dig("error", "code") || "unknown_error"
         Rails.logger.error("API Error occurred: #{error_code}")
-        return { error: true, message: "Service unavailable" }
+        return response
       end
 
       unless response.dig("choices", 0, "message", "content")
-        Rails.logger.error("Provider returned unexpected response structure CONTENT")
-        return { error: true, message: "Received unexpected response from provider" }
+        Rails.logger.warn("No assistant content in response — may be tool/function call or refusal.")
       end
 
       unless response.dig("usage", "total_tokens")
-        Rails.logger.error("Provider returned unexpected response structure TOKEN")
-        return { error: true, message: "Received unexpected response from provider" }
+        Rails.logger.error("Missing token usage in response")
       end
 
-      { error: false, content: response.dig("choices", 0, "message", "content"), tokens: response.dig("usage", "total_tokens") }
+      response
 
     rescue Faraday::Error => e
       Rails.logger.error("Network error in provider communication: #{e.class}")
-      { error: true, message: "Unable to connect to service provider" }
+      {
+        "error" => {
+          "message" => "Unable to connect to service provider",
+          "type" => "network_error",
+          "code" => e.class.to_s
+        }
+      }
     rescue JSON::ParserError => e
-      Rails.logger.error("Response parsing error")
-      { error: true, message: "Error processing response" }
+      Rails.logger.error("Response parsing error: #{e.message}")
+      {
+        "error" => {
+          "message" => "Error processing response",
+          "type" => "parse_error",
+          "code" => "json_parse_error"
+        }
+      }
     rescue => e
       Rails.logger.error("Unexpected error: #{e.class}: #{e.message}")
-      { error: true, message: "An unexpected error occurred" }
+      {
+        "error" => {
+          "message" => "An unexpected error occurred",
+          "type" => "internal_error",
+          "code" => e.class.to_s
+        }
+      }
     end
   end
 end

@@ -19,7 +19,7 @@ class MessagesController < ApplicationController
           MermaidJob.perform_later(message_params[:conversation_id], artifact_stencil_id, favorite_artifact_stencil_id)
         end
       else
-        ProcessLlmChatJob.perform_later(message_params[:conversation_id])
+        ProcessLlmChatJob.perform_later(message_params[:conversation_id], Current.user)
       end
     else
       if @message.errors[:base].include?("Conversation has exceeded the token limit of #{Conversation::TOKEN_LIMIT}")
