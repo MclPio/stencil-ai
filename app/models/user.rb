@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include OpenRouterUsageTracker::Trackable
+
   has_secure_password
   has_many :sessions, dependent: :destroy
   has_one :weekly_consumption, dependent: :destroy

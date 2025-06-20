@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_11_192111) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_20_215134) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -78,6 +78,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_11_192111) do
     t.text "suggestions", default: [], array: true
     t.index ["conversation_id"], name: "index_messages_on_conversation_id"
     t.index ["role"], name: "index_messages_on_role"
+  end
+
+  create_table "open_router_usage_logs", force: :cascade do |t|
+    t.string "model", null: false
+    t.integer "prompt_tokens", null: false
+    t.integer "completion_tokens", null: false
+    t.integer "total_tokens", null: false
+    t.decimal "cost", precision: 10, scale: 5, null: false
+    t.string "user_type", null: false
+    t.bigint "user_id", null: false
+    t.string "request_id", null: false
+    t.jsonb "raw_usage_response", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["request_id"], name: "index_open_router_usage_logs_on_request_id", unique: true
+    t.index ["user_type", "user_id"], name: "index_open_router_usage_logs_on_user"
   end
 
   create_table "projects", force: :cascade do |t|
