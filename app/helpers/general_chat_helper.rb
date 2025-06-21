@@ -8,7 +8,7 @@ module GeneralChatHelper
     messages = [ { role: "system", content: system_prompt } ] + message_history
 
     client.chat(
-      model: "meta-llama/llama-3.3-8b-instruct:free",
+      model: "google/gemini-2.5-flash-lite-preview-06-17",
       messages: messages,
       usage: { "include": true }
     )

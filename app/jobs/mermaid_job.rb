@@ -64,7 +64,7 @@ class MermaidJob < ApplicationJob
     messages = [ { role: "system", content: stencil_prompt } ] + message_history
 
     response = client.chat(
-      model: "meta-llama/llama-3.3-8b-instruct:free",
+      model: "google/gemini-2.5-flash-lite-preview-06-17",
       messages: messages,
       temperature: 0.3,
       usage: { "include": true },
