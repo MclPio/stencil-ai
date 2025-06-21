@@ -21,6 +21,8 @@ class User < ApplicationRecord
 
   enum :account_type, { free: 0, paid: 1, admin: 2 }, prefix: true
   FREE_DAILY_COST_LIMIT_USD = 0.0045
+  PAID_DAILY_COST_LIMIT_USD = 0.0045
+  ADMIN_DAILY_COST_LIMIT_USD = 5
 
   validate :under_user_limit, on: :create
 

@@ -11,6 +11,8 @@ class ProcessLlmChatJob < ApplicationJob
                              response.dig("error", "code"), response.dig("error", "message"), 8000)
     else
       begin
+        cost = response.dig("usage", "cost").to_f
+        current_user.increment!(:current_daily_cost, cost)
         OpenRouterUsageTracker.log(response: response, user: current_user)
       rescue ActiveRecord::RecordInvalid => e
         Rails.logger.error "Failed to log OpenRouter usage: #{e.message}"

@@ -58,6 +58,14 @@ class MessagesController < ApplicationController
   end
 
   def below_cost_limit?
-    Current.user.usage_in_last_24_hours[:cost] < Current.user::FREE_DAILY_COST_LIMIT_USD
+    account_type = Current.user.account_type
+    case account_type
+    when "admin"
+      Current.user.current_daily_cost < User::ADMIN_DAILY_COST_LIMIT_USD
+    when "paid"
+      Current.user.current_daily_cost < User::PAID_DAILY_COST_LIMIT_USD
+    when "free"
+      Current.user.current_daily_cost < User::FREE_DAILY_COST_LIMIT_USD
+    end
   end
 end
