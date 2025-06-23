@@ -1,5 +1,4 @@
 class MessagesController < ApplicationController
-  include ConversationHelper
   include ToastHelper
 
   def create
