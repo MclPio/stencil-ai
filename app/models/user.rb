@@ -7,7 +7,7 @@ class User < ApplicationRecord
   has_many :favorite_artifact_stencils
   has_many :artifacts, through: :favorite_artifact_stencils
   has_many :projects, dependent: :destroy
-  has_many :artifact_stencils
+  has_many :artifact_stencils, dependent: :destroy
 
   validates :email_address, uniqueness: true, presence: true
   validates :name, presence: true, length: { maximum: 255 }
@@ -46,8 +46,10 @@ class User < ApplicationRecord
   end
 
   def mark_invite_as_used
+    return if invite_code.blank?
     @invite = Invite.find_by(invite_code: invite_code)
-    return unless @invite && persisted?
-    @invite.update!(used_by_id: id)
+    if @invite && persisted? && !@invite.reusable?
+      @invite.update!(used_by_id: id)
+    end
   end
 end

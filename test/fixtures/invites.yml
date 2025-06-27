@@ -39,3 +39,12 @@ unused_invite:
   expires_at: <%= 1.day.from_now %>
   created_at: <%= Time.current %>
   updated_at: <%= Time.current %>
+
+reusable_invite:
+  invite_code: "REUSABLECODE"
+  admin: admin_user
+  user: nil # This invite is not used by a specific person
+  expires_at: <%= 1.year.from_now %>
+  reusable: true
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>

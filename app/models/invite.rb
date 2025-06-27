@@ -11,7 +11,7 @@ class Invite < ApplicationRecord
   validate :expires_at_must_be_future, if: -> { expires_at.present? }
 
   def active?
-    used_by_id.nil? && (expires_at.nil? || expires_at.future?)
+    (reusable? || used_by_id.nil?) && (expires_at.nil? || expires_at.future?)
   end
 
   def self.valid_code?(code)

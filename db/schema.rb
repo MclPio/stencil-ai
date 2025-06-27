@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_21_205741) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_27_195322) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -64,6 +64,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_21_205741) do
     t.datetime "expires_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "reusable", default: false, null: false
     t.index ["created_by_id"], name: "index_invites_on_created_by_id"
     t.index ["invite_code"], name: "index_invites_on_invite_code", unique: true
     t.index ["used_by_id"], name: "index_invites_on_used_by_id"
