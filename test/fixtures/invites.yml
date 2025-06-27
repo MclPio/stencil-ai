@@ -2,12 +2,40 @@
 
 one:
   invite_code: MyString1
-  created_by_id: 1
-  used_by_id: 2
-  expires_at: 2025-06-11 15:21:11
+  admin: one # Use the 'admin' association with the 'one' user fixture
+  user: two    # Use the 'user' association with the 'two' user fixture
+  expires_at: <%= 1.day.from_now %>
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
 
 two:
   invite_code: MyString2
-  created_by_id: 2
-  used_by_id: 1
-  expires_at: 2025-06-11 15:21:11
+  admin: two # Use the 'admin' association with the 'two' user fixture
+  user: one    # Use the 'user' association with the 'one' user fixture
+  expires_at: <%= 1.day.from_now %>
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+paid_user_invite:
+  invite_code: "PAIDINVITE123"
+  admin: admin_user # Use the 'admin' association
+  user: paid_user   # Use the 'user' association
+  expires_at: <%= 1.day.from_now %>
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+free_user_invite:
+  invite_code: "FREEINVITE456"
+  admin: admin_user
+  user: free_user
+  expires_at: <%= 1.day.from_now %>
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+unused_invite:
+  invite_code: "UNUSEDINVITE789"
+  admin: admin_user
+  # 'user' is intentionally left null for this unused invite
+  expires_at: <%= 1.day.from_now %>
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>

@@ -15,3 +15,27 @@ two:
   account_type: 0
   created_at: <%= Time.current %>
   updated_at: <%= Time.current %>
+
+admin_user:
+  email_address: admin@example.com
+  password_digest: <%= BCrypt::Password.create('password') %>
+  name: Admin User
+  account_type: 2
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+paid_user:
+  email_address: paid_user@example.com
+  password_digest: <%= BCrypt::Password.create('password') %>
+  name: Paid User
+  account_type: 1
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+free_user:
+  email_address: free_user@example.com
+  password_digest: <%= BCrypt::Password.create('password') %>
+  name: Free User
+  account_type: 0
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
