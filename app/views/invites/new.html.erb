@@ -16,7 +16,7 @@
           
           <!-- Display validation errors -->
           <% if @invite.errors.any? %>
-            <div class="alert alert-error">
+            <div role="alert" class="alert alert-error">
               <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -31,6 +31,19 @@
             </div>
           <% end %>
 
+          <!-- Reusable Checkbox -->
+          <div class="form-control">
+            <label class="label cursor-pointer justify-start gap-4">
+              <%= form.check_box :reusable, class: "checkbox checkbox-primary" %>
+              <span class="label-text font-semibold">Reusable Invite Code</span> 
+            </label>
+            <div class="label">
+              <span class="label-text-alt text-base-content/60">
+                If checked, this invite code can be used by multiple users to register.
+              </span>
+            </div>
+          </div>
+
           <!-- Expires At Field -->
           <div class="form-control">
             <%= form.label :expires_at, class: "label" do %>
@@ -43,7 +56,7 @@
                 min: Time.current.strftime("%Y-%m-%dT%H:%M") %>
             <div class="label">
               <span class="label-text-alt text-base-content/60">
-                Leave blank for invite codes that never expire
+                Leave blank for invite codes that never expire.
               </span>
               <% if @invite.errors[:expires_at].any? %>
                 <span class="label-text-alt text-error">
@@ -54,15 +67,14 @@
           </div>
 
           <!-- Info Card -->
-          <div class="alert alert-info">
+          <div role="alert" class="alert alert-info">
             <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
             <div>
               <h3 class="font-bold">How it works</h3>
               <div class="text-sm mt-1">
-                A unique invite code will be automatically generated when you create this invite. 
-                Share this code with users to allow them to register for your application.
+                A unique invite code will be automatically generated. Share this code with users to allow them to register.
               </div>
             </div>
           </div>

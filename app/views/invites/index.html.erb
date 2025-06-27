@@ -1,3 +1,38 @@
+<%# 
+  Helper to determine the status and color for an invite badge.
+  The logic is ordered by priority:
+  1. Activated: A single-use code that has been redeemed. This is a final state.
+  2. Reusable: A code that is active and can be used multiple times.
+  3. Pending: A single-use code that is active and waiting to be used.
+  4. Expired: Any code that has passed its expiration date.
+%>
+<%
+def invite_status_badge(invite)
+  # 1. If it's been used, its final state is "Activated". This is terminal for single-use codes.
+  if invite.used_by_id.present?
+    return content_tag(:div, "Activated", class: "badge badge-success")
+  end
+
+  # 2. If it's reusable and not expired, it's "Reusable".
+  if invite.reusable? && invite.active?
+    return content_tag(:div, "Reusable", class: "badge badge-primary")
+  end
+
+  # 3. If it's a single-use code and still active, it's "Pending".
+  if invite.active?
+    return content_tag(:div, "Pending", class: "badge badge-warning")
+  end
+
+  # 4. If it's not used and not active, it must be expired.
+  if invite.expires_at&.past?
+    return content_tag(:div, "Expired", class: "badge badge-error")
+  end
+  
+  # 5. Fallback for any other inactive state
+  content_tag(:div, "Inactive", class: "badge badge-ghost")
+end
+%>
+
 <div class="container mx-auto px-4 py-8">
   <div class="flex justify-between items-center mb-6">
     <h1 class="text-3xl font-bold">Invite Codes</h1>
@@ -5,16 +40,16 @@
   </div>
 
   <% if @invites.any? %>
-    <div class="overflow-x-auto">
-      <table class="table table-zebra w-full">
+    <div class="overflow-x-auto bg-base-100 rounded-lg shadow">
+      <table class="table w-full">
         <thead>
           <tr>
             <th>Invite Code</th>
             <th>Status</th>
-            <th>Expires At</th>
             <th>Used By</th>
+            <th>Expires At</th>
             <th>Created At</th>
-            <th>Actions</th>
+            <th class="text-right">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -26,24 +61,7 @@
                 </code>
               </td>
               <td>
-                <% if invite.used_by_id %>
-                  <div class="badge badge-success">Activated</div>
-                <% else %>
-                  <% if invite.active? %>
-                    <div class="badge badge-warning">Pending</div>
-                  <% else %>
-                    <div class="badge badge-error">Expired</div>
-                  <% end %>
-                <% end %>
-              </td>
-              <td>
-                <% if invite.expires_at %>
-                  <time class="text-sm" datetime="<%= invite.expires_at.iso8601 %>">
-                    <%= invite.expires_at.strftime("%B %d, %Y at %I:%M %p") %>
-                  </time>
-                <% else %>
-                  <span class="text-base-content/60">Never expires</span>
-                <% end %>
+                <%= invite_status_badge(invite) %>
               </td>
               <td>
                 <% if invite.user %>
@@ -53,27 +71,35 @@
                         <span class="text-xs"><%= invite.user.name.first.upcase %></span>
                       </div>
                     </div>
-                    <%= invite.user.name %>
+                    <span title="<%= invite.user.email_address %>"><%= invite.user.name %></span>
                   </div>
                 <% else %>
-                  <span class="text-base-content/60 italic">Not used</span>
+                  <span class="text-base-content/60 italic">
+                    <%= invite.reusable? ? "Multiple Users" : "Not used" %>
+                  </span>
+                <% end %>
+              </td>
+              <td>
+                <% if invite.expires_at %>
+                  <time class="text-sm" datetime="<%= invite.expires_at.iso8601 %>">
+                    <%= invite.expires_at.strftime("%b %d, %Y") %>
+                  </time>
+                <% else %>
+                  <span class="text-base-content/60">Never</span>
                 <% end %>
               </td>
               <td>
                 <time class="text-sm" datetime="<%= invite.created_at.iso8601 %>">
-                  <%= invite.created_at.strftime("%B %d, %Y") %>
+                  <%= invite.created_at.strftime("%b %d, %Y") %>
                 </time>
               </td>
               <td>
                 <%= button_to invite_path(invite), 
                     method: :delete, 
-                    class: "btn btn-ghost btn-xs text-error hover:bg-error hover:text-error-content",
+                    class: "btn btn-ghost btn-sm float-right",
                     data: { turbo_confirm: "Are you sure you want to delete this invite code? This action cannot be undone." },
                     title: "Delete invite" do %>
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                  </svg>
-                  Delete
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                 <% end %>
               </td>
             </tr>
@@ -82,17 +108,13 @@
       </table>
     </div>
   <% else %>
-    <div class="hero min-h-64">
-      <div class="hero-content text-center">
-        <div class="max-w-md">
-          <div class="text-6xl mb-4">📧</div>
-          <h2 class="text-xl font-semibold mb-2">No invite codes yet</h2>
-          <p class="text-base-content/70 mb-6">
-            Create your first invite code to start inviting users to your application.
-          </p>
-          <%= link_to "Create First Invite", new_invite_path, class: "btn btn-primary" %>
-        </div>
-      </div>
+    <div class="text-center py-16">
+        <div class="text-6xl mb-4">📧</div>
+        <h2 class="text-xl font-semibold mb-2">No invite codes yet</h2>
+        <p class="text-base-content/70 mb-6 max-w-md mx-auto">
+          Create your first invite code to start allowing users to register for your application.
+        </p>
+        <%= link_to "Create First Invite", new_invite_path, class: "btn btn-primary" %>
     </div>
   <% end %>
 </div>

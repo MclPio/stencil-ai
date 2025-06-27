@@ -2,7 +2,7 @@ class InvitesController < ApplicationController
   before_action :authorize_admin
 
   def index
-    @invites = Current.user.invites
+    @invites = Current.user.invites.includes(:user).order(created_at: :desc)
   end
 
   def new
@@ -12,7 +12,7 @@ class InvitesController < ApplicationController
   def create
     @invite = Current.user.invites.new(invite_params)
     if @invite.save
-      redirect_to invites_path
+      redirect_to invites_path, notice: "Invite code successfully created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -29,7 +29,7 @@ class InvitesController < ApplicationController
   private
 
   def invite_params
-    params.expect(invite: [ :expires_at ])
+    params.expect(invite: [ :expires_at, :reusable ])
   end
 
   def authorize_admin
