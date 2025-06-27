@@ -14,184 +14,126 @@ class OpenRouterClientTest < ActiveSupport::TestCase
     assert_equal OpenRouterClient::API_BASE_URL, @open_router_client.instance_variable_get(:@client).uri_base
   end
 
-  test "successful chat returns expected content" do
+  test "successful chat returns the raw response" do
+    # This mock simulates the raw, successful response from the API
+    mock_response = {
+      "choices" => [ { "message" => { "content" => "Hello, how can I help you today?" } } ],
+      "usage" => { "total_tokens" => 4 }
+    }
     mock_client = Object.new
-    def mock_client.chat(parameters:)
-      {
-        "choices" => [
-          {
-            "message" => {
-              "content" => "Hello, how can I help you today?"
-            }
-          }
-        ],
-        "usage" => {
-          "prompt_tokens" => 0,
-          "completion_tokens" => 4,
-          "total_tokens" => 4
-        }
-      }
-    end
+    # The block here is a closure, so it has access to mock_response
+    mock_client.define_singleton_method(:chat) { |parameters:| mock_response }
 
     @open_router_client.instance_variable_set(:@client, mock_client)
 
-    result = @open_router_client.chat(
-      model: @test_model,
-      messages: @test_messages,
-      usage: { "include": true }
-    )
+    result = @open_router_client.chat(model: @test_model, messages: @test_messages)
 
-    assert_equal false, result[:error]
-    assert_equal "Hello, how can I help you today?", result[:content]
-    assert_equal 4, result[:tokens]
+    # Assert that the raw response is returned and has the expected structure
+    assert_nil result["error"]
+    assert_equal "Hello, how can I help you today?", result.dig("choices", 0, "message", "content")
+    assert_equal 4, result.dig("usage", "total_tokens")
   end
 
-  test "response with error code" do
+  test "response with an error code returns the raw error response" do
+    # This mock simulates a raw response that contains an error object
+    mock_response = { "error" => { "message" => "Service unavailable", "code" => "service_unavailable" } }
     mock_client = Object.new
-    def mock_client.chat(parameters:)
-      {
-        "error" => {
-            "code" => "420"
-        }
-      }
-    end
+    mock_client.define_singleton_method(:chat) { |parameters:| mock_response }
 
     @open_router_client.instance_variable_set(:@client, mock_client)
 
-    result = @open_router_client.chat(
-      model: @test_model,
-      messages: @test_messages
-    )
+    result = @open_router_client.chat(model: @test_model, messages: @test_messages)
 
-    assert_equal true, result[:error]
-    assert_equal "Service unavailable", result[:message]
+    # Assert that the error object is present and contains the correct data
+    assert_not_nil result["error"]
+    assert_equal "Service unavailable", result.dig("error", "message")
   end
 
-  test "Unexpected response is handled" do
+  test "response with missing content is returned as-is" do
+    # The client now just warns and returns the malformed response
+    mock_response = { "choices" => [ { "message" => { "something_other_than_content" => "HEHE" } } ] }
     mock_client = Object.new
-    def mock_client.chat(parameters:)
-      {
-        "choices" => {
-          "message" => {
-            "something_other_than_content" => "HEHE"
-          }
-        }
-      }
-    end
+    mock_client.define_singleton_method(:chat) { |parameters:| mock_response }
 
     @open_router_client.instance_variable_set(:@client, mock_client)
 
-    result = @open_router_client.chat(
-      model: @test_model,
-      messages: @test_messages
-    )
+    result = @open_router_client.chat(model: @test_model, messages: @test_messages)
 
-    assert_equal true, result[:error]
-    assert_equal "Received unexpected response from provider", result[:message]
+    # Assert the response is returned and content is nil
+    assert_not_nil result["choices"]
+    assert_nil result.dig("choices", 0, "message", "content")
   end
 
-  test "Faraday::Error is handled" do
+  test "Faraday::Error is handled and returns a formatted error hash" do
+    # Mock the client to raise a network error
     mock_client = Object.new
-    def mock_client.chat(parameters:)
-      raise Faraday::Error
-    end
+    def mock_client.chat(parameters:); raise Faraday::Error; end
 
     @open_router_client.instance_variable_set(:@client, mock_client)
 
-    result = @open_router_client.chat(
-      model: @test_model,
-      messages: @test_messages
-    )
+    result = @open_router_client.chat(model: @test_model, messages: @test_messages)
 
-    assert_equal true, result[:error]
-    assert_equal "Unable to connect to service provider", result[:message]
+    # Assert that the rescue block returns the correct structure
+    assert_equal "Unable to connect to service provider", result.dig("error", "message")
+    assert_equal "network_error", result.dig("error", "type")
   end
 
-  test "JSON::ParserError is handled" do
+  test "JSON::ParserError is handled and returns a formatted error hash" do
+    # Mock the client to raise a JSON parsing error
     mock_client = Object.new
-    def mock_client.chat(parameters:)
-      raise JSON::ParserError
-    end
+    def mock_client.chat(parameters:); raise JSON::ParserError; end
 
     @open_router_client.instance_variable_set(:@client, mock_client)
 
-    result = @open_router_client.chat(
-      model: @test_model,
-      messages: @test_messages
-    )
+    result = @open_router_client.chat(model: @test_model, messages: @test_messages)
 
-    assert_equal true, result[:error]
-    assert_equal "Error processing response", result[:message]
+    # Assert that the rescue block returns the correct structure
+    assert_equal "Error processing response", result.dig("error", "message")
+    assert_equal "json_parse_error", result.dig("error", "code")
   end
 
-  test "any other unexpected error is handled" do
+  test "any other unexpected error is handled and returns a formatted error hash" do
+    # Mock the client to raise a generic, unexpected error
     mock_client = Object.new
-    def mock_client.chat(parameters:)
-      raise "error"
-    end
+    def mock_client.chat(parameters:); raise "A generic error"; end
 
     @open_router_client.instance_variable_set(:@client, mock_client)
 
-    result = @open_router_client.chat(
-      model: @test_model,
-      messages: @test_messages
-    )
+    result = @open_router_client.chat(model: @test_model, messages: @test_messages)
 
-    assert_equal true, result[:error]
-    assert_equal "An unexpected error occurred", result[:message]
+    # Assert that the generic rescue block returns the correct structure
+    assert_equal "An unexpected error occurred", result.dig("error", "message")
+    assert_equal "internal_error", result.dig("error", "type")
   end
 
   test "handles optional parameters correctly" do
-    # Track what parameters were passed to the mock
-    @received_parameters = nil
-
+    # This test verifies that all parameters are correctly passed to the underlying client
+    captured_params = nil # Use a local variable to capture the parameters
     mock_client = Object.new
-    def mock_client.chat(parameters:)
-      # Store the parameters we received for later verification
-      @received_parameters = parameters
 
-      {
-        "choices" => [
-          {
-            "message" => {
-              "content" => "Hello, how can I help you today?"
-            }
-          }
-        ],
-        "usage" => {
-          "prompt_tokens" => 0,
-          "completion_tokens" => 4,
-          "total_tokens" => 4
-        }
-      }
-    end
-
-    # Add a method to access the stored parameters
-    def mock_client.received_parameters
-      @received_parameters
+    # Define a singleton method on the mock object to capture the parameters
+    mock_client.define_singleton_method(:chat) do |parameters:|
+      captured_params = parameters # Assign to the variable in the outer scope
+      # Return a minimal success response
+      { "choices" => [ { "message" => { "content" => "OK" } } ] }
     end
 
     @open_router_client.instance_variable_set(:@client, mock_client)
 
-    # Call with optional parameters
-    result = @open_router_client.chat(
+    @open_router_client.chat(
       model: @test_model,
       messages: @test_messages,
       temperature: 0.5,
       response_format: { type: "json_object" },
       max_tokens: 1000,
-      usage: { "include": true },
+      usage: { "include": true }
     )
 
-    # Verify the result is successful
-    assert_equal false, result[:error]
-
-    # Now verify that all parameters were passed correctly
-    assert_equal @test_model, mock_client.received_parameters[:model]
-    assert_equal @test_messages, mock_client.received_parameters[:messages]
-    assert_equal 0.5, mock_client.received_parameters[:temperature]
-    assert_equal({ type: "json_object" }, mock_client.received_parameters[:response_format])
-    assert_equal 1000, mock_client.received_parameters[:max_tokens]
-    assert_equal true, mock_client.received_parameters[:usage][:include]
+    assert_equal @test_model, captured_params[:model]
+    assert_equal @test_messages, captured_params[:messages]
+    assert_equal 0.5, captured_params[:temperature]
+    assert_equal({ type: "json_object" }, captured_params[:response_format])
+    assert_equal 1000, captured_params[:max_tokens]
+    assert_equal({ "include": true }, captured_params[:usage])
   end
 end
