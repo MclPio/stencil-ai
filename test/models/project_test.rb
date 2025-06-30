@@ -14,7 +14,7 @@ class ProjectTest < ActiveSupport::TestCase
     assert project.save, "Free user should be able to save their first project. Errors: #{project.errors.full_messages.join(", ")}"
   end
 
-  test "free user cannot create a second project" do
+  test "free user cannot create a third project" do
     # Get the free user from fixtures
     free_user = users(:free_user)
     # Create the first project successfully
@@ -22,9 +22,12 @@ class ProjectTest < ActiveSupport::TestCase
     assert first_project.persisted?, "First project for free user should be created. Errors: #{first_project.errors.full_messages.join(", ")}"
 
     # Attempt to create the second project
-    second_project = Project.new(user: free_user, title: "Free User Second Project")
-    assert_not second_project.save, "Second project for free user should not save."
-    assert_includes second_project.errors[:base], "Free users are limited to 1 project."
+    second_project = Project.create(user: free_user, title: "Free User Second Project")
+    assert second_project.persisted?, "First project for free user should be created. Errors: #{second_project.errors.full_messages.join(", ")}"
+
+    third_project = Project.new(user: free_user, title: "Free User Second Project")
+    assert_not third_project.save, "Second project for free user should not save."
+    assert_includes third_project.errors[:base], "Free users are limited to 2 project."
   end
 
   # --- Tests for Paid Users ---
