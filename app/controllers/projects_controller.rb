@@ -22,10 +22,13 @@ class ProjectsController < ApplicationController
   def update
     if @project.update(project_params)
       respond_to do |format|
-        format.html { redirect_to projects_path }
-        format.turbo_stream
+        format.html { redirect_to projects_path, notice: "Project was successfully updated." }
+        format.turbo_stream do
+          flash.now[:notice] = "Project was successfully updated."
+        end
       end
     else
+      flash.now[:alert] = @project.errors.full_messages.to_sentence
       render :edit, status: :unprocessable_entity
     end
   end

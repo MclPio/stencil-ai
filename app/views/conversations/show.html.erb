@@ -1,5 +1,8 @@
 <%= turbo_stream_from "conversation_#{@conversation.id}" %>
 <div id="toast_container" class="toast-container"></div>
+<turbo-frame id="flash">
+  <%= render partial: "layouts/flash_messages"%>
+</turbo-frame>
 <div class="flex w-full" data-controller="artifact" data-artifact-project-id-value=<%= @project.id %>>
   <%= render partial: "projects/menu", locals: { project: @project, projects: @projects } %>
   <%# WILL HOLD THE chat_navbar + chat content %>
@@ -17,7 +20,7 @@
     </main>
   </div>
 
-  <div class="divider divider-horizontal hidden" data-artifact-target="divider">🍰</div>
+  <div class="divider divider-horizontal hidden" data-artifact-target="divider"></div>
 
   <%# WILL HOLD artifact panel %>
   <div class="flex flex-col w-1/2 h-screen overflow-y-auto hidden" data-artifact-target="panel">

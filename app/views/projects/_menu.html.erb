@@ -31,7 +31,7 @@
     <li class="hidden" data-project-menu-target="link">
       <div class="flex items-center justify-between w-full pr-1">
         <%= link_to project_conversation_path(p), class: "flex-grow #{p == project ? 'menu-focus' : ''}" do %>
-          <span><%= p.title.truncate(16) %></span>
+          <span id="project_menu_title_<%= p.id %>"><%= p.title.truncate(16) %></span>
         <% end %>
         <div class="dropdown dropdown-end">
           <label tabindex="0" class="btn btn-ghost btn-xs p-1">

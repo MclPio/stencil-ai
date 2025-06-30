@@ -25,6 +25,9 @@ application.register("message-form", MessageFormController)
 import ProjectMenuController from "./project_menu_controller"
 application.register("project-menu", ProjectMenuController)
 
+import RemovableController from "./removable_controller"
+application.register("removable", RemovableController)
+
 import SvgZoomController from "./svg_zoom_controller"
 application.register("svg-zoom", SvgZoomController)
 

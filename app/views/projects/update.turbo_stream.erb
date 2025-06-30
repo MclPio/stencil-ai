@@ -1,5 +1,17 @@
+<turbo-stream action="update" target="flash">
+  <template>
+    <%= render partial: "layouts/flash_messages_timed", formats: [:html] %>
+  </template>
+</turbo-stream>
+
 <turbo-stream action="replace" target="project_title_<%= @project.id %>">
   <template>
     <summary id="project_title_<%= @project.id %>"><%= @project.title %></summary>
+  </template>
+</turbo-stream>
+
+<turbo-stream action="replace" target="project_menu_title_<%= @project.id %>">
+  <template>
+    <span id="project_menu_title_<%= @project.id %>"><%= @project.title.truncate(16) %></span>
   </template>
 </turbo-stream>
