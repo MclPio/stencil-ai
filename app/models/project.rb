@@ -16,8 +16,8 @@ class Project < ApplicationRecord
 
     case user.account_type
     when "free"
-      if project_count >= 1
-        errors.add(:base, "Free users are limited to 1 project.")
+      if project_count >= 2
+        errors.add(:base, "Free users are limited to 2 project.")
       end
     when "paid"
       if project_count >= 10

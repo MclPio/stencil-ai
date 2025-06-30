@@ -1,0 +1,19 @@
+<% if flash.present? %>
+  <div class="max-w-md mx-auto mb-4 space-y-2">
+    <% flash.each do |type, msg| %>
+      <% if type == "notice" %>
+        <div class="alert alert-success shadow-lg">
+          <div>
+            <span><%= msg %></span>
+          </div>
+        </div>
+      <% elsif type == "alert" %>
+        <div class="alert alert-error shadow-lg">
+          <div>
+            <span><%= msg %></span>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
