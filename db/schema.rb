@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_27_195322) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_30_031139) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -81,6 +81,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_27_195322) do
     t.index ["role"], name: "index_messages_on_role"
   end
 
+  create_table "open_router_daily_summaries", force: :cascade do |t|
+    t.string "user_type", null: false
+    t.bigint "user_id", null: false
+    t.date "day", null: false
+    t.integer "total_tokens", default: 0, null: false
+    t.decimal "cost", precision: 10, scale: 5, default: "0.0", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_type", "user_id", "day"], name: "index_daily_summaries_on_user_and_day", unique: true
+    t.index ["user_type", "user_id"], name: "index_open_router_daily_summaries_on_user"
+  end
+
   create_table "open_router_usage_logs", force: :cascade do |t|
     t.string "model", null: false
     t.integer "prompt_tokens", null: false
@@ -129,7 +141,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_27_195322) do
     t.datetime "updated_at", null: false
     t.string "name", null: false
     t.integer "account_type", default: 0, null: false
-    t.decimal "current_daily_cost", precision: 10, scale: 5, default: "0.0", null: false
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
