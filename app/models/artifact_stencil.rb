@@ -14,9 +14,9 @@ class ArtifactStencil < ApplicationRecord
   enum :category, { regular_text: 0, mermaid: 1 }, default: :regular_text
 
   ACCOUNT_TYPE_LIMITS = {
-    'free' => 2,
-    'paid' => 5,
-    'admin' => 20
+    "free" => 2,
+    "paid" => 5,
+    "admin" => 20
   }.freeze
 
   private

@@ -13,10 +13,10 @@ class FavoriteArtifactStencil < ApplicationRecord
   private
 
   def add_usage_count
-    artifact_stencil.usage_count += 1
+    artifact_stencil.increment!(:usage_count)
   end
 
   def subtract_usage_count
-    artifact_stencil.usage_count -= 1
+    artifact_stencil.decrement!(:usage_count)
   end
 end
