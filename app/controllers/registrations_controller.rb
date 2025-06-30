@@ -24,8 +24,7 @@ class RegistrationsController < ApplicationController
   def update
     @user = Current.user
     tab = params[:user][:redirect_tab] || "profile"
-
-    if @user.authenticate(params[:current_password])
+    if @user.authenticate(params[:user][:current_password])
       if params[:user][:name].present?
         # Handle name update
         if @user.update(name_params)
