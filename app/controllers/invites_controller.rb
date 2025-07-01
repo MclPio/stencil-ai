@@ -23,7 +23,7 @@ class InvitesController < ApplicationController
     @invite.destroy!
     redirect_to invites_path, notice: "Invite code was successfully deleted."
   rescue ActiveRecord::RecordNotDestroyed
-    redirect_to invites_path, alert: @invite.errors.full_messages.join(', ')
+    redirect_to invites_path, alert: @invite.errors.full_messages.join(", ")
   end
 
   private

@@ -14,7 +14,7 @@ class WeeklyConsumptionTest < ActiveSupport::TestCase
     @weekly_consumption.credits = -5
     assert_not @weekly_consumption.valid?, "WeeklyConsumption should be invalid with negative credits"
     assert_includes @weekly_consumption.errors[:credits], "must be greater than or equal to 0"
-    assert_no_difference 'WeeklyConsumption.count' do
+    assert_no_difference "WeeklyConsumption.count" do
       @weekly_consumption.save
     end
   end

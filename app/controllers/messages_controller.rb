@@ -29,7 +29,7 @@ class MessagesController < ApplicationController
           "conversation_#{@message.conversation_id}",
           target: "conversation-message-form",
           partial: "conversations/message_form_disabled",
-          locals: { conversation: @message.conversation}
+          locals: { conversation: @message.conversation }
         )
       end
       ToastHelper.show_toast("conversation_#{message_params[:conversation_id]}", "error", "Error",  @message.errors.full_messages.join(", "), 8000)

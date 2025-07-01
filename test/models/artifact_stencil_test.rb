@@ -125,7 +125,7 @@ class ArtifactStencilTest < ActiveSupport::TestCase
     end
 
     # Verify the user has exactly 2 stencils
-    assert_equal ArtifactStencil::ACCOUNT_TYPE_LIMITS['free'], @user.artifact_stencils.count, "User should have #{ArtifactStencil::ACCOUNT_TYPE_LIMITS['free']} stencils"
+    assert_equal ArtifactStencil::ACCOUNT_TYPE_LIMITS["free"], @user.artifact_stencils.count, "User should have #{ArtifactStencil::ACCOUNT_TYPE_LIMITS['free']} stencils"
 
     # Attempt to create a third stencil (should fail)
     stencil = ArtifactStencil.new(
@@ -143,7 +143,7 @@ class ArtifactStencilTest < ActiveSupport::TestCase
   test "paid user cannot create more than 5 stencils" do
     @user.artifact_stencils.destroy_all
     @user.update(account_type: "paid")
-    limit = ArtifactStencil::ACCOUNT_TYPE_LIMITS['paid']
+    limit = ArtifactStencil::ACCOUNT_TYPE_LIMITS["paid"]
 
     # Create 5 stencils successfully
     limit.times do |i|
@@ -184,7 +184,7 @@ class ArtifactStencilTest < ActiveSupport::TestCase
   end
 
   test "ACCOUNT_TYPE_LIMITS constant is defined correctly" do
-    expected = { 'free' => 2, 'paid' => 5, 'admin' => 20 }
+    expected = { "free" => 2, "paid" => 5, "admin" => 20 }
     assert_equal expected, ArtifactStencil::ACCOUNT_TYPE_LIMITS
     assert_predicate ArtifactStencil::ACCOUNT_TYPE_LIMITS, :frozen?
   end
