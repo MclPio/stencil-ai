@@ -55,6 +55,7 @@ message_collections = [
 ]
 
 stencil_admin = User.create!(email_address: "stencil@world.co", password: "1234", name: "free_stencil", account_type: "admin")
+invite = Invite.create!(admin: stencil_admin, reusable: true)
 
 user0 = User.create!(email_address: "user0@world.co", password: "1234", name: "Joe Smith", account_type: "paid", invite_code: invite.invite_code)
 user1 = User.create!(email_address: "user1@world.co", password: "1234", name: "Mikey Hanma", account_type: "paid", invite_code: invite.invite_code)
