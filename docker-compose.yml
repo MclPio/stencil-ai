@@ -19,7 +19,7 @@ services:
       # The user that will be created with superuser privileges.
       POSTGRES_USER: stencilai
       # We remove POSTGRES_DB because the init.sql script now handles all database creation.
-      POSTGRES_PASSWORD: ${POSTGRESQL_ROOT_PASSWORD}
+      POSTGRES_PASSWORD: ${POSTGRESPASSWORD}
 
   web:
     build: . # Build the image from the Dockerfile in the current directory
@@ -38,7 +38,7 @@ services:
       DATABASE_HOST: db
       # These will be loaded from your .env file
       RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
-      POSTGRESQL_ROOT_PASSWORD: ${POSTGRESQL_ROOT_PASSWORD}
+      POSTGRESPASSWORD: ${POSTGRESPASSWORD}
 
 volumes:
   db_data: # Defines the named volume for persistent database data
