@@ -1,0 +1,4 @@
+CREATE DATABASE stencilai_production;
+CREATE DATABASE stencilai_production_cache;
+CREATE DATABASE stencilai_production_queue;
+CREATE DATABASE stencilai_production_cable;
