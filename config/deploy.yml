@@ -7,7 +7,7 @@ image: mclpio/stencilai
 # Deploy to these servers.
 servers:
   web:
-    - 192.168.0.1 # CHANGE ME!
+    - 5.161.91.5
   # job:
   #   hosts:
   #     - 192.168.0.1
@@ -19,7 +19,7 @@ servers:
 # Note: If using Cloudflare, set encryption mode in SSL/TLS setting to "Full" to enable CF-to-app encryption.
 proxy:
   ssl: true
-  host: app.example.com # CHANGEME
+  host: stencil-ai.xyz
 
 # Credentials for your image host.
 registry:
@@ -96,9 +96,9 @@ builder:
 accessories:
   db:
     image: postgresql:16.0
-    host: 192.168.0.2 # CHANGE ME
-    # Change to 3306 to expose port to the world instead of just local network.
-    port: "127.0.0.1:3306:3306"
+    host: 5.161.91.5 # CHANGE ME
+    # Change to 5432 to expose port to the world instead of just local network.
+    port: "127.0.0.1:5432:5432"
     env:
       clear:
         POSTGRESQL_ROOT_HOST: '%'
