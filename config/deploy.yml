@@ -107,6 +107,8 @@ accessories:
       - db/production.sql:/docker-entrypoint-initdb.d/setup.sql
     directories:
       - data:/var/lib/postgresql
+    healthcheck:
+      cmd: pg_isready -U stencilai -d stencilai_production
   # redis:
   #   image: redis:7.0
   #   host: 192.168.0.2
