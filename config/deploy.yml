@@ -101,10 +101,9 @@ accessories:
     port: "127.0.0.1:5432:5432"
     env:
       clear:
-        POSTGRES_USER: stencilai
         POSTGRESQL_ROOT_HOST: '%'
       secret:
-        - POSTGRESQL_ROOT_PASSWORD
+        - POSTGRES_PASSWORD
     files:
       # - config/mysql/production.cnf:/etc/mysql/my.cnf
       - db/production.sql:/docker-entrypoint-initdb.d/setup.sql
