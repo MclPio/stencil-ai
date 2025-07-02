@@ -96,7 +96,9 @@ ssh:
 accessories:
   db:
     image: postgres:16.0
-    role: web
+    host: 5.161.91.5 # CHANGE ME
+    # Change to 5432 to expose port to the world instead of just local network.
+    port: "127.0.0.1:5432:5432"
     env:
       clear:
         POSTGRESQL_ROOT_HOST: '%'
@@ -107,8 +109,6 @@ accessories:
       - db/production.sql:/docker-entrypoint-initdb.d/setup.sql
     directories:
       - data:/var/lib/postgresql
-    healthcheck:
-      cmd: pg_isready -U stencilai -d stencilai_production
   # redis:
   #   image: redis:7.0
   #   host: 192.168.0.2
