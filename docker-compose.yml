@@ -1,0 +1,38 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: always
+    # This volume persists the database data on your host machine
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    # These variables MUST match the 'production' block in your database.yml
+    # and the password in your .env file.
+    environment:
+      POSTGRES_USER: stencilai
+      POSTGRES_DB: stencilai_production
+      POSTGRES_PASSWORD: ${POSTGRESQL_ROOT_PASSWORD}
+
+  web:
+    build: . # Build the image from the Dockerfile in the current directory
+    restart: always
+    # Expose port 3000 on the host and map it to port 80 in the container
+    ports:
+      - "3000:80"
+    # This ensures the db container is running before the web container starts
+    depends_on:
+      - db
+    # Pass environment variables from the .env file to the container
+    # This is much more secure and flexible than hardcoding them.
+    environment:
+      RAILS_ENV: production
+      # This is the crucial change: tell Rails to find the database at host 'db'
+      DATABASE_HOST: db
+      # These will be loaded from your .env file
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      POSTGRESQL_ROOT_PASSWORD: ${POSTGRESQL_ROOT_PASSWORD}
+
+volumes:
+  db_data: # Defines the named volume for persistent database data
+
