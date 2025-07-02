@@ -97,8 +97,6 @@ accessories:
   db:
     image: postgres:16.0
     host: 5.161.91.5 # CHANGE ME
-    # Change to 5432 to expose port to the world instead of just local network.
-    port: "127.0.0.1:5432:5432"
     env:
       clear:
         POSTGRESQL_ROOT_HOST: '%'
