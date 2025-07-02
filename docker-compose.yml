@@ -1,3 +1,5 @@
+# docker-compose.yml
+
 version: '3.9'
 
 services:
@@ -7,11 +9,16 @@ services:
     # This volume persists the database data on your host machine
     volumes:
       - db_data:/var/lib/postgresql/data
+      # This line mounts your SQL script. The postgres image will automatically
+      # execute any .sql files in this directory on initialization.
+      # This makes your local setup perfectly match your Kamal setup.
+      - ./db/production.sql:/docker-entrypoint-initdb.d/init.sql
     # These variables MUST match the 'production' block in your database.yml
     # and the password in your .env file.
     environment:
+      # The user that will be created with superuser privileges.
       POSTGRES_USER: stencilai
-      POSTGRES_DB: stencilai_production
+      # We remove POSTGRES_DB because the init.sql script now handles all database creation.
       POSTGRES_PASSWORD: ${POSTGRESQL_ROOT_PASSWORD}
 
   web:
@@ -35,4 +42,3 @@ services:
 
 volumes:
   db_data: # Defines the named volume for persistent database data
-
