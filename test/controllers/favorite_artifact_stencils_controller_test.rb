@@ -96,7 +96,7 @@ class FavoriteArtifactStencilsControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference "FavoriteArtifactStencil.count" do
       delete favorite_artifact_stencil_url(favorite_artifact_stencil)
     end
-    assert_redirected_to root_path
+    assert_redirected_to favorite_artifact_stencils_path
     assert_equal "You are not authorized to perform this action.", flash[:alert]
   end
 
@@ -104,7 +104,7 @@ class FavoriteArtifactStencilsControllerTest < ActionDispatch::IntegrationTest
     post session_url, params: { email_address: @user.email_address, password: "1234" }
 
     delete favorite_artifact_stencil_url(id: 9999)
-    assert_redirected_to root_path
+    assert_redirected_to favorite_artifact_stencils_path
     assert_equal "favorite_artifact_stencil not found.", flash[:alert]
   end
 

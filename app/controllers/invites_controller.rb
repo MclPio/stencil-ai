@@ -34,6 +34,6 @@ class InvitesController < ApplicationController
 
   def authorize_admin
     return if Current.user.account_type_admin?
-    redirect_to root_path, alert: "Not found."
+    redirect_to projects_path, alert: "Not found."
   end
 end

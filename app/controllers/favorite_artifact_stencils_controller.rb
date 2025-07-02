@@ -39,7 +39,7 @@ class FavoriteArtifactStencilsController < ApplicationController
   def set_favorite_artifact_stencil
     @favorite_artifact_stencil = FavoriteArtifactStencil.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    redirect_to root_path, alert: "favorite_artifact_stencil not found."
+    redirect_to favorite_artifact_stencils_path, alert: "favorite_artifact_stencil not found."
   end
 
   def favorite_artifact_stencil_params
@@ -48,6 +48,6 @@ class FavoriteArtifactStencilsController < ApplicationController
 
   def authorize_user
     return if @favorite_artifact_stencil.user_id == Current.user.id
-    redirect_to root_path, alert: "You are not authorized to perform this action."
+    redirect_to favorite_artifact_stencils_path, alert: "You are not authorized to perform this action."
   end
 end

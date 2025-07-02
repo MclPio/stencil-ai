@@ -21,7 +21,7 @@ class ArtifactStencilsController < ApplicationController
 
   def destroy
     @artifact_stencil.destroy
-    redirect_to root_path
+    redirect_to favorite_artifact_stencils_path
   end
 
   private
@@ -29,7 +29,7 @@ class ArtifactStencilsController < ApplicationController
   def set_artifact_stencil
     @artifact_stencil = ArtifactStencil.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    redirect_to root_path, alert: "Artifact Stencil not found."
+    redirect_to favorite_artifact_stencils_path, alert: "Artifact Stencil not found."
   end
 
   def artifact_stencil_params
@@ -38,11 +38,11 @@ class ArtifactStencilsController < ApplicationController
 
   def authorize_user
     return if @artifact_stencil.user_id == Current.user.id
-    redirect_to root_path, alert: "You are not authorized to perform this action."
+    redirect_to favorite_artifact_stencils_path, alert: "You are not authorized to perform this action."
   end
 
   def authorize_show
     return if @artifact_stencil.published? || @artifact_stencil.user_id == Current.user.id
-    redirect_to root_path, alert: "Artifact not found."
+    redirect_to favorite_artifact_stencils_path, alert: "Artifact not found."
   end
 end

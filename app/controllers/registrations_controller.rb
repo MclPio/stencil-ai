@@ -11,7 +11,7 @@ class RegistrationsController < ApplicationController
     if @user.save
       UserMailer.welcome(@user).deliver_later
       start_new_session_for @user
-      redirect_to root_path, notice: "Successfully signed up!"
+      redirect_to new_registration_url, notice: "Successfully signed up!"
     else
       render :new, status: :unprocessable_entity
     end

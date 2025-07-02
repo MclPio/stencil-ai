@@ -12,7 +12,7 @@ class InvitesControllerTest < ActionDispatch::IntegrationTest
     sign_in_as @non_admin
 
     get invites_url
-    assert_redirected_to root_path
+    assert_redirected_to projects_path
   end
 
   test "admin can access invite pages" do
