@@ -85,7 +85,7 @@ production:
     <<: *default
     database: stencilai_production
     username: stencilai
-    password: <%= ENV["POSTGRESQL_PASSWORD"] %>
+    password: <%= ENV["POSTGRES_PASSWORD"] %>
   cache:
     <<: *primary_production
     database: stencilai_production_cache
