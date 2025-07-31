@@ -68,4 +68,4 @@ gem "jsbundling-rails", "~> 1.3"
 
 gem "cssbundling-rails", "~> 1.4"
 
-gem "open_router_usage_tracker", "~> 0.2.0"
+gem "open_router_usage_tracker", "~> 1.0.0"
