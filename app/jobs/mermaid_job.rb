@@ -63,34 +63,65 @@ class MermaidJob < ApplicationJob
     message_history = conversation.formatted_messages
     messages = [ { role: "system", content: stencil_prompt } ] + message_history
 
-    response = client.chat(
-      model: "google/gemini-2.5-flash-lite-preview-06-17",
-      messages: messages,
-      temperature: 0.3,
-      usage: { "include": true },
-      response_format: {
-        "type": "json_schema",
-        "json_schema": {
-          "name": "info",
-          "strict": true,
-          "schema": {
-            "type": "object",
-            "properties": {
-              "mermaid": {
-                "type": "string",
-                "description": "mermaid js code only"
+    if stencil.mermaid?
+      response = client.chat(
+        model: "google/gemini-2.5-flash-lite-preview-06-17",
+        messages: messages,
+        temperature: 0.3,
+        usage: { "include": true },
+        response_format: {
+          "type": "json_schema",
+          "json_schema": {
+            "name": "info",
+            "strict": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "mermaid": {
+                  "type": "string",
+                  "description": "mermaid js code only"
+                },
+                "explanation": {
+                  "type": "string",
+                  "description": "An explanation of the mermaid creation and any additional comments go here"
+                }
               },
-              "explanation": {
-                "type": "string",
-                "description": "An explanation of the mermaid creation and any additional comments go here"
-              }
-            },
-            "required": [ "mermaid", "explanation" ],
-            "additionalProperties": false
+              "required": [ "mermaid", "explanation" ],
+              "additionalProperties": false
+            }
           }
         }
-      }
-    )
+      )
+    elsif stencil.regular_text?
+      response = client.chat(
+        model: "google/gemini-2.5-flash-lite-preview-06-17",
+        messages: messages,
+        temperature: 0.7,
+        usage: { "include": true },
+        response_format: {
+          "type": "json_schema",
+          "json_schema": {
+            "name": "info",
+            "strict": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "mermaid": {
+                  "type": "string",
+                  "description": "your response to the query and system prompt"
+                },
+                "explanation": {
+                  "type": "string",
+                  "description": "An explanation of the response and any additional comments go here"
+                }
+              },
+              "required": [ "mermaid", "explanation" ],
+              "additionalProperties": false
+            }
+          }
+        }
+      )
+    end
     response
   end
 

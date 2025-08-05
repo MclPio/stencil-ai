@@ -1,13 +1,18 @@
-<!-- Raw Mermaid Code -->
-<div class="mb-6">
-  <h2 class="text-xl font-bold mb -2">Mermaid JS Code</h2>
-  <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto"><code><%= @project.artifacts.find(artifact_id).content %></code></pre>
-</div>
+<% artifact_stencil = @project.artifacts.find(artifact_id).artifact_stencil %>
 
-<!-- Rendered Diagram -->
-<div class="mb-6">
-  <h2 class="text-xl font-bold mb-2">Mermaid Diagram</h2>
-  <div id="mermaid-diagram-model" class="mermaid bg-white p-4 border rounded-lg" data-svg-zoom-target="diagram">
-    <%= @project.artifacts.find(artifact_id).content %>
+<% if artifact_stencil.regular_text? %>
+  <!-- Raw Mermaid Code -->
+  <div class="mb-6">
+    <pre class="bg-gray-100 p-4 rounded-lg whitespace-pre-wrap break-words"><code><%= @project.artifacts.find(artifact_id).content %></code></pre>
   </div>
-</div>
+<% end %>
+
+<% if artifact_stencil.mermaid? %>
+  <!-- Rendered Diagram -->
+  <div class="mb-6">
+    <h2 class="text-xl font-bold mb-2">Mermaid Diagram</h2>
+    <div id="mermaid-diagram-model" class="mermaid bg-white p-4 border rounded-lg" data-svg-zoom-target="diagram">
+      <%= @project.artifacts.find(artifact_id).content %>
+    </div>
+  </div>
+<% end %>
