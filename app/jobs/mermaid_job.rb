@@ -106,16 +106,16 @@ class MermaidJob < ApplicationJob
             "schema": {
               "type": "object",
               "properties": {
-                "mermaid": {
+                "text": {
                   "type": "string",
-                  "description": "your response to the query and system prompt"
+                  "description": "your response to the query"
                 },
                 "explanation": {
                   "type": "string",
                   "description": "An explanation of the response and any additional comments go here"
                 }
               },
-              "required": [ "mermaid", "explanation" ],
+              "required": [ "info", "explanation" ],
               "additionalProperties": false
             }
           }
