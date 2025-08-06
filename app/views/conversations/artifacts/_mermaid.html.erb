@@ -1,11 +1,9 @@
 <% artifact_stencil = @project.artifacts.find(artifact_id).artifact_stencil %>
 
-<% if artifact_stencil.regular_text? %>
-  <!-- Raw Mermaid Code -->
-  <div class="mb-6">
-    <pre class="bg-gray-100 p-4 rounded-lg whitespace-pre-wrap break-words"><code><%= @project.artifacts.find(artifact_id).content %></code></pre>
-  </div>
-<% end %>
+<!-- Raw Mermaid Code -->
+<div class="mb-6">
+  <pre class="bg-gray-100 p-4 rounded-lg whitespace-pre-wrap break-words"><code><%= @project.artifacts.find(artifact_id).content %></code></pre>
+</div>
 
 <% if artifact_stencil.mermaid? %>
   <!-- Rendered Diagram -->

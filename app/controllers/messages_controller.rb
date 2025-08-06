@@ -18,7 +18,7 @@ class MessagesController < ApplicationController
 
       if ids_exist
         id_set.each do |artifact_stencil_id, favorite_artifact_stencil_id|
-          MermaidJob.perform_later(message_params[:conversation_id], artifact_stencil_id, favorite_artifact_stencil_id, Current.user)
+          ContentGenerationJob.perform_later(message_params[:conversation_id], artifact_stencil_id, favorite_artifact_stencil_id, Current.user)
         end
       else
         ProcessLlmChatJob.perform_later(message_params[:conversation_id], Current.user)
