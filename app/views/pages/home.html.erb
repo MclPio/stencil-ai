@@ -1,118 +1,86 @@
-<div class="min-h-screen bg-base-200 font-sans"> <div class="navbar bg-base-100/80 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
-    <div class="flex-1">
-      <%= link_to root_path, class: "btn btn-ghost text-xl flex items-center gap-2" do %>
+<div class="bg-base-100 text-bright-off-white font-jakarta">
+
+  <div class="navbar bg-base-100">
+    <div class="navbar-start">
+      <a class="btn btn-ghost text-xl">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-primary">
           <path stroke-linecap="round" stroke-linejoin="round" d="M9 13.5l3 3m0 0l3-3m-3 3v-6m1.06-4.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
         </svg>
-        Stencil AI
-      <% end %>
+        <span class="font-space font-bold">Stencil AI</span>
+      </a>
     </div>
-    <div class="flex-none">
-      <ul class="menu menu-horizontal px-1 items-center gap-2">
-        <% if Current.user %>
-          <li><%= link_to "Go to App", projects_path, class: "btn btn-primary" %></li>
-          <li><%= link_to "Sign Out", session_path, method: :delete, data: { turbo_method: :delete }, class: "btn btn-ghost" %></li>
-        <% else %>
-          <li><%= link_to "Sign In", new_session_path, class: "btn btn-ghost" %></li>
-          <li><%= link_to "Sign Up", new_registration_path, class: "btn btn-primary" %></li>
-        <% end %>
-      </ul>
+    <div class="navbar-end">
+      <% if Current.user %>
+        <%= link_to "Go to App", projects_path, class: "btn btn-primary" %>
+        <%= link_to "Sign Out", session_path, method: :delete, data: { turbo_method: :delete }, class: "btn btn-ghost" %>
+      <% else %>
+        <%= link_to "Sign In", new_session_path, class: "btn btn-ghost" %>
+        <%= link_to "Sign Up", new_registration_path, class: "btn btn-primary" %>
+      <% end %>
     </div>
   </div>
 
-  <section class="hero min-h-[70vh] bg-base-100">
-    <div class="hero-content text-center max-w-4xl">
-      <div>
-        <h1 class="text-6xl font-bold bg-gradient-to-r from-primary to-accent inline-block text-transparent bg-clip-text mb-4">
-          Automate Your AI Workflows
-        </h1>
-        <p class="text-xl text-base-content/80 mb-8">
-          Stop repeating yourself. Stencil is an AI chat built for professionals who need to generate structured documents—like user stories, reports, or diagrams—repeatedly. Build your library of prompt Stencils, and deploy them in any conversation.
-        </p>
-        <%= link_to "Start Building for Free", new_registration_path, class: "btn btn-primary btn-lg" %>
+  <header class="text-center py-20">
+    <h1 class="text-6xl font-bold font-space">Generate Structured Documents with AI</h1>
+    <p class="text-xl text-softer-off-white mt-4">Stop repeating yourself. Stencil is an AI chat built for professionals who need to generate structured documents repeatedly.</p>
+    <div class="mt-8">
+      <%= link_to "Start Building for Free", new_registration_path, class: "btn btn-primary btn-lg" %>
+    </div>
+    <div class="mt-12">
+      <div class="inline-block bg-gray-800 rounded-lg p-8">
+        <div class="w-64 h-64 bg-gray-700 rounded-full mx-auto"></div>
       </div>
     </div>
-  </section>
+  </header>
 
-  <section class="py-20 px-4">
-    <div class="max-w-5xl mx-auto">
+  <section class="py-20">
+    <div class="container mx-auto px-6">
       <div class="text-center mb-12">
-        <h2 class="text-4xl font-bold">From Chat to Document in a Single Command</h2>
-        <p class="text-lg text-base-content/70 mt-2">The workflow is simple, fast, and built for iteration.</p>
+        <h2 class="text-4xl font-bold font-space">From Chat to Document in a Single Command</h2>
+        <p class="text-lg text-softer-off-white mt-2">The workflow is simple, fast, and built for iteration.</p>
       </div>
-
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-        <div class="flex flex-col items-center">
-          <div class="rounded-full bg-primary/10 p-4 mb-4">
-            <svg class="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L15.232 5.232z"></path></svg>
-          </div>
-          <h3 class="text-xl font-semibold mb-2">1. Create & Discover Stencils</h3>
-          <p class="text-base-content/70">Build your own private library of powerful prompt templates (Stencils) or subscribe to public ones created by the community.</p>
+        <div class="p-8 border border-gray-800 rounded-lg">
+          <h3 class="text-xl font-bold font-space mb-2">1. Create & Discover Stencils</h3>
+          <p class="text-softer-off-white">Build your own private library of powerful prompt templates (Stencils) or subscribe to public ones created by the community.</p>
         </div>
-
-        <div class="flex flex-col items-center">
-          <div class="rounded-full bg-primary/10 p-4 mb-4">
-            <svg class="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-          </div>
-          <h3 class="text-xl font-semibold mb-2">2. Queue Your Generation</h3>
-          <p class="text-base-content/70">In any chat, select one or more Stencils you need. Generate a user journey diagram, a marketing email, and a project timeline all at once.</p>
+        <div class="p-8 border border-gray-800 rounded-lg">
+          <h3 class="text-xl font-bold font-space mb-2">2. Queue Your Generation</h3>
+          <p class="text-softer-off-white">In any chat, select one or more Stencils you need. Generate a user journey diagram, a marketing email, and a project timeline all at once.</p>
         </div>
-
-        <div class="flex flex-col items-center">
-          <div class="rounded-full bg-primary/10 p-4 mb-4">
-            <svg class="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-          </div>
-          <h3 class="text-xl font-semibold mb-2">3. Generate & Iterate</h3>
-          <p class="text-base-content/70">Get all your artifacts generated instantly by Gemini. Then, use the chat to select and refine any generated piece with follow-up commands.</p>
+        <div class="p-8 border border-gray-800 rounded-lg">
+          <h3 class="text-xl font-bold font-space mb-2">3. Generate & Iterate</h3>
+          <p class="text-softer-off-white">Get all your artifacts generated instantly by Gemini. Then, use the chat to select and refine any generated piece with follow-up commands.</p>
         </div>
       </div>
     </div>
   </section>
 
-
-  <section class="py-20 px-4 bg-base-100">
-    <div class="max-w-4xl mx-auto text-center">
-      <h2 class="text-4xl font-bold mb-12">The Power of a Composable AI Workspace</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
-        <div class="card bg-base-200 shadow-md p-6">
-          <h3 class="text-xl font-semibold mb-2">Reusable Prompt Stencils</h3>
-          <p>Define an output once—text, JSON, Mermaid diagram—and reuse it forever. Stop copy-pasting complex instructions.</p>
-        </div>
-        <div class="card bg-base-200 shadow-md p-6">
-          <h3 class="text-xl font-semibold mb-2">Batch Generation</h3>
-          <p>Why wait for one prompt at a time? Queue up multiple Stencils and let the AI build a complete document in a single run.</p>
-        </div>
-        <div class="card bg-base-200 shadow-md p-6">
-          <h3 class="text-xl font-semibold mb-2">Context-Aware Iteration</h3>
-          <p>Your chat history and generated artifacts form the context. Highlight a diagram and simply say, "add a database to this," to make edits.</p>
-        </div>
-        <div class="card bg-base-200 shadow-md p-6">
-          <h3 class="text-xl font-semibold mb-2">Powered by Gemini</h3>
-          <p>Leverage the speed and power of Google's Gemini model for fast, high-quality output, optimized for our unique workflow.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="py-20 px-4">
-    <div class="max-w-2xl mx-auto text-center">
-      <h2 class="text-4xl font-bold mb-4">Stop Prompting. Start Building.</h2>
-      <p class="text-lg mb-6 text-base-content/70">Sign up and build your first Stencil in seconds. It's free to get started.</p>
+  <section class="py-20 text-center">
+    <h2 class="text-4xl font-bold font-space">Stop Prompting. Start Building.</h2>
+    <p class="text-lg text-softer-off-white mt-4">Sign up and build your first Stencil in seconds. It's free to get started.</p>
+    <div class="mt-8">
       <%= link_to "Create Your Free Account", new_registration_path, class: "btn btn-primary btn-lg" %>
     </div>
   </section>
-</div>
 
-<footer class="footer p-10 bg-base-300 text-base-content flex justify-center">
-  <div>
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M9 13.5l3 3m0 0l3-3m-3 3v-6m1.06-4.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-    </svg>
-    <p>Stencil AI<br/>Automate your AI interactions.</p>
-  </div>
-  <div>
-    <span class="footer-title">Legal</span>
-    <%= link_to "Privacy Policy", privacy_policy_path, class: "link link-hover" %>
-    <%= link_to "Terms of Use", terms_of_use_path, class: "link link-hover" %>
-  </div>
-</footer>
+  <footer class="footer footer-center p-10 bg-base-200 text-base-content rounded">
+    <div class="grid grid-flow-col gap-4">
+      <a class="link link-hover">About us</a>
+      <a class="link link-hover">Contact</a>
+      <a class="link link-hover">Jobs</a>
+      <a class="link link-hover">Press kit</a>
+    </div> 
+    <div>
+      <div class="grid grid-flow-col gap-4">
+        <a><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616v.064c0 2.297 1.634 4.208 3.803 4.649-.625.17-1.284.26-1.96.26-.304 0-.6-.03-1.084-.104.635 1.901 2.423 3.285 4.564 3.325-1.798 1.407-4.069 2.245-6.516 2.245-.423 0-.84-.025-1.254-.074 2.323 1.496 5.078 2.372 8.048 2.372 9.673 0 14.975-8.012 14.975-14.975 0-.227-.005-.453-.014-.678.98-.71 1.824-1.602 2.516-2.612z"></path></svg></a> 
+        <a><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"></path></svg></a> 
+        <a><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"></path></svg></a>
+      </div>
+    </div> 
+    <div>
+      <p>Copyright © <%= Time.now.year %> - All right reserved by Stencil AI</p>
+    </div>
+  </footer>
+
+</div>
