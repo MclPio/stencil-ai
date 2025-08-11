@@ -1,3 +1,16 @@
+:root {
+  --font-space: "Space Grotesk", sans-serif;
+  --font-jakarta: "Plus Jakarta Sans", sans-serif;
+}
+
+.font-space {
+  font-family: var(--font-space);
+}
+
+.font-jakarta {
+  font-family: var(--font-jakarta);
+}
+
 .chat-form {
   display: flex;
   flex-direction: column;
