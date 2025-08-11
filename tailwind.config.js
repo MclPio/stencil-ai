@@ -1,4 +1,3 @@
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -10,14 +9,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'not-quite-black': '#0A0A0A',
-        'bright-off-white': '#F5F5F5',
-        'softer-off-white': '#A3A3A3',
-        'electric-blue': '#3B82F6',
+        'not-quite-black': 'var(--not-quite-black)',
+        'bright-off-white': 'var(--bright-off-white)',
+        'softer-off-white': 'var(--softer-off-white)',
+        'electric-blue': 'var(--electric-blue)',
       },
       fontFamily: {
-        space: ['"Space Grotesk"', 'sans-serif'],
-        jakarta: ['"Plus Jakarta Sans"', 'sans-serif'],
+        space: ['var(--font-space)', 'sans-serif'],
+        jakarta: ['var(--font-jakarta)', 'sans-serif'],
       }
     },
   },
