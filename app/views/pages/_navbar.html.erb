@@ -1,87 +1,13 @@
-<!-- app/views/layouts/_navbar.html.erb -->
-<style>
-  .logo-container {
-    position: relative;
-    width: 2rem;
-    height: 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .logo-outline {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 2;
-    color: var(--not-quite-black);
-    filter: 
-      drop-shadow(0 0 1px var(--bright-off-white))
-      contrast(2);
-    opacity: 0.7;
-    transform: scale(1.03);
-  }
-  
-  /* Navbar styling with our color palette */
-  .navbar {
-    background-color: var(--bright-off-white);
-    border-bottom: 1px solid var(--bright-off-white);
-  }
-  
-  .navbar-link {
-    color: var(--not-quite-black);
-    font-family: var(--font-jakarta);
-  }
-  
-  .navbar-link:hover {
-    color: var(--electric-blue);
-  }
-  
-  .navbar-brand {
-    font-family: var(--font-space);
-    color: var(--not-quite-black);
-  }
-  
-  .btn-outline {
-    color: var(--not-quite-black);
-    border-color: var(--not-quite-black);
-    font-family: var(--font-jakarta);
-  }
-  
-  .btn-outline:hover {
-    background-color: var(--not-quite-black);
-    color: var(--bright-off-white);
-  }
-  
-  .btn-primary {
-    background-color: var(--electric-blue);
-    border-color: var(--electric-blue);
-    color: var(--bright-off-white);
-    font-family: var(--font-jakarta);
-  }
-  
-  .btn-primary:hover {
-    background-color: #2563eb; /* A slightly darker blue */
-    border-color: #2563eb;
-  }
-</style>
-
 <nav class="navbar shadow-md">
   <!-- Left Side: Logo, SaaS Name, and Feature Links -->
   <div class="navbar-start">
     <!-- Logo and SaaS Name -->
     <div class="flex items-center space-x-2">
-      <!-- Artistic Logo - Simplified -->
-      <div class="logo-container">
-        <%= image_tag "petals.svg", 
-             class:"logo-base w-8 h-8", 
-             alt: "Logo" %>
-      </div>
-      <span class="font-bold text-xl navbar-brand">stencil-ai</span>
+      <span class="font-bold text-xl navbar-brand font-space">stencil-ai</span>
     </div>
     
     <!-- Feature Links (hidden on mobile) -->
-    <div class="hidden md:flex ml-8 space-x-6">
+    <div class="hidden md:flex ml-8 space-x-6 font-jakarta">
       <%= link_to "Features", "#", class: "navbar-link font-medium" %>
       <%= link_to "Solutions", "#", class: "navbar-link font-medium" %>
       <%= link_to "Pricing", "#", class: "navbar-link font-medium" %>
@@ -97,7 +23,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
         </svg>
       </div>
-      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow rounded-box w-52" style="background-color: var(--bright-off-white)">
+      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow rounded-box w-52 font-jakarta" style="background-color: white">
         <li><%= link_to "Features", "#", class: "navbar-link" %></li>
         <li><%= link_to "Solutions", "#", class: "navbar-link" %></li>
         <li><%= link_to "Pricing", "#", class: "navbar-link" %></li>
@@ -109,7 +35,7 @@
   </div>
   
   <!-- Right Side: Sign Up and Login Buttons -->
-  <div class="navbar-end hidden md:flex space-x-3">
+  <div class="navbar-end hidden md:flex space-x-3 font-jakarta">
     <%= link_to "Login", "#", class: "btn btn-outline" %>
     <%= link_to "Sign Up", "#", class: "btn btn-primary" %>
   </div>

@@ -3,3 +3,4 @@
   themes: light --default;
 }
 @import "./styles.css";
+@import "./lander.css"

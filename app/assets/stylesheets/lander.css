@@ -1,0 +1,80 @@
+:root {
+  /* Color Palette */
+  --not-quite-black: #0A0A0A;
+  --bright-off-white: #F5F5F5;
+  --softer-off-white: #A3A3A3;
+  --electric-blue: #3B82F6;
+  
+  /* Fonts */
+  --font-space: "Space Grotesk", sans-serif;
+  --font-jakarta: "Plus Jakarta Sans", sans-serif;
+}
+
+/* Font Helper Classes */
+.font-space {
+  font-family: var(--font-space);
+}
+
+.font-jakarta {
+  font-family: var(--font-jakarta);
+}
+
+/* Color Helper Classes */
+.text-not-quite-black {
+  color: var(--not-quite-black);
+}
+
+.text-bright-off-white {
+  color: var(--bright-off-white);
+}
+
+.text-softer-off-white {
+  color: var(--softer-off-white);
+}
+
+.text-electric-blue {
+  color: var(--electric-blue);
+}
+
+.bg-not-quite-black {
+  background-color: var(--not-quite-black);
+}
+
+.bg-bright-off-white {
+  background-color: var(--bright-off-white);
+}
+
+.bg-softer-off-white {
+  background-color: var(--softer-off-white);
+}
+
+.bg-electric-blue {
+  background-color: var(--electric-blue);
+}
+
+.lander_component {
+  margin-left: 4rem;
+  margin-right: 4rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.hero_heading {
+  font-family: var(--font-space);
+  font-size: xx-large;
+}
+
+.hero_sub_heading {
+  font-family: var(--font-jakarta);
+  font-size: large;
+}
+
+.hero_cta_section {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.hero_cta_button {
+  margin-top: 1rem;
+}
