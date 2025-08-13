@@ -36,3 +36,6 @@ application.register("tab-switcher", TabSwitcherController)
 
 import ToastController from "./toast_controller"
 application.register("toast", ToastController)
+
+import ViewportController from "./viewport_controller"
+application.register("viewport", ViewportController)
