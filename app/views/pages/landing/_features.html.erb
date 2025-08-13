@@ -14,4 +14,57 @@
   <%# 7) For each output we need an intermediate part that shows that they are premade stencils with detailed prompts. For your info: the stencils can be hand crafted by the user base and shared. So what we need to indicate with these is that they each are doing something different based on the chat context. %>
   <%# 8) So this needs to feel like a serious chat visualization of the features section. So I need some method to do so. Problem is, I plan to rebuild the chat interface so if I take direct photos there would be issues: 1) Going to be expired since UI will change. 2) Would not be very appealing to show pictures of the workflow. We need to just give an idea of the workflow so visitors get excited to try it out. %>
   <%# Your task would be to suggest a method for me to build this. I am highly doubtful that you can do it properly. Some ideas I have is 1) have you make it using the tailwindcss and daisyui components I have access to... additionally make custom css animations, classes etc... to make it appealing using lander.css file. 2) Better option would be for me to find some tooling to illustrate this properly myself, but it would be difficult to make animations I imagine. The animations I am talking about are the lines of beams that move from one box to another when vercel is showcasing their "Deploy once, deliver everywhere" and they have the planet with lines that connect to nodes in an interesting manner. 3) another interesting method is to perhaps try using aski art and animating that in browser, if you can guide me to examples and use cases that would be good. %>
+  <%# --- %>
+  <%# Ok now moving on to the copy for the features themselves, this may seem bad but it is my first draft and I am ok with it %>
+  <%# 1) Create and Share Stencils, your customized prompts %>
+  <%# 2) Run mutiple stencils on your chat context  %>
+  <%# 3) Simple chat UI designed for speed  %>
+  <%# 4) Iterate on your context, edit anything and shape it how you want! %>
+
+  <%# here is some more project context to help you understand my features and how they connect to my app. (subject to change; target audience not finalized): %>
+  <%# 
+1. Core Product and Functionality
+
+    What: Stencil-AI is a workflow automation and insight generation platform centered around a specialized LLM chat interface. It is designed to transform a single conversation into a multi-faceted analysis.
+    Functionality: The core of the application is "Stencils"—reusable, shareable prompts that can output text or Mermaid diagrams.
+        Workflow: Users create or subscribe to a marketplace of Stencils. Within a project chat, they can provide context (e.g., a piece of code, a business idea). By selecting multiple Stencils and submitting the chat, the user triggers concurrent AI calls.
+        Output: The platform runs each Stencil against the same chat context simultaneously, generating multiple, distinct outputs called "Artifacts" in a side panel. These artifacts update as the chat conversation evolves, allowing for dynamic, multi-angled analysis from a single source of truth.
+        Known Challenge: For very large contexts, ensuring the LLM maintains focus when running diverse Stencils will be a key area for refinement.
+
+2. Target Audience and Market
+
+    Beachhead Ideal Customer Profile (ICP): Persona 1 - The Developer / Indie Hacker / Founder.
+        Description: Technical individuals who are actively building products, either solo or in small teams. They are fluent in system architecture and coding but must constantly switch contexts between development, product design, strategy, and even marketing.
+    Initial Industry Focus: Technology / Software Development.
+    Pain Points Solved for this Persona:
+        Documentation Debt & Code Visualization: Overcomes the tedious task of manually documenting code or creating architectural diagrams.
+        Severe Context-Switching: Reduces the mental fatigue of jumping between disparate tasks (e.g., coding, then user story generation, then writing a project update). Stencil-AI allows these to be done in one place, from one context.
+        Repetitive Analysis: Automates the process of running the same set of diagnostic prompts on a piece of code or idea (e.g., from a single codebase, simultaneously generate a database diagram, a user flow, a list of security vulnerabilities, and a summary for non-technical stakeholders).
+
+3. Unique Value Proposition and Competitive Landscape
+
+    Core Value Proposition: Stencil-AI is a workflow platform that allows professionals to run multiple, reusable AI prompts (Stencils) concurrently on a single chat, transforming a simple conversation into a multi-faceted analysis.
+        Feature: Specialized prompt stencils.
+            Benefit: "Stop re-inventing the wheel. Use powerful, reusable workflows (Stencils) to get consistent, high-quality results from your AI every time."
+        Feature: Concurrent prompts.
+            Benefit: "Why ask one question when you can ask ten? Get a 360-degree view of your problem—from technical diagrams to marketing copy—all from a single conversation, instantly."
+        Feature: Marketplace for Stencils.
+            Benefit: "Leverage the collective intelligence of a community. Subscribe to expert-crafted Stencils and deploy professional-grade AI workflows in seconds."
+    Competitive Landscape:
+        Direct Competitors: Tools like ChatGPT for Teams (with Custom GPTs) and open-source workflow builders like Flowise.
+        Indirect Competitors: Developer-integrated tools like GitHub Copilot Chat that compete for workflow attention.
+        Key Differentiator: Stencil-AI's primary differentiator is its focus on concurrent artifact generation from a single conversational context, a "one-to-many" model that is unique in the current market.
+
+4. Current Status, Goals, and Strategy
+
+    Stage of Business: Pre-launch. Deployed and functional, but in a beta state where UX refinement is needed and minor bugs are expected.
+    Business Goals: Grow revenue by acquiring users. The project is self-funded ("Indie Hacking") with no current interest in venture capital.
+    Go-to-Market Strategy: Phase 1 - Founder-Led Evangelism.
+        Focus: The immediate goal is not mass adoption, but to acquire the first 50-100 "true fan" users from the Developer/Indie Hacker persona in exchange for high-quality feedback.
+        Tactics:
+            Build in Public: Document the journey and share progress on platforms like Twitter, LinkedIn, and Indie Hackers.
+            Content-Led Marketing: Create tutorials and blog posts showing, not just telling, how Stencil-AI solves specific developer problems (e.g., "How I planned an entire app architecture using Stencil-AI")
+            Community Engagement: Provide value first in communities like Hacker News and relevant subreddits by sharing useful outputs (like a Mermaid diagram generated by the tool), only mentioning the product when organic interest is shown.
+
+ %>
 </div>
