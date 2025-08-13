@@ -61,20 +61,8 @@
 
 .hero_heading {
   font-family: var(--font-space);
-  font-size: xx-large;
 }
 
 .hero_sub_heading {
   font-family: var(--font-jakarta);
-  font-size: large;
-}
-
-.hero_cta_section {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-
-.hero_cta_button {
-  margin-top: 1rem;
 }
