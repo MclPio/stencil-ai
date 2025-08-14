@@ -10,9 +10,8 @@
     <!-- Feature Links (hidden on mobile) -->
     <div class="hidden md:flex ml-8 space-x-6 font-jakarta">
       <%= link_to "Features", "#features", class: "navbar-link font-medium" %>
-      <%= link_to "Solutions", "#", class: "navbar-link font-medium" %>
-      <%= link_to "Pricing", "#", class: "navbar-link font-medium" %>
-      <%= link_to "Resources", "#", class: "navbar-link font-medium" %>
+      <%= link_to "Testimonials", "#testimonials", class: "navbar-link font-medium" %>
+      <%= link_to "FAQ", "#faq", class: "navbar-link font-medium" %>
     </div>
   </div>
   
@@ -26,18 +25,17 @@
       </div>
       <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow rounded-box w-52 font-jakarta" style="background-color: white">
         <li><%= link_to "Features", "#features", class: "navbar-link" %></li>
-        <li><%= link_to "Solutions", "#", class: "navbar-link" %></li>
-        <li><%= link_to "Pricing", "#", class: "navbar-link" %></li>
-        <li><%= link_to "Resources", "#", class: "navbar-link" %></li>
-        <li><%= link_to "Sign Up", "#", class: "navbar-link" %></li>
-        <li><%= link_to "Login", "#", class: "navbar-link" %></li>
+        <li><%= link_to "Testimonials", "#testimonials", class: "navbar-link" %></li>
+        <li><%= link_to "FAQ", "#faq", class: "navbar-link" %></li>
+        <li><%= link_to "Sign Up", new_registration_path, class: "navbar-link" %></li>
+        <li><%= link_to "Login", new_session_path, class: "navbar-link" %></li>
       </ul>
     </div>
   </div>
   
   <!-- Right Side: Sign Up and Login Buttons -->
   <div class="navbar-end hidden md:flex space-x-3 font-jakarta">
-    <%= link_to "Login", "#", class: "btn btn-outline" %>
-    <%= link_to "Sign Up", "#", class: "btn btn-primary" %>
+    <%= link_to "Login", new_session_path, class: "btn btn-outline" %>
+    <%= link_to "Sign Up", new_registration_path, class: "btn btn-primary" %>
   </div>
 </nav>
