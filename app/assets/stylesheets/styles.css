@@ -1,3 +1,9 @@
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-primary: var(--electric-blue);
+}
+
 .chat-form {
   display: flex;
   flex-direction: column;
