@@ -1,0 +1,28 @@
+<section class="w-1/5 h-full p-4 bg-gray-50 border-r">
+  SIDEBAR
+  <div class="flex flex-col">
+    <button class="btn w-16">Close</button>
+    <a class="link">Projects</a>
+    <a class="link">Stencils</a>
+    Stencil Select
+    <% stencils.each do |stencil| %>
+      <%= stencil %>
+    <% end %>
+
+    <div>
+      <label for="stencil-1">stencil-1</label>
+      <input type="checkbox" id="stencil-1" name="stencil-1">
+    </div>
+
+    <div>
+      <label for="stencil-2">stencil-2</label>
+      <input type="checkbox" id="stencil-2" name="stencil-2">
+    </div>
+
+    <div>
+      <label for="stencil-3">stencil-3</label>
+      <input type="checkbox" id="stencil-3" name="stencil-3">
+    </div>
+  </div>
+  <button class="btn">Run Stencils</button>
+</section>

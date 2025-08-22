@@ -1,5 +1,17 @@
-<div id="conversations" class="max-w-3xl mx-auto mb-54" data-controller="assistant-user-chat">
-  <% @conversation.user_assistant_messages.sort.each do |message| %>
-    <%= render partial: "conversations/#{message.role}_role", locals: { message: message } %>
-  <% end %>
+<div class="w-5/5 flex flex-col p-4">
+  <section class="">
+    CHAT
+    <div>
+      User Message
+    </div>
+
+    <div>
+      Assistant Message
+    </div>
+
+    <div>
+      Artifact Shortcut
+    </div>
+  </section>
+  <%= render partial: "message_form" %>
 </div>

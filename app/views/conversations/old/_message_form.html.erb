@@ -1,0 +1,66 @@
+<%= form_with model: Message.new, url: messages_url, html: { class: "", id: "conversation-message-form", data: { controller: "message-form", turbo_frame: "_top", action: "turbo:submit-start->message-form#startLoading turbo:submit-end->message-form#resetForm input->message-form#updateSubmitButton" } } do |form| %>
+  <%= form.hidden_field :conversation_id, value: conversation.id %>
+  <%= form.hidden_field :artifact_stencil_ids, multiple: true, data: { 'message-form-target': 'stencilIds' } %>
+  <%= form.hidden_field :favorite_artifact_stencil_ids, multiple: true, data: { 'message-form-target': 'favoriteIds' } %>
+
+  <div class="chat-form">
+    <div class="chat-form__border">
+      <% if form.object.errors.any? %>
+        <%= render "conversations/message_form_disabled", conversation: conversation %>
+      <% else %>
+        <%= form.text_area :content, autofocus: true, disabled: false, data: { controller: 'auto-expand', action: "input->auto-expand#resize keydown->message-form#handleKeydown", 'message-form-target': 'textarea' }, class: "textarea mb-2 min-h-[6rem] max-h-[12rem] resize-none chat-form__textarea", placeholder: "Lets Build, provide me a detailed writeup about your project" %>
+      <% end %>
+      <div class="chat-form__input-groups">
+        <!-- Button to Open Modal -->
+        <div class="form-control">
+          <button type="button" class="btn btn-outline btn-sm" data-action="click->message-form#openStencilModal">
+            Select Stencils
+            <% if Current.user.favorite_artifact_stencils.any? %>
+              <span class="badge badge-primary ml-2" data-message-form-target="selectedCount">0</span>
+            <% end %>
+          </button>
+        </div>
+
+        <%= form.button class: "btn btn-primary p-2 rounded-full chat-form__input-submit", data: { 'message-form-target': 'submit' } do %>
+          <span data-message-form-target="buttonContent">
+            <% if @loading %>
+              <span class="loading loading-spinner loading-sm"></span>
+            <% else %>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M208.49,120.49a12,12,0,0,1-17,0L140,69V216a12,12,0,0,1-24,0V69L64.49,120.49a12,12,0,0,1-17-17l72-72a12,12,0,0,1,17,0l72,72A12,12,0,0,1,208.49,120.49Z"></path>
+              </svg>
+            <% end %>
+          </span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Selecting Stencils -->
+  <dialog id="stencil-modal" class="modal" data-message-form-target="stencilModal">
+    <div class="modal-box bg-base-100 shadow-xl max-w-md">
+      <h3 class="font-bold text-lg mb-4">Select Favorite Stencils</h3>
+      <div class="form-control max-h-[16rem] overflow-y-auto">
+        <% if Current.user.favorite_artifact_stencils.any? %>
+          <% Current.user.favorite_artifact_stencils.each do |favorite| %>
+            <% stencil = favorite.artifact_stencil %>
+            <label class="cursor-pointer flex items-center gap-3 py-2">
+              <input type="checkbox" 
+                     class="checkbox checkbox-primary" 
+                     value="<%= stencil.id %>" 
+                     data-action="change->message-form#updateStencilIds"
+                     data-stencil-id="<%= stencil.id %>"
+                     data-favorite-id="<%= favorite.id %>">
+              <span class="label-text text-base-content/80"><%= stencil.name %></span>
+            </label>
+          <% end %>
+        <% else %>
+          <p class="text-base-content/60">No favorite stencils available.</p>
+        <% end %>
+      </div>
+      <div class="modal-action mt-4">
+        <button class="btn btn-primary" type="button" data-action="click->message-form#closeStencilModal">Done</button>
+      </div>
+    </div>
+  </dialog>
+<% end %>
